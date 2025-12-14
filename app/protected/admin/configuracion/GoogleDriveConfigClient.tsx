@@ -4,15 +4,18 @@ import { useState } from "react";
 import { Button } from "@/app/components/ui/button";
 import {
   CheckCircleIcon,
-  AlertTriangle, // Corregido
+  AlertTriangle,
   CheckIcon,
   ExternalLinkIcon,
   SettingsIcon,
   AlertCircleIcon,
-  X, // Corregido
+  CloudIcon,
+  RefreshCwIcon
 } from 'lucide-react'
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/app/components/ui/card";
+import { Badge } from "@/app/components/ui/badge";
 
 interface TokenInfo {
   createdAt: string;
@@ -24,22 +27,20 @@ interface GoogleDriveConfigClientProps {
   tokenInfo: TokenInfo | null;
 }
 
-export function GoogleDriveConfigClient({ 
-  hasExistingTokens, 
-  tokenInfo 
+export function GoogleDriveConfigClient({
+  hasExistingTokens,
+  tokenInfo
 }: GoogleDriveConfigClientProps) {
   const [isConnecting, setIsConnecting] = useState(false);
 
   const handleConnectGoogleDrive = async () => {
     setIsConnecting(true);
-    
+
     try {
-      // Llamar a la API para obtener URL de autorización
       const response = await fetch('/api/auth/google/connect');
       const data = await response.json();
-      
+
       if (data.authUrl) {
-        // Redirigir a Google para autorización
         window.location.href = data.authUrl;
       } else {
         throw new Error('No se pudo obtener la URL de autorización');
@@ -52,8 +53,8 @@ export function GoogleDriveConfigClient({
   };
 
   const formatDate = (dateString: string) => {
-    return format(new Date(dateString), "d 'de' MMMM 'de' yyyy 'a las' HH:mm", { 
-      locale: es 
+    return format(new Date(dateString), "d 'de' MMMM 'de' yyyy 'a las' HH:mm", {
+      locale: es
     });
   };
 
@@ -63,167 +64,125 @@ export function GoogleDriveConfigClient({
   };
 
   return (
-    <div className="bg-card/80 backdrop-blur-sm border border-border/60 rounded-lg p-6">
-      <div className="flex items-start justify-between">
-        <div className="flex items-center space-x-3">
-          <div className="p-2 bg-blue-100 dark:bg-blue-900/20 rounded-lg">
-            <SettingsIcon className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+    <Card className="border border-white/10 bg-card/40 backdrop-blur-md shadow-xl">
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className={`p-2.5 rounded-xl ${hasExistingTokens ? 'bg-green-500/10 text-green-500' : 'bg-amber-500/10 text-amber-500'}`}>
+              <CloudIcon className="h-6 w-6" />
+            </div>
+            <div>
+              <CardTitle className="text-lg">Google Drive</CardTitle>
+              <CardDescription>Almacenamiento de documentos</CardDescription>
+            </div>
           </div>
-          <div>
-            <h3 className="text-lg font-semibold">Google Drive</h3>
-            <p className="text-sm text-muted-foreground">
-              Conectá tu cuenta de Google Drive para subir documentos
-            </p>
-          </div>
+          {hasExistingTokens ? (
+            <Badge variant="success" className="gap-1">
+              <CheckIcon className="h-3 w-3" /> Conectado
+            </Badge>
+          ) : (
+            <Badge variant="warning" className="gap-1">
+              <AlertTriangle className="h-3 w-3" /> Desconectado
+            </Badge>
+          )}
         </div>
+      </CardHeader>
 
-        {hasExistingTokens && (
-          <div className="flex items-center space-x-2">
-            <CheckIcon className="h-5 w-5 text-green-600" />
-            <span className="text-sm font-medium text-green-600">Conectado</span>
-          </div>
-        )}
-      </div>
+      <CardContent className="space-y-6">
+        {hasExistingTokens && tokenInfo ? (
+          <div className="space-y-4">
+            <div className="p-4 bg-green-500/5 border border-green-500/20 rounded-xl">
+              <div className="flex items-start gap-3">
+                <CheckCircleIcon className="h-5 w-5 text-green-500 mt-0.5" />
+                <div className="space-y-1">
+                  <h4 className="text-sm font-medium text-green-600 dark:text-green-400">Integración Activa</h4>
+                  <p className="text-xs text-muted-foreground">
+                    Los documentos generados se guardarán automáticamente en tu unidad.
+                  </p>
+                  <div className="pt-2 text-xs text-muted-foreground space-y-1">
+                    <p>Conectado: {formatDate(tokenInfo.createdAt)}</p>
+                    {tokenInfo.expiresAt && (
+                      <p className={isTokenExpired(tokenInfo.expiresAt) ? "text-destructive" : ""}>
+                        Expira: {formatDate(tokenInfo.expiresAt)}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
 
-      {hasExistingTokens && tokenInfo ? (
-        <div className="mt-4 space-y-3">
-          <div className="p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
-            <div className="flex items-center space-x-2 mb-2">
-              <CheckIcon className="h-4 w-4 text-green-600" />
-              <span className="text-sm font-medium text-green-800 dark:text-green-200">
-                Cuenta de Google Drive conectada exitosamente
-              </span>
-            </div>
-            <div className="text-xs text-green-700 dark:text-green-300 space-y-1">
-              <p>Conectada el: {formatDate(tokenInfo.createdAt)}</p>
-              {tokenInfo.expiresAt && (
-                <p>
-                  {isTokenExpired(tokenInfo.expiresAt) ? (
-                    <span className="flex items-center space-x-1 text-orange-600">
-                      <AlertCircleIcon className="h-3 w-3" />
-                      <span>Token expirado el: {formatDate(tokenInfo.expiresAt)}</span>
-                    </span>
-                  ) : (
-                    <span>Expira el: {formatDate(tokenInfo.expiresAt)}</span>
-                  )}
-                </p>
-              )}
-            </div>
-          </div>
-
-          <div className="flex items-center justify-between">
-            <div className="text-sm text-muted-foreground">
-              Los documentos se subirán automáticamente a tu Google Drive
-            </div>
             <Button
               onClick={handleConnectGoogleDrive}
               disabled={isConnecting}
               variant="outline"
-              size="sm"
+              className="w-full"
             >
               {isConnecting ? (
-                "Reconectando..."
+                <>
+                  <RefreshCwIcon className="h-4 w-4 mr-2 animate-spin" />
+                  Actualizando...
+                </>
               ) : (
                 <>
-                  <ExternalLinkIcon className="h-4 w-4 mr-2" />
-                  Reconectar
+                  <RefreshCwIcon className="h-4 w-4 mr-2" />
+                  Reconectar Cuenta
                 </>
               )}
             </Button>
           </div>
-        </div>
-      ) : (
-        <div className="mt-4 space-y-4">
-          <div className="p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
-            <div className="flex items-center space-x-2 mb-2">
-              <AlertCircleIcon className="h-4 w-4 text-yellow-600" />
-              <span className="text-sm font-medium text-yellow-800 dark:text-yellow-200">
-                Google Drive no está conectado
-              </span>
+        ) : (
+          <div className="space-y-4">
+            <div className="p-4 bg-amber-500/5 border border-amber-500/20 rounded-xl">
+              <div className="flex items-start gap-3">
+                <AlertCircleIcon className="h-5 w-5 text-amber-500 mt-0.5" />
+                <div className="space-y-1">
+                  <h4 className="text-sm font-medium text-amber-600 dark:text-amber-400">Configuración Requerida</h4>
+                  <p className="text-xs text-muted-foreground">
+                    Para habilitar el almacenamiento automático, debes autorizar el acceso a Google Drive.
+                    Solo necesitas hacerlo una vez.
+                  </p>
+                </div>
+              </div>
             </div>
-            <p className="text-xs text-yellow-700 dark:text-yellow-300">
-              Para que los documentos se suban automáticamente a Google Drive, 
-              necesitás autorizar la aplicación una vez.
-            </p>
-          </div>
 
-          <div className="flex items-center justify-between">
-            <div className="text-sm text-muted-foreground">
-              Solo el administrador puede conectar Google Drive
-            </div>
             <Button
               onClick={handleConnectGoogleDrive}
               disabled={isConnecting}
-              className="bg-blue-600 hover:bg-blue-700"
+              className="w-full shadow-lg shadow-primary/20"
             >
               {isConnecting ? (
-                "Conectando..."
+                <>
+                  <RefreshCwIcon className="h-4 w-4 mr-2 animate-spin" />
+                  Conectando...
+                </>
               ) : (
                 <>
                   <ExternalLinkIcon className="h-4 w-4 mr-2" />
-                  Conectar Google Drive
+                  Conectar con Google
                 </>
               )}
             </Button>
           </div>
-        </div>
-      )}
+        )}
 
-      <div className="mt-4 pt-4 border-t border-border/60">
-        <h4 className="text-sm font-medium mb-2">¿Qué hace esta configuración?</h4>
-        <ul className="text-xs text-muted-foreground space-y-1">
-          <li>• Permite subir documentos automáticamente a tu Google Drive</li>
-          <li>• Los archivos se organizan en carpetas según el estado del convenio</li>
-          <li>• Solo necesitás autorizar una vez (los tokens se renuevan automáticamente)</li>
-          <li>• Los documentos quedan en tu cuenta personal de Google</li>
-        </ul>
-      </div>
-
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h3 className="text-lg font-semibold">Conexión con Google Drive</h3>
-            <p className="text-sm text-muted-foreground mt-1">
-              Conecta tu cuenta de Google Drive para permitir que la aplicación guarde convenios
-            </p>
-          </div>
-          <div className="flex items-center space-x-2">
-            <span className="pulsing-indicator">
-              <span 
-                className={`animate-ping ${hasExistingTokens ? 'bg-green-400' : 'bg-red-400'}`}
-              ></span>
-              <span 
-                className={`relative-dot ${hasExistingTokens ? 'bg-green-500' : 'bg-red-500'}`}
-              ></span>
-            </span>
-            <span className={`text-sm font-medium ${hasExistingTokens ? 'text-green-500' : 'text-red-500'}`}>
-              {hasExistingTokens ? 'Conectado' : 'No conectado'}
-            </span>
-          </div>
+        <div className="pt-4 border-t border-border/50">
+          <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">Información del Sistema</h4>
+          <ul className="space-y-2 text-xs text-muted-foreground">
+            <li className="flex items-center gap-2">
+              <div className="w-1 h-1 rounded-full bg-primary" />
+              Almacenamiento centralizado en la cuenta del administrador.
+            </li>
+            <li className="flex items-center gap-2">
+              <div className="w-1 h-1 rounded-full bg-primary" />
+              Organización automática por carpetas y estados.
+            </li>
+            <li className="flex items-center gap-2">
+              <div className="w-1 h-1 rounded-full bg-primary" />
+              Sin límite de usuarios para la generación de documentos.
+            </li>
+          </ul>
         </div>
-
-        {/* NUEVA SECCIÓN: Información del sistema */}
-        <div className="rounded-lg border bg-blue-50 p-4 dark:border-blue-800 dark:bg-blue-900/30">
-          <h4 className="flex items-center gap-2 font-medium text-blue-900 dark:text-blue-200">
-            <SettingsIcon className="h-4 w-4" />
-            Sistema de Administrador Único
-          </h4>
-          <div className="mt-2 space-y-2 text-sm text-blue-800 dark:text-blue-300">
-            <p>
-              • <strong>Tu cuenta Google Drive</strong> se usa para TODOS los convenios
-            </p>
-            <p>
-              • <strong>Cualquier usuario</strong> puede crear convenios, pero se guardan en tu Drive
-            </p>
-            <p>
-              • <strong>No hay límite de usuarios</strong> en la aplicación (solo 1 cuenta OAuth)
-            </p>
-            <p>
-              • <strong>Control centralizado</strong> - todos los archivos en un solo lugar
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
-} 
+}

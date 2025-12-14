@@ -14,14 +14,16 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "Convenios UTN - Sistema de Gestión",
-  description: "Sistema de gestión de convenios institucionales para la UTN",
+  title: "NexusDoc - Intelligent Document OS",
+  description: "The intelligent operating system for managing digital agreements and workflows.",
 };
 
 const inter = Inter({
   display: "swap",
   subsets: ["latin"],
 });
+
+import { AnimatedBackground } from "@/app/components/ui/animated-background";
 
 export default function RootLayout({
   children,
@@ -30,12 +32,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" className={inter.className} suppressHydrationWarning>
-      <body className="bg-background text-foreground">
+      <body className="bg-background text-foreground antialiased">
+        <AnimatedBackground />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
-          disableTransitionOnChange
         >
           <LoadingProvider>
             <ToastProvider>

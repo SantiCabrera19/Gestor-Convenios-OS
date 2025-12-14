@@ -2,11 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { ProfesorPanelClient } from "./ProfesorPanelClient";
-import {
-  SectionContainer,
-  BackgroundPattern,
-  DashboardHeader
-} from "@/app/components/dashboard";
+import { PageContainer } from "@/app/components/ui/page-container";
+import { GraduationCapIcon } from "lucide-react";
 
 export default function ProfesorPage() {
   const [convenios, setConvenios] = useState<any[]>([]);
@@ -17,7 +14,7 @@ export default function ProfesorPage() {
     async function fetchData() {
       try {
         setLoading(true);
-        
+
         const res = await fetch("/api/convenios?limit=1000&full=true");
         if (!res.ok) {
           throw new Error("Error al cargar convenios");
@@ -39,48 +36,45 @@ export default function ProfesorPage() {
 
   if (loading) {
     return (
-      <>
-        <BackgroundPattern />
-        <div className="p-6 w-full relative">
-          <div className="animate-pulse">
-            <div className="h-8 bg-muted rounded-lg w-64 mb-2"></div>
-            <div className="h-4 bg-muted rounded-lg w-96 mb-8"></div>
-            <div className="h-96 bg-muted rounded-lg"></div>
+      <PageContainer>
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+          <div className="space-y-1">
+            <div className="h-8 w-48 bg-muted/20 rounded-md animate-pulse"></div>
+            <div className="h-4 w-64 bg-muted/20 rounded-md animate-pulse"></div>
           </div>
         </div>
-      </>
+        <div className="h-96 w-full bg-muted/10 rounded-xl animate-pulse"></div>
+      </PageContainer>
     );
   }
 
   if (error) {
     return (
-      <>
-        <BackgroundPattern />
-        <div className="p-6 w-full relative">
-          <DashboardHeader name="Panel de Profesor" subtitle="Error al cargar convenios" />
-          <div className="mt-6">
-            <SectionContainer title="Error">
-              <div className="text-center py-12 text-red-500">
-                <p className="text-lg font-semibold">Error al cargar los convenios</p>
-                <p className="text-sm mt-2">Por favor, intenta recargar la página</p>
-              </div>
-            </SectionContainer>
-          </div>
+      <PageContainer>
+        <div className="text-center py-16 text-destructive">
+          <p className="text-lg font-semibold">Error al cargar los convenios</p>
+          <p className="text-sm mt-2">Por favor, intenta recargar la página</p>
         </div>
-      </>
+      </PageContainer>
     );
   }
 
   return (
-    <>
-      <BackgroundPattern />
-      <div className="p-6 w-full relative">
-        <DashboardHeader 
-          name="Panel de Profesor" 
-          subtitle="Visualiza y filtra todos los convenios del sistema" 
-        />
-        <ProfesorPanelClient convenios={convenios} />
+    <PageContainer>
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+        <div className="space-y-1">
+          <h1 className="text-3xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/70">
+            Panel Académico
+          </h1>
+          <p className="text-muted-foreground max-w-2xl">
+            Visualiza y filtra los convenios académicos del sistema.
+          </p>
+        </div>
+        <div className="p-3 bg-primary/10 rounded-full">
+          <GraduationCapIcon className="w-6 h-6 text-primary" />
+        </div>
       </div>
-    </>
+      <ProfesorPanelClient convenios={convenios} />
+    </PageContainer>
   );
-} 
+}

@@ -2,22 +2,26 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { 
-  ChevronLeftIcon, 
-  FileTextIcon, 
-  CalendarIcon, 
-  BuildingIcon, 
+import {
+  ChevronLeftIcon,
+  FileTextIcon,
+  CalendarIcon,
+  BuildingIcon,
   UserIcon,
   AlertTriangle,
   CheckCircle,
   Clock,
   XCircle,
   Edit,
-  Download
+  Download,
+  InfoIcon
 } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/app/components/ui/button';
 import { RequestModificationModal } from '@/app/components/ui/request-modification-modal';
+import { Card, CardContent, CardHeader, CardTitle } from '@/app/components/ui/card';
+import { Badge } from '@/app/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
 
 interface ConvenioInfoDisplayProps {
   convenioId: string;
@@ -44,32 +48,32 @@ interface ConvenioData {
 const statusConfig = {
   pendiente: {
     icon: Clock,
-    color: 'text-yellow-600 bg-yellow-100 dark:bg-yellow-900/20',
+    variant: 'warning' as const,
     label: 'Pendiente de Revisión'
   },
   aprobado: {
     icon: CheckCircle,
-    color: 'text-green-600 bg-green-100 dark:bg-green-900/20',
+    variant: 'success' as const,
     label: 'Aprobado'
   },
   rechazado: {
     icon: XCircle,
-    color: 'text-red-600 bg-red-100 dark:bg-red-900/20',
+    variant: 'destructive' as const,
     label: 'Rechazado'
   },
   enviado: {
     icon: Clock,
-    color: 'text-blue-600 bg-blue-100 dark:bg-blue-900/20',
+    variant: 'info' as const,
     label: 'Enviado'
   },
   borrador: {
     icon: FileTextIcon,
-    color: 'text-gray-600 bg-gray-100 dark:bg-gray-900/20',
+    variant: 'secondary' as const,
     label: 'Borrador'
   },
   revision_modificacion: {
     icon: AlertTriangle,
-    color: 'text-orange-600 bg-orange-100 dark:bg-orange-900/20',
+    variant: 'warning' as const,
     label: 'Solicitud de Modificación'
   }
 };
@@ -89,11 +93,11 @@ export function ConvenioInfoDisplay({ convenioId }: ConvenioInfoDisplayProps) {
     try {
       setLoading(true);
       const response = await fetch(`/api/convenios/${convenioId}`);
-      
+
       if (!response.ok) {
         throw new Error('No se pudo cargar el convenio');
       }
-      
+
       const data = await response.json();
       setConvenio(data);
     } catch (error) {
@@ -105,11 +109,10 @@ export function ConvenioInfoDisplay({ convenioId }: ConvenioInfoDisplayProps) {
 
   const handleEditClick = () => {
     if (!convenio) return;
-    
-    // Determinar el tipo de convenio para la URL
+
     const convenioTypeName = convenio.convenio_types.name.toLowerCase();
     let typeSlug = '';
-    
+
     if (convenioTypeName.includes('marco') && convenioTypeName.includes('práctica')) {
       typeSlug = 'practica-marco';
     } else if (convenioTypeName.includes('marco')) {
@@ -121,7 +124,7 @@ export function ConvenioInfoDisplay({ convenioId }: ConvenioInfoDisplayProps) {
     } else if (convenioTypeName.includes('acuerdo')) {
       typeSlug = 'acuerdo';
     }
-    
+
     router.push(`/protected/convenio-detalle/${convenioId}?type=${typeSlug}&mode=correccion`);
   };
 
@@ -129,206 +132,162 @@ export function ConvenioInfoDisplay({ convenioId }: ConvenioInfoDisplayProps) {
     if (!convenio?.form_data) return null;
 
     const data = convenio.form_data;
-    
+
     return (
-      <div className="space-y-6">
-        {/* Información del Estudiante/Alumno (si existe) */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Información del Estudiante/Alumno */}
         {data.alumno_nombre && (
-          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6">
-            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-blue-700 dark:text-blue-300">
-              <UserIcon className="w-5 h-5" />
-              Información del Estudiante
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+          <Card className="border-white/10 bg-card/40 backdrop-blur-md">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg flex items-center gap-2 text-primary">
+                <UserIcon className="w-5 h-5" />
+                Información del Estudiante
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4 text-sm">
               <div>
-                <span className="font-medium text-blue-600 dark:text-blue-400">Estudiante:</span>
-                <p className="mt-1 font-semibold text-blue-800 dark:text-blue-200">{data.alumno_nombre}</p>
+                <span className="text-muted-foreground block text-xs uppercase tracking-wider">Estudiante</span>
+                <p className="font-medium text-base">{data.alumno_nombre}</p>
               </div>
-              {data.alumno_carrera && (
-                <div>
-                  <span className="font-medium text-blue-600 dark:text-blue-400">Carrera:</span>
-                  <p className="mt-1 text-blue-800 dark:text-blue-200">{data.alumno_carrera}</p>
-                </div>
-              )}
-              {data.alumno_legajo && (
-                <div>
-                  <span className="font-medium text-blue-600 dark:text-blue-400">Legajo:</span>
-                  <p className="mt-1 text-blue-800 dark:text-blue-200">{data.alumno_legajo}</p>
-                </div>
-              )}
-              {data.alumno_dni && (
-                <div>
-                  <span className="font-medium text-blue-600 dark:text-blue-400">DNI:</span>
-                  <p className="mt-1 text-blue-800 dark:text-blue-200">***{data.alumno_dni.slice(-3)}</p>
-                </div>
-              )}
-            </div>
-          </div>
+              <div className="grid grid-cols-2 gap-4">
+                {data.alumno_carrera && (
+                  <div>
+                    <span className="text-muted-foreground block text-xs uppercase tracking-wider">Carrera</span>
+                    <p className="font-medium">{data.alumno_carrera}</p>
+                  </div>
+                )}
+                {data.alumno_legajo && (
+                  <div>
+                    <span className="text-muted-foreground block text-xs uppercase tracking-wider">Legajo</span>
+                    <p className="font-medium">{data.alumno_legajo}</p>
+                  </div>
+                )}
+                {data.alumno_dni && (
+                  <div>
+                    <span className="text-muted-foreground block text-xs uppercase tracking-wider">DNI</span>
+                    <p className="font-medium">***{data.alumno_dni.slice(-3)}</p>
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
         )}
 
         {/* Información de la Empresa/Entidad */}
-        <div className="bg-card border border-border rounded-lg p-6">
-          <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-            <BuildingIcon className="w-5 h-5 text-green-600" />
-            Empresa/Entidad
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+        <Card className="border-white/10 bg-card/40 backdrop-blur-md">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg flex items-center gap-2 text-primary">
+              <BuildingIcon className="w-5 h-5" />
+              Empresa/Entidad
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4 text-sm">
             <div>
-              <span className="font-medium text-muted-foreground">Nombre:</span>
-              <p className="mt-1 font-semibold">{data.entidad_nombre || data.empresa_nombre || 'No especificado'}</p>
+              <span className="text-muted-foreground block text-xs uppercase tracking-wider">Nombre</span>
+              <p className="font-medium text-base">{data.entidad_nombre || data.empresa_nombre || 'No especificado'}</p>
             </div>
-            {(data.entidad_tipo || data.empresa_tipo) && (
-              <div>
-                <span className="font-medium text-muted-foreground">Tipo:</span>
-                <p className="mt-1">{data.entidad_tipo || data.empresa_tipo}</p>
-              </div>
-            )}
-            {(data.entidad_cuit || data.empresa_cuit) && (
-              <div>
-                <span className="font-medium text-muted-foreground">CUIT:</span>
-                <p className="mt-1">***{(data.entidad_cuit || data.empresa_cuit).slice(-4)}</p>
-              </div>
-            )}
+            <div className="grid grid-cols-2 gap-4">
+              {(data.entidad_tipo || data.empresa_tipo) && (
+                <div>
+                  <span className="text-muted-foreground block text-xs uppercase tracking-wider">Tipo</span>
+                  <p className="font-medium">{data.entidad_tipo || data.empresa_tipo}</p>
+                </div>
+              )}
+              {(data.entidad_cuit || data.empresa_cuit) && (
+                <div>
+                  <span className="text-muted-foreground block text-xs uppercase tracking-wider">CUIT</span>
+                  <p className="font-medium">***{(data.entidad_cuit || data.empresa_cuit).slice(-4)}</p>
+                </div>
+              )}
+            </div>
             {(data.entidad_domicilio || data.empresa_direccion_calle) && (
               <div>
-                <span className="font-medium text-muted-foreground">Dirección:</span>
-                <p className="mt-1">{data.entidad_domicilio || data.empresa_direccion_calle}</p>
+                <span className="text-muted-foreground block text-xs uppercase tracking-wider">Dirección</span>
+                <p className="font-medium">{data.entidad_domicilio || data.empresa_direccion_calle}</p>
               </div>
             )}
-            {(data.entidad_ciudad || data.empresa_direccion_ciudad) && (
-              <div>
-                <span className="font-medium text-muted-foreground">Ciudad:</span>
-                <p className="mt-1">{data.entidad_ciudad || data.empresa_direccion_ciudad}</p>
-              </div>
-            )}
-            {data.entidad_rubro && (
-              <div>
-                <span className="font-medium text-muted-foreground">Rubro:</span>
-                <p className="mt-1">{data.entidad_rubro}</p>
-              </div>
-            )}
-          </div>
-        </div>
+          </CardContent>
+        </Card>
 
         {/* Representante/Contacto */}
         {(data.entidad_representante || data.representanteNombre || data.empresa_representante_nombre) && (
-          <div className="bg-card border border-border rounded-lg p-6">
-            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-              <UserIcon className="w-5 h-5 text-orange-600" />
-              Representante Legal
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-              <div>
-                <span className="font-medium text-muted-foreground">Nombre:</span>
-                <p className="mt-1 font-semibold">
-                  {data.entidad_representante || data.representanteNombre || data.empresa_representante_nombre || 'No especificado'}
-                </p>
-              </div>
-              <div>
-                <span className="font-medium text-muted-foreground">Cargo:</span>
-                <p className="mt-1">
-                  {data.entidad_cargo || data.cargoRepresentante || data.empresa_representante_caracter || 'No especificado'}
-                </p>
-              </div>
-              {data.representante_telefono && (
+          <Card className="border-white/10 bg-card/40 backdrop-blur-md">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg flex items-center gap-2 text-primary">
+                <UserIcon className="w-5 h-5" />
+                Representante Legal
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4 text-sm">
+              <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <span className="font-medium text-muted-foreground">Teléfono:</span>
-                  <p className="mt-1">{data.representante_telefono}</p>
+                  <span className="text-muted-foreground block text-xs uppercase tracking-wider">Nombre</span>
+                  <p className="font-medium">
+                    {data.entidad_representante || data.representanteNombre || data.empresa_representante_nombre}
+                  </p>
                 </div>
-              )}
-              {data.representante_email && (
                 <div>
-                  <span className="font-medium text-muted-foreground">Email:</span>
-                  <p className="mt-1">{data.representante_email}</p>
+                  <span className="text-muted-foreground block text-xs uppercase tracking-wider">Cargo</span>
+                  <p className="font-medium">
+                    {data.entidad_cargo || data.cargoRepresentante || data.empresa_representante_caracter || 'No especificado'}
+                  </p>
                 </div>
-              )}
-            </div>
-          </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                {data.representante_telefono && (
+                  <div>
+                    <span className="text-muted-foreground block text-xs uppercase tracking-wider">Teléfono</span>
+                    <p className="font-medium">{data.representante_telefono}</p>
+                  </div>
+                )}
+                {data.representante_email && (
+                  <div>
+                    <span className="text-muted-foreground block text-xs uppercase tracking-wider">Email</span>
+                    <p className="font-medium">{data.representante_email}</p>
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
         )}
 
         {/* Fechas y Tipo de Convenio */}
-        <div className="bg-card border border-border rounded-lg p-6">
-          <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-            <CalendarIcon className="w-5 h-5 text-purple-600" />
-            Información del Convenio
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+        <Card className="border-white/10 bg-card/40 backdrop-blur-md">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg flex items-center gap-2 text-primary">
+              <CalendarIcon className="w-5 h-5" />
+              Detalles del Convenio
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4 text-sm">
             <div>
-              <span className="font-medium text-muted-foreground">Tipo de Convenio:</span>
-              <p className="mt-1 font-semibold">{convenio.convenio_types.name}</p>
+              <span className="text-muted-foreground block text-xs uppercase tracking-wider">Tipo</span>
+              <p className="font-medium text-base">{convenio.convenio_types.name}</p>
             </div>
-            <div>
-              <span className="font-medium text-muted-foreground">Fecha de Creación:</span>
-              <p className="mt-1">{new Date(convenio.created_at).toLocaleDateString('es-ES')}</p>
-            </div>
-            {data.dia && data.mes && (
+            <div className="grid grid-cols-2 gap-4">
               <div>
-                <span className="font-medium text-muted-foreground">Fecha de Firma:</span>
-                <p className="mt-1">{data.dia} de {data.mes}</p>
+                <span className="text-muted-foreground block text-xs uppercase tracking-wider">Creado</span>
+                <p className="font-medium">{new Date(convenio.created_at).toLocaleDateString('es-ES')}</p>
               </div>
-            )}
-            <div>
-              <span className="font-medium text-muted-foreground">Última Actualización:</span>
-              <p className="mt-1">{new Date(convenio.updated_at).toLocaleDateString('es-ES')}</p>
-            </div>
-            {data.fecha_inicio && (
               <div>
-                <span className="font-medium text-muted-foreground">Fecha de Inicio:</span>
-                <p className="mt-1">{new Date(data.fecha_inicio).toLocaleDateString('es-ES')}</p>
+                <span className="text-muted-foreground block text-xs uppercase tracking-wider">Actualizado</span>
+                <p className="font-medium">{new Date(convenio.updated_at).toLocaleDateString('es-ES')}</p>
               </div>
-            )}
-            {data.fecha_fin && (
-              <div>
-                <span className="font-medium text-muted-foreground">Fecha de Fin:</span>
-                <p className="mt-1">{new Date(data.fecha_fin).toLocaleDateString('es-ES')}</p>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Información de Práctica/Actividad (si existe) */}
-        {(data.practica_tematica || data.alumno_tutor || data.empresa_tutor || data.practica_carga_horaria) && (
-          <div className="bg-card border border-border rounded-lg p-6">
-            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-              <FileTextIcon className="w-5 h-5 text-indigo-600" />
-              Información de la Práctica
-            </h3>
-            <div className="space-y-4 text-sm">
-              {data.practica_tematica && (
+              {data.fecha_inicio && (
                 <div>
-                  <span className="font-medium text-muted-foreground">Temática:</span>
-                  <p className="mt-1 text-muted-foreground leading-relaxed bg-muted/50 p-3 rounded border-l-4 border-indigo-500">{data.practica_tematica}</p>
+                  <span className="text-muted-foreground block text-xs uppercase tracking-wider">Inicio</span>
+                  <p className="font-medium">{new Date(data.fecha_inicio).toLocaleDateString('es-ES')}</p>
                 </div>
               )}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {data.alumno_tutor && (
-                  <div>
-                    <span className="font-medium text-muted-foreground">Tutor UTN:</span>
-                    <p className="mt-1">{data.alumno_tutor}</p>
-                  </div>
-                )}
-                {data.empresa_tutor && (
-                  <div>
-                    <span className="font-medium text-muted-foreground">Tutor Empresa:</span>
-                    <p className="mt-1">{data.empresa_tutor}</p>
-                  </div>
-                )}
-                {data.practica_carga_horaria && (
-                  <div>
-                    <span className="font-medium text-muted-foreground">Carga Horaria:</span>
-                    <p className="mt-1">{data.practica_carga_horaria} horas</p>
-                  </div>
-                )}
-                {data.practica_modalidad && (
-                  <div>
-                    <span className="font-medium text-muted-foreground">Modalidad:</span>
-                    <p className="mt-1">{data.practica_modalidad}</p>
-                  </div>
-                )}
-              </div>
+              {data.fecha_fin && (
+                <div>
+                  <span className="text-muted-foreground block text-xs uppercase tracking-wider">Fin</span>
+                  <p className="font-medium">{new Date(data.fecha_fin).toLocaleDateString('es-ES')}</p>
+                </div>
+              )}
             </div>
-          </div>
-        )}
+          </CardContent>
+        </Card>
       </div>
     );
   };
@@ -336,8 +295,8 @@ export function ConvenioInfoDisplay({ convenioId }: ConvenioInfoDisplayProps) {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+        <div className="text-center space-y-4">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
           <p className="text-muted-foreground">Cargando convenio...</p>
         </div>
       </div>
@@ -346,12 +305,14 @@ export function ConvenioInfoDisplay({ convenioId }: ConvenioInfoDisplayProps) {
 
   if (error || !convenio) {
     return (
-      <div className="text-center py-8">
-        <XCircle className="h-12 w-12 mx-auto mb-4 text-red-500" />
+      <div className="text-center py-16">
+        <div className="w-16 h-16 bg-destructive/10 rounded-full flex items-center justify-center mx-auto mb-4">
+          <XCircle className="h-8 w-8 text-destructive" />
+        </div>
         <h2 className="text-xl font-semibold mb-2">Error al cargar el convenio</h2>
         <p className="text-muted-foreground mb-6">{error || 'No se encontró el convenio'}</p>
         <Link href="/protected/convenios-lista">
-          <Button>
+          <Button variant="outline">
             <ChevronLeftIcon className="h-4 w-4 mr-2" />
             Volver a Mis Convenios
           </Button>
@@ -364,90 +325,72 @@ export function ConvenioInfoDisplay({ convenioId }: ConvenioInfoDisplayProps) {
   const StatusIcon = statusInfo.icon;
 
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-6">
+    <div className="space-y-8 animate-fade-up">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div className="flex items-center gap-4">
           <Link href="/protected/convenios-lista">
-            <Button variant="outline" size="sm">
-              <ChevronLeftIcon className="h-4 w-4 mr-2" />
-              Volver
+            <Button variant="ghost" size="icon" className="rounded-full">
+              <ChevronLeftIcon className="h-5 w-5" />
             </Button>
           </Link>
           <div>
-            <h1 className="text-2xl font-bold">{convenio.title}</h1>
-            <p className="text-muted-foreground">{convenio.convenio_types.name}</p>
+            <h1 className="text-2xl font-bold tracking-tight">{convenio.title}</h1>
+            <p className="text-muted-foreground text-sm">{convenio.convenio_types.name}</p>
           </div>
         </div>
-        
-        {/* Status Badge */}
-        <div className={`flex items-center gap-2 px-3 py-2 rounded-full ${statusInfo.color}`}>
+
+        <Badge variant={statusInfo.variant} className="px-3 py-1.5 text-sm gap-2">
           <StatusIcon className="w-4 h-4" />
-          <span className="text-sm font-medium">{statusInfo.label}</span>
-        </div>
+          {statusInfo.label}
+        </Badge>
       </div>
 
-      {/* Información */}
+      {/* Actions */}
+      <Card className="border-white/10 bg-card/40 backdrop-blur-md">
+        <CardContent className="p-4 flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <InfoIcon className="w-4 h-4" />
+            <span>
+              {convenio.status === 'aprobado' && 'Este convenio está aprobado. Usa "Solicitar Modificación" para cambios.'}
+              {convenio.status === 'borrador' && 'Este convenio es un borrador. Puedes continuar editándolo.'}
+              {convenio.status === 'pendiente' && 'Esperando revisión administrativa.'}
+            </span>
+          </div>
+
+          <div className="flex gap-2">
+            {convenio.status === 'borrador' && (
+              <Button onClick={handleEditClick} className="shadow-lg shadow-primary/20">
+                <Edit className="w-4 h-4 mr-2" />
+                Continuar Editando
+              </Button>
+            )}
+
+            {convenio.status === 'aprobado' && (
+              <Button
+                onClick={() => setShowRequestModal(true)}
+                variant="outline"
+                className="border-yellow-500/50 text-yellow-600 hover:bg-yellow-500/10 dark:text-yellow-400"
+              >
+                <AlertTriangle className="w-4 h-4 mr-2" />
+                Solicitar Modificación
+              </Button>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Main Info */}
       {renderBasicInfo()}
 
-      {/* Acciones */}
-      <div className="bg-card border border-border rounded-lg p-6">
-        <h3 className="text-lg font-semibold mb-4">Acciones Disponibles</h3>
-        <div className="flex flex-wrap gap-3">
-          {/* Solo mostrar botón de editar si está en borrador */}
-          {convenio.status === 'borrador' && (
-            <Button onClick={handleEditClick} className="flex items-center gap-2">
-              <Edit className="w-4 h-4" />
-              Continuar Editando
-            </Button>
-          )}
-          
-          {/* Solicitar modificación si está aprobado */}
-          {convenio.status === 'aprobado' && (
-            <Button 
-              onClick={() => setShowRequestModal(true)}
-              variant="outline"
-              className="flex items-center gap-2 text-yellow-600 border-yellow-600 hover:bg-yellow-50"
-            >
-              <AlertTriangle className="w-4 h-4" />
-              Solicitar Modificación
-            </Button>
-          )}
-
-          {/* Mostrar estado si está en revisión de modificación */}
-          {convenio.status === 'revision_modificacion' && (
-            <div className="flex items-center gap-2 px-4 py-2 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg">
-              <AlertTriangle className="w-4 h-4 text-orange-600" />
-              <span className="text-sm text-orange-800 dark:text-orange-200">
-                Solicitud de modificación enviada. Esperando respuesta del administrador.
-              </span>
-            </div>
-          )}
-        </div>
-        
-        {/* Información adicional */}
-        <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-          <p className="text-sm text-blue-800 dark:text-blue-200">
-            <strong>Nota:</strong> Esta es una vista de solo lectura por motivos de privacidad. 
-            {convenio.status === 'aprobado' && ' Si necesitas realizar cambios, usa "Solicitar Modificación".'}
-            {convenio.status === 'borrador' && ' Puedes continuar editando mientras esté en borrador.'}
-            {convenio.status === 'pendiente' && ' El convenio está siendo revisado por el equipo administrativo.'}
-            {convenio.status === 'revision_modificacion' && ' Has solicitado una modificación. El administrador revisará tu solicitud y podrá habilitar la edición.'}
-          </p>
-        </div>
-      </div>
-
-      {/* Modal de solicitud de modificación */}
+      {/* Modal */}
       <RequestModificationModal
         isOpen={showRequestModal}
         onClose={() => setShowRequestModal(false)}
         convenioId={convenio.id}
         convenioTitle={convenio.title}
-        onSuccess={() => {
-          // Actualizar la página o mostrar mensaje
-          window.location.reload();
-        }}
+        onSuccess={() => window.location.reload()}
       />
     </div>
   );
-} 
+}

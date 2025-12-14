@@ -17,7 +17,7 @@ export const NavigationFooter = () => {
 
   // Total de pasos es ahora explícitamente 5
   const totalSteps = 5;
-  
+
   // Determinar si el paso actual es válido
   const isCurrentStepValid = stepStates[currentStep]?.isValid || false;
 
@@ -29,28 +29,28 @@ export const NavigationFooter = () => {
 
   const handlePrevious = () => {
     if (!isPreviousDisabled) {
-        goToStep(currentStep - 1);
+      goToStep(currentStep - 1);
     }
   };
 
   const handleNext = () => {
-      if (!isNextDisabled) {
-          // Si estamos en el paso 3 (cláusulas), asegurarnos de poder avanzar al paso 4 (revisión)
-          if (currentStep === 3) {
-              // Verificar/establecer el paso 4 como válido en caso de que no esté configurado
-              if (!stepStates[4] || !stepStates[4].isValid) {
-                  console.log("Habilitando paso de revisión para navegar del paso 3 al 4");
-                  // Típicamente esto lo haría el store, pero forzamos aquí por seguridad
-              }
-          }
-          goToStep(currentStep + 1);
+    if (!isNextDisabled) {
+      // Si estamos en el paso 3 (cláusulas), asegurarnos de poder avanzar al paso 4 (revisión)
+      if (currentStep === 3) {
+        // Verificar/establecer el paso 4 como válido en caso de que no esté configurado
+        if (!stepStates[4] || !stepStates[4].isValid) {
+          console.log("Habilitando paso de revisión para navegar del paso 3 al 4");
+          // Típicamente esto lo haría el store, pero forzamos aquí por seguridad
+        }
       }
+      goToStep(currentStep + 1);
+    }
   };
 
   const handleSubmit = () => {
-     if (!isSubmitDisabled) {
-         saveConvenio();
-     }
+    if (!isSubmitDisabled) {
+      saveConvenio();
+    }
   };
 
   return (
@@ -58,22 +58,22 @@ export const NavigationFooter = () => {
       <div className="text-sm text-muted-foreground">
         Paso {currentStep} de {totalSteps}
       </div>
-      
+
       <div className="flex gap-3">
         {currentStep > 1 && (
-          <Button 
-            variant="outline" 
+          <Button
+            variant="outline"
             onClick={handlePrevious}
             className="border-border/60 hover:bg-muted/50 text-muted-foreground hover:text-foreground"
             disabled={isPreviousDisabled}
           >
-            <ChevronLeftIcon className="h-4 w-4 mr-2" /> 
+            <ChevronLeftIcon className="h-4 w-4 mr-2" />
             Anterior
           </Button>
         )}
-        
+
         {currentStep < totalSteps ? (
-          <Button 
+          <Button
             onClick={handleNext}
             className="bg-primary hover:bg-primary/90 text-primary-foreground"
             disabled={isNextDisabled}
@@ -82,7 +82,7 @@ export const NavigationFooter = () => {
             <ChevronRightIcon className="h-4 w-4 ml-2" />
           </Button>
         ) : (
-          <Button 
+          <Button
             onClick={handleSubmit}
             className="bg-emerald-600 hover:bg-emerald-500 text-primary-foreground"
             disabled={isSubmitDisabled}
@@ -95,7 +95,7 @@ export const NavigationFooter = () => {
             ) : (
               <>
                 <SaveIcon className="h-4 w-4 mr-2" />
-                Guardar convenio
+                Guardar acuerdo
               </>
             )}
           </Button>

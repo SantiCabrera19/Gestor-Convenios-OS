@@ -19,7 +19,7 @@ export async function sendCorrectionRequestEmail(data: CorrectionEmailData) {
     const correctionUrl = `${process.env.NEXT_PUBLIC_APP_URL}/protected/convenio-detalle/${convenioId}?type=${typeSlug}&mode=correccion`
 
     const { data: emailData, error } = await resend.emails.send({
-      from: 'Convenios UTN <onboarding@resend.dev>', // Cambiar por tu dominio verificado
+      from: 'NexusDoc <onboarding@resend.dev>', // Cambiar por tu dominio verificado
       to: [userEmail],
       subject: `Solicitud de Corrección - Convenio: ${convenioTitle}`,
       html: `
@@ -55,7 +55,7 @@ export async function sendCorrectionRequestEmail(data: CorrectionEmailData) {
           <hr style="border: none; border-top: 1px solid #dee2e6; margin: 30px 0;">
           
           <p style="color: #6c757d; font-size: 12px; text-align: center;">
-            Este es un email automático del sistema de Convenios UTN.<br>
+            Este es un email automático del sistema de NexusDoc.<br>
             No respondas a este mensaje.
           </p>
         </div>

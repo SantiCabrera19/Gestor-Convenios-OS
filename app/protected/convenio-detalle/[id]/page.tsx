@@ -3,17 +3,16 @@
 import { useSearchParams, useParams } from 'next/navigation';
 import { ChevronLeftIcon, FileTextIcon } from "lucide-react";
 import Link from "next/link";
-import { Suspense, useEffect } from "react";
+import { useEffect } from "react";
 
-import { 
-  BackgroundPattern, 
-  SectionContainer 
-} from "@/app/components/dashboard";
 import { Button } from "@/app/components/ui/button";
 import { ConvenioFormLayout } from "@/app/components/convenios/ConvenioFormLayout";
 import { ConvenioInfoDisplay } from "@/app/components/convenios/convenio-info-display";
 import { convenioConfigs } from "@/app/components/convenios/convenio-configs";
 import { useConvenioMarcoStore } from "@/stores/convenioMarcoStore";
+import { DynamicConvenioPage } from "@/app/components/forms/dynamic/DynamicConvenioPage";
+import { PageContainer } from "@/app/components/ui/page-container";
+import { Card, CardContent } from "@/app/components/ui/card";
 
 export default function ConvenioPage() {
   const params = useParams<{ id: string }>();
@@ -22,12 +21,10 @@ export default function ConvenioPage() {
   const searchParams = useSearchParams();
   const type = searchParams.get('type') as keyof typeof convenioConfigs;
   const mode = searchParams.get('mode');
-  
-  // Store de convenio para inicializar cuando estemos en modo corrección
+
   const initializeStore = useConvenioMarcoStore((state) => state.initialize);
   const isStoreInitialized = useConvenioMarcoStore((state) => state.isInitialized);
 
-  // Si estamos corrigiendo un convenio existente, inicializar el store con el ID
   useEffect(() => {
     if (!isCreating && mode === 'correccion' && paramId) {
       initializeStore(paramId as unknown as any);
@@ -37,33 +34,44 @@ export default function ConvenioPage() {
   // 3. Vista de solo lectura (por defecto para convenios existentes)
   if (!isCreating && mode !== 'correccion') {
     return (
-      <>
-        <BackgroundPattern />
-        <div className="p-8 w-full relative">
-          <ConvenioInfoDisplay convenioId={paramId} />
-        </div>
-      </>
+      <PageContainer>
+        <ConvenioInfoDisplay convenioId={paramId} />
+      </PageContainer>
     );
   }
 
   // 1. Creación de convenio nuevo
   if (isCreating && type && convenioConfigs[type]) {
+    if (type === 'marco') {
+      return (
+        <PageContainer>
+          <DynamicConvenioPage
+            convenioTypeId={2}
+            title="Nuevo Convenio Marco"
+            slug="nuevo-convenio-marco"
+          />
+        </PageContainer>
+      );
+    }
+
     const config = convenioConfigs[type];
-    return <ConvenioFormLayout config={config} />;
+    return (
+      <PageContainer>
+        <ConvenioFormLayout config={config} />
+      </PageContainer>
+    );
   }
 
   // 4. Corrección de convenio existente con datos precargados
   if (!isCreating && mode === 'correccion') {
-    // Esperar a que los datos estén en el store
     if (!isStoreInitialized) {
       return (
         <div className="flex items-center justify-center h-screen w-full">
-          <p className="text-muted-foreground">Cargando convenio…</p>
+          <p className="text-muted-foreground animate-pulse">Cargando convenio…</p>
         </div>
       );
     }
 
-    // Determinar slug si no es válido o falta
     let slug: keyof typeof convenioConfigs | null = null;
     if (type && convenioConfigs[type]) {
       slug = type;
@@ -82,36 +90,37 @@ export default function ConvenioPage() {
 
     if (slug && convenioConfigs[slug]) {
       const config = convenioConfigs[slug];
-      return <ConvenioFormLayout config={config} />;
+      return (
+        <PageContainer>
+          <ConvenioFormLayout config={config} />
+        </PageContainer>
+      );
     }
   }
 
   // Si no es un tipo válido, mostrar mensaje de no disponible
   return (
-    <>
-      <BackgroundPattern />
-      <div className="p-8 w-full relative">
-        <div className="flex items-center justify-center h-[60vh]">
-          <SectionContainer title="No disponible">
-            <div className="text-center py-8">
-              <FileTextIcon className="h-12 w-12 mx-auto mb-4 text-muted-foreground/50" />
-              <h2 className="text-xl font-semibold mb-2">Tipo de Convenio No Disponible</h2>
-              <p className="text-muted-foreground mb-6">
-                {type ? 
-                  `El tipo "${type}" no está disponible actualmente.` :
-                  "Debe especificar un tipo de convenio válido."
-                }
-              </p>
-              <Link href="/protected">
-                <Button>
-                  <ChevronLeftIcon className="h-4 w-4 mr-2" />
-                  Volver al Inicio
-                </Button>
-              </Link>
-            </div>
-          </SectionContainer>
-        </div>
+    <PageContainer>
+      <div className="flex items-center justify-center h-[60vh]">
+        <Card className="w-full max-w-md border-white/10 bg-card/40 backdrop-blur-md">
+          <CardContent className="text-center py-8">
+            <FileTextIcon className="h-12 w-12 mx-auto mb-4 text-muted-foreground/50" />
+            <h2 className="text-xl font-semibold mb-2">Tipo de Convenio No Disponible</h2>
+            <p className="text-muted-foreground mb-6">
+              {type ?
+                `El tipo "${type}" no está disponible actualmente.` :
+                "Debe especificar un tipo de convenio válido."
+              }
+            </p>
+            <Link href="/protected">
+              <Button variant="outline">
+                <ChevronLeftIcon className="h-4 w-4 mr-2" />
+                Volver al Inicio
+              </Button>
+            </Link>
+          </CardContent>
+        </Card>
       </div>
-    </>
+    </PageContainer>
   );
-} 
+}

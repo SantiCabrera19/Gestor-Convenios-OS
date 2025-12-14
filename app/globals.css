@@ -1,17 +1,20 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import './components/ui/dot-pattern.css';
 
 @layer base {
   :root {
+    /* Light Mode (SaaS Clean) */
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 240 10% 3.9%;
     --card: 0 0% 100%;
     --card-foreground: 240 10% 3.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
-    --primary: 240 5.9% 10%;
-    --primary-foreground: 0 0% 98%;
+    --primary: 262.1 83.3% 57.8%;
+    /* Violet 600 */
+    --primary-foreground: 210 40% 98%;
     --secondary: 240 4.8% 95.9%;
     --secondary-foreground: 240 5.9% 10%;
     --muted: 240 4.8% 95.9%;
@@ -22,9 +25,11 @@
     --destructive-foreground: 0 0% 98%;
     --border: 240 5.9% 90%;
     --input: 240 5.9% 90%;
-    --ring: 215 27.9% 16.9%;
-    --radius: 0.5rem;
-    --chart-1: 12 76% 61%;
+    --ring: 262.1 83.3% 57.8%;
+    --radius: 0.75rem;
+
+    /* Charts */
+    --chart-1: 262 83% 58%;
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
@@ -32,26 +37,33 @@
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
+    /* Dark Mode (NexusDoc Cyberpunk Corporate) */
+    --background: 240 10% 3.9%;
+    /* Zinc 950 */
     --foreground: 0 0% 98%;
     --card: 240 10% 3.9%;
+    /* Transparent/Dark */
     --card-foreground: 0 0% 98%;
     --popover: 240 10% 3.9%;
     --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
+    --primary: 263.4 70% 50.4%;
+    /* Violet 600 (Darker) */
+    --primary-foreground: 210 40% 98%;
     --secondary: 240 3.7% 15.9%;
     --secondary-foreground: 0 0% 98%;
     --muted: 240 3.7% 15.9%;
     --muted-foreground: 240 5% 64.9%;
-    --accent: 240 3.7% 15.9%;
+    --accent: 263.4 70% 50.4%;
+    /* Violet Accent */
     --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
-    --ring: 215 27.9% 16.9%;
-    --chart-1: 220 70% 50%;
+    --ring: 263.4 70% 50.4%;
+
+    /* Charts */
+    --chart-1: 263 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
@@ -63,18 +75,32 @@
   * {
     @apply border-border;
   }
+
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased selection:bg-primary/20 selection:text-primary;
   }
-  
-  /* Cursor de loading global */
-  .loading-cursor * {
-    cursor: wait !important;
+
+  /* Glassmorphism Utilities */
+  .glass {
+    @apply bg-background/60 backdrop-blur-lg border border-border/50;
   }
-  
-  /* Transiciones suaves para elementos */
-  .smooth-transition {
-    transition: all 0.2s ease-in-out;
+
+  .glass-card {
+    @apply bg-card/50 backdrop-blur-sm border border-border/50 shadow-xl;
+  }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-muted-foreground/20 rounded-full hover:bg-muted-foreground/40 transition-colors;
   }
 }
 
@@ -82,156 +108,61 @@
   .pulsing-indicator {
     @apply relative flex h-3 w-3;
   }
+
   .pulsing-indicator .animate-ping {
     @apply absolute inline-flex h-full w-full rounded-full opacity-75;
   }
+
   .pulsing-indicator .relative-dot {
     @apply relative inline-flex rounded-full h-3 w-3;
   }
 }
 
-/* Animaciones personalizadas */
 @layer utilities {
-  /* Animación de desvanecimiento hacia arriba */
   .animate-fade-up {
     animation: fade-up 0.5s ease-out forwards;
     opacity: 0;
   }
-  
+
   @keyframes fade-up {
     from {
       opacity: 0;
       transform: translateY(20px);
     }
+
     to {
       opacity: 1;
       transform: translateY(0);
     }
   }
-  
-  /* Animación para burbujas de fondo */
+
   .animate-blob {
     animation: blob 7s infinite;
   }
-  
+
   @keyframes blob {
     0% {
       transform: translate(0px, 0px) scale(1);
     }
+
     33% {
       transform: translate(30px, -50px) scale(1.1);
     }
+
     66% {
       transform: translate(-20px, 20px) scale(0.9);
     }
+
     100% {
       transform: translate(0px, 0px) scale(1);
     }
   }
-  
-  /* Animación de brillo */
-  .animate-shimmer {
-    animation: shimmer 2s infinite;
-  }
-  
-  @keyframes shimmer {
-    from {
-      transform: translateX(0%);
-    }
-    to {
-      transform: translateX(200%);
-    }
-  }
-  
-  /* Animación de pulso suave */
-  .animate-pulse-soft {
-    animation: pulse-soft 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  }
-  
-  @keyframes pulse-soft {
-    0%, 100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.7;
-    }
-  }
-  
-  /* Animación de latido */
-  .animate-heartbeat {
-    animation: heartbeat 1.5s ease-in-out infinite;
-  }
-  
-  @keyframes heartbeat {
-    0% {
-      transform: scale(1);
-    }
-    14% {
-      transform: scale(1.1);
-    }
-    28% {
-      transform: scale(1);
-    }
-    42% {
-      transform: scale(1.1);
-    }
-    70% {
-      transform: scale(1);
-    }
-  }
-  
-  /* Retrasos de animación */
-  .animation-delay-300 {
-    animation-delay: 300ms;
-  }
-  
-  .animation-delay-500 {
-    animation-delay: 500ms;
-  }
-  
-  .animation-delay-700 {
-    animation-delay: 700ms;
-  }
-  
-  .animation-delay-1000 {
-    animation-delay: 1000ms;
-  }
-  
-  .animation-delay-1500 {
-    animation-delay: 1500ms;
-  }
-  
+
   .animation-delay-2000 {
-    animation-delay: 2000ms;
+    animation-delay: 2s;
   }
-  
+
   .animation-delay-4000 {
-    animation-delay: 4000ms;
-  }
-  
-  /* Animación de carrusel automático paso a paso */
-  .animate-carousel {
-    animation: carousel-steps 20s infinite ease-in-out;
-  }
-  
-  @keyframes carousel-steps {
-    0%, 18% {
-      transform: translateX(0);
-    }
-    20%, 38% {
-      transform: translateX(-20%);
-    }
-    40%, 58% {
-      transform: translateX(-40%);
-    }
-    60%, 78% {
-      transform: translateX(-60%);
-    }
-    80%, 98% {
-      transform: translateX(-80%);
-    }
-    100% {
-      transform: translateX(0);
-    }
+    animation-delay: 4s;
   }
 }

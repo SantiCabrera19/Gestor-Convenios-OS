@@ -1,10 +1,8 @@
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import { 
-  BackgroundPattern,
-  DashboardHeader
-} from "@/app/components/dashboard";
 import { AprobacionesClient } from "./AprobacionesClient";
+import { PageContainer } from "@/app/components/ui/page-container";
+import { CheckCircle2 } from "lucide-react";
 
 export default async function AprobacionesPage() {
   const supabase = await createClient();
@@ -19,7 +17,6 @@ export default async function AprobacionesPage() {
 
   // Por ahora, traemos todos los convenios. El cliente se encarga de filtrar
   // los que son relevantes para aprobación ('enviado', 'revision').
-  // Esto es más simple que hacer una consulta compleja con 'or'.
   const { data: convenios, error: conveniosError } = await supabase
     .from("convenios")
     .select("*, convenio_types(name)")
@@ -27,19 +24,25 @@ export default async function AprobacionesPage() {
 
   if (conveniosError) {
     console.error("Error fetching convenios for approval:", conveniosError);
-    // Considerar un estado de error en la UI
   }
 
   return (
-    <div className="w-full">
-      <BackgroundPattern />
-      <div className="p-6">
-        <DashboardHeader
-          name="Aprobaciones de Convenios"
-          subtitle="Revisa y gestiona los convenios pendientes"
-        />
-        <AprobacionesClient convenios={convenios || []} />
+    <PageContainer>
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+        <div className="space-y-1">
+          <h1 className="text-3xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/70">
+            Aprobaciones
+          </h1>
+          <p className="text-muted-foreground max-w-2xl">
+            Revisa y gestiona los convenios pendientes de aprobación.
+          </p>
+        </div>
+        <div className="p-3 bg-primary/10 rounded-full">
+          <CheckCircle2 className="w-6 h-6 text-primary" />
+        </div>
       </div>
-    </div>
+
+      <AprobacionesClient convenios={convenios || []} />
+    </PageContainer>
   );
-} 
+}

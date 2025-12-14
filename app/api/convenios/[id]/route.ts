@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { UpdateConvenioDTO } from "@/lib/types/convenio";
-import { moveFileToFolder, moveFolderToFolder, DRIVE_FOLDERS, uploadFileToDrive, uploadConvenioEspecifico, deleteFileFromDrive } from '@/app/lib/google-drive';
+import { getStorageProvider } from '@/lib/storage';
 import { NotificationService } from '@/app/lib/services/notification-service';
 import { renderDocx } from '@/app/lib/utils/docx-templater';
 import { createDocument } from '@/app/lib/utils/doc-generator';
@@ -303,26 +303,15 @@ export async function PATCH(
         }
 
         if (buffer) {
+          const storage = getStorageProvider();
+
           // Primero, eliminar el documento viejo de Archivados si existe
           if (updatedConvenio.document_path) {
             try {
-              // Para convenio específico, extraer el ID de la carpeta en lugar del archivo
-              const isConvenioEspecifico = updatedConvenio.convenio_type_id === 4;
-              
-              if (isConvenioEspecifico) {
-                // Si es convenio específico, el link es a una carpeta
-                const oldFolderId = updatedConvenio.document_path.split('/folders/')[1]?.split('?')[0];
-                if (oldFolderId) {
-                  console.log('🗑️ [Update] Eliminando carpeta vieja de convenio específico:', oldFolderId);
-                  await deleteFileFromDrive(oldFolderId); // Eliminar carpeta completa
-                }
-              } else {
-                // Si es convenio normal, el link es a un archivo
-                const oldFileId = updatedConvenio.document_path.split('/d/')[1]?.split('/')[0];
-                if (oldFileId) {
-                  console.log('🗑️ [Update] Eliminando archivo viejo:', oldFileId);
-                  await deleteFileFromDrive(oldFileId);
-                }
+              const oldId = storage.getFileIdFromUrl ? storage.getFileIdFromUrl(updatedConvenio.document_path) : null;
+              if (oldId && storage.deleteFile) {
+                  console.log('🗑️ [Update] Eliminando documento viejo:', oldId);
+                  await storage.deleteFile(oldId);
               }
             } catch (deleteError) {
               console.error('Error al eliminar documento viejo:', deleteError);
@@ -332,70 +321,65 @@ export async function PATCH(
 
           // Subir nuevo documento según el tipo
           const isConvenioEspecifico = updatedConvenio.convenio_type_id === 4;
-          let driveResponse;
+          let documentPath = null;
+          const convenioName = `Convenio_${body.title || 'Sin_titulo'}_${new Date().toISOString().split('T')[0]}`;
           
           if (isConvenioEspecifico) {
             console.log('📁 [Update] Regenerando convenio específico con carpeta...');
             
-            // Preparar anexos si existen en body
-            const anexos = [];
+            // 1. Crear carpeta
+            let folderId: string | undefined;
+            if (storage.createFolder) {
+                 const folder = await storage.createFolder(convenioName);
+                 folderId = folder.id;
+                 documentPath = folder.webViewLink;
+            }
+
+            // 2. Subir documento principal
+            const mainDoc = await storage.saveFile(
+                buffer as Buffer,
+                `${convenioName}.docx`,
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                folderId
+            );
+            if (!documentPath) documentPath = mainDoc.webViewLink;
+
+            // 3. Subir anexos
             if (body.anexos && Array.isArray(body.anexos)) {
-              console.log('📎 [Update] Procesando anexos...', body.anexos.length);
-              
               for (const anexo of body.anexos) {
                 if (anexo.name && anexo.buffer) {
-                  try {
-                    // Convertir a ArrayBuffer según el tipo de entrada
-                    let buffer;
+                   let anexoBuffer;
                     if (Array.isArray(anexo.buffer)) {
-                      buffer = new Uint8Array(anexo.buffer).buffer;
+                      anexoBuffer = Buffer.from(new Uint8Array(anexo.buffer));
                     } else if (anexo.buffer instanceof ArrayBuffer) {
-                      buffer = anexo.buffer;
+                      anexoBuffer = Buffer.from(anexo.buffer);
                     } else {
-                      // Intentar convertir desde Buffer u otro formato
-                      buffer = new Uint8Array(anexo.buffer).buffer;
+                      anexoBuffer = Buffer.from(new Uint8Array(anexo.buffer));
                     }
-                    
-                    anexos.push({
-                      name: anexo.name,
-                      buffer: buffer
-                    });
-                    
-                    console.log(`✅ [Update] Anexo procesado: ${anexo.name}`);
-                  } catch (bufferError) {
-                    console.error(`❌ [Update] Error procesando anexo ${anexo.name}:`, bufferError);
-                  }
+
+                   await storage.saveFile(
+                       anexoBuffer,
+                       `ANEXO-${anexo.name}`,
+                       'application/octet-stream',
+                       folderId
+                   );
                 }
               }
             }
-            
-            console.log(`📎 [Update] Anexos procesados: ${anexos.length}`);
-            
-            // Usar nueva función para convenio específico
-            const convenioName = `Convenio_${body.title || 'Sin_titulo'}_${new Date().toISOString().split('T')[0]}`;
-            driveResponse = await uploadConvenioEspecifico(
-              buffer,
-              convenioName,
-              anexos
-            );
-            
-            console.log('✅ [Update] Convenio específico regenerado en carpeta:', driveResponse);
           } else {
             console.log('📄 [Update] Regenerando convenio normal...');
-            
-            // Usar función original para otros tipos de convenio
-            driveResponse = await uploadFileToDrive(
-              buffer,
-              `Convenio_${body.title || 'Sin_titulo'}_${new Date().toISOString().split('T')[0]}.docx`
+            const fileInfo = await storage.saveFile(
+                buffer as Buffer,
+                `${convenioName}.docx`,
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
             );
-            
-            console.log('✅ [Update] Convenio normal regenerado:', driveResponse);
+            documentPath = fileInfo.webViewLink;
           }
 
           // Actualizar el path del documento en la BD
           const { error: pathUpdateError } = await supabase
             .from('convenios')
-            .update({ document_path: driveResponse.webViewLink })
+            .update({ document_path: documentPath })
             .eq('id', params.id);
 
           if (pathUpdateError) {
@@ -412,33 +396,18 @@ export async function PATCH(
     if (body.status === 'enviado' && convenio.status === 'revision' && updatedConvenio.document_path) {
       try {
         console.log('📋 [Update] Moviendo convenio corregido de vuelta a pendientes...');
+        const storage = getStorageProvider();
         
-        // Detectar si es convenio específico (carpeta) o archivo normal
-        const isConvenioEspecifico = updatedConvenio.convenio_type_id === 4;
-        let itemId = null;
+        const itemId = storage.getFileIdFromUrl ? storage.getFileIdFromUrl(updatedConvenio.document_path) : null;
+        const pendingFolderId = storage.getSystemFolderId ? storage.getSystemFolderId('pending') : null;
 
-        if (isConvenioEspecifico) {
-          // Para convenio específico, extraer ID de carpeta
-          itemId = updatedConvenio.document_path.split('/folders/')[1]?.split('?')[0];
-        } else {
-          // Para otros tipos, extraer ID de archivo
-          itemId = updatedConvenio.document_path.split('/d/')[1]?.split('/')[0];
+        if (itemId && pendingFolderId && storage.moveFile) {
+            console.log(`📦 [Update] Moviendo item ${itemId} a ${pendingFolderId}`);
+            await storage.moveFile(itemId, pendingFolderId);
+            console.log('✅ [Update] Convenio movido exitosamente a pendientes');
         }
-
-        if (itemId) {
-          // Usar función apropiada según el tipo
-          if (isConvenioEspecifico) {
-            console.log('📁 [Update] Moviendo carpeta de convenio específico a pendientes...');
-            await moveFolderToFolder(itemId, DRIVE_FOLDERS.PENDING);
-          } else {
-            console.log('📄 [Update] Moviendo archivo de convenio normal a pendientes...');
-            await moveFileToFolder(itemId, DRIVE_FOLDERS.PENDING);
-          }
-          console.log('✅ [Update] Convenio movido exitosamente a pendientes');
-        }
-      } catch (driveError) {
-        console.error('Error al mover convenio de vuelta a pendientes:', driveError);
-        // No fallamos la operación si el movimiento en Drive falla
+      } catch (moveError) {
+        console.error('Error al mover convenio de vuelta a pendientes:', moveError);
       }
     }
 

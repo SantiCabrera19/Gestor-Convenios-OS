@@ -1,307 +1,205 @@
 import Link from "next/link";
-import Image from "next/image";
 import { Button } from "@/app/components/ui/button";
 import AccessButton from "@/app/components/AccessButton";
+import { ArrowRightIcon, CloudIcon, ShieldCheckIcon, ZapIcon, GlobeIcon, DatabaseIcon, LockIcon } from "lucide-react";
+import { Badge } from "@/app/components/ui/badge";
 
 export default function Home() {
   return (
-    <>
-      {/* Fondo con patrón */}
-      <div className="fixed inset-0 bg-background -z-10 opacity-50">
-        <svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%'>
-          <defs>
-            <pattern id='pattern' width='40' height='40' patternUnits='userSpaceOnUse'>
-              <circle cx='20' cy='20' r='0.5' fill='currentColor' className="text-foreground/10" />
-            </pattern>
-            <pattern id='pattern2' width='80' height='80' patternUnits='userSpaceOnUse'>
-              <circle cx='40' cy='40' r='1' fill='currentColor' className="text-foreground/5" />
-            </pattern>
-          </defs>
-          <rect width='100%' height='100%' fill='url(#pattern)' />
-          <rect width='100%' height='100%' fill='url(#pattern2)' />
-        </svg>
-      </div>
-      
-      {/* Efectos de fondo con animación */}
-      <div className="fixed inset-0 -z-10 overflow-hidden">
-        <div className="absolute -top-[30%] -left-[10%] w-[500px] h-[500px] bg-purple-500/10 rounded-full blur-3xl animate-blob"></div>
-        <div className="absolute -bottom-[20%] -right-[10%] w-[600px] h-[600px] bg-blue-500/10 rounded-full blur-3xl animate-blob animation-delay-2000"></div>
-        <div className="absolute top-[40%] left-[60%] w-[400px] h-[400px] bg-teal-500/10 rounded-full blur-3xl animate-blob animation-delay-4000"></div>
-      </div>
-      
-      <div className="flex flex-col items-center w-full max-w-6xl px-4 py-16 mx-auto gap-16 relative">
-        {/* Hero Section */}
-        <section className="flex flex-col items-center text-center gap-8 mt-10 animate-fade-up">
-          {/* Logo UTN con imagen */}
-          <div className="relative">
-            <div className="relative flex justify-center items-center">
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-teal-600/10 rounded-xl blur-lg"></div>
-              <div className="bg-white rounded-xl shadow-lg relative overflow-hidden w-[120px] h-[120px] flex items-center justify-center border border-gray-200">
-                <Image 
-                  src="/utn-logo.png" 
-                  alt="Logo UTN" 
-                  width={100}
-                  height={80}
-                  className="w-[100px] h-[80px] object-contain"
-                  priority
-                  style={{
-                    width: '100px',
-                    height: '80px',
-                    objectFit: 'contain'
-                  }}
-                />
-              </div>
-              <div className="absolute -inset-3 bg-gradient-to-r from-blue-500/15 via-transparent to-teal-500/15 blur-md -z-10"></div>
+    <div className="flex flex-col min-h-screen">
+      {/* Navbar simplificado */}
+      <header className="sticky top-0 z-50 w-full border-b border-white/5 bg-background/60 backdrop-blur-xl">
+        <div className="container flex h-16 items-center justify-between px-4 md:px-6">
+          <div className="flex items-center gap-2 font-bold text-xl tracking-tighter">
+            <div className="p-1.5 bg-primary/20 rounded-lg">
+              <GlobeIcon className="w-5 h-5 text-primary" />
             </div>
+            <span>Nexus<span className="text-primary">Doc</span></span>
           </div>
+          <nav className="hidden md:flex gap-6 text-sm font-medium text-muted-foreground">
+            <Link href="#features" className="hover:text-primary transition-colors">Características</Link>
+            <Link href="#security" className="hover:text-primary transition-colors">Seguridad</Link>
+            <Link href="#pricing" className="hover:text-primary transition-colors">Planes</Link>
+          </nav>
+          <div className="flex items-center gap-4">
+            <Link href="/sign-in" className="text-sm font-medium hover:text-primary hidden sm:block">
+              Iniciar Sesión
+            </Link>
+            <Link href="/sign-up">
+              <Button size="sm" className="shadow-lg shadow-primary/20">
+                Comenzar Gratis
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </header>
 
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold max-w-3xl leading-tight animate-fade-up animation-delay-300">
-            <span className="text-foreground">Gestiona Convenios</span><br/>
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400">con Confianza y Eficiencia</span>
+      <main className="flex-1 flex flex-col items-center">
+        {/* Hero Section */}
+        <section className="w-full py-20 md:py-32 lg:py-40 flex flex-col items-center text-center px-4 relative overflow-hidden">
+          {/* Efectos de fondo locales para resaltar el hero */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[300px] bg-primary/10 blur-[120px] rounded-full -z-10" />
+
+          <Badge variant="outline" className="mb-6 animate-fade-up border-primary/20 bg-primary/5 text-primary px-4 py-1.5 rounded-full text-sm">
+            <span className="mr-2 text-xs">✨</span> La Evolución del Gestor Documental
+          </Badge>
+
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight max-w-4xl mx-auto leading-[1.1] animate-fade-up animation-delay-200">
+            Gestiona tus acuerdos a la <br className="hidden md:block" />
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-violet-500 to-teal-400">velocidad de la luz</span>
           </h1>
-          
-          <p className="text-lg max-w-2xl text-muted-foreground animate-fade-up animation-delay-500">
-            La plataforma oficial de la <strong>Universidad Tecnológica Nacional</strong> para crear, aprobar y gestionar convenios institucionales de manera 100% digital y segura.
+
+          <p className="mt-6 text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto animate-fade-up animation-delay-400 leading-relaxed">
+            Elimina la burocracia con una plataforma SaaS inteligente. Centraliza documentos, automatiza aprobaciones y sincroniza con tu nube favorita.
           </p>
 
-          {/* Botón de Acceso inteligente */}
-          <div className="mt-8 animate-fade-up animation-delay-700">
+          <div className="mt-10 flex flex-col sm:flex-row gap-4 animate-fade-up animation-delay-600">
             <AccessButton />
+            <Button variant="outline" size="lg" className="h-12 px-8 border-white/10 hover:bg-white/5 gap-2 group">
+              Ver Demo
+              <ArrowRightIcon className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </Button>
+          </div>
+
+          {/* Stats rápidos */}
+          <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-16 opacity-70 animate-fade-up animation-delay-800 border-t border-white/5 pt-8">
+            <div className="flex flex-col items-center gap-1">
+              <span className="text-2xl font-bold">99.9%</span>
+              <span className="text-xs uppercase tracking-wider text-muted-foreground">Uptime</span>
+            </div>
+            <div className="flex flex-col items-center gap-1">
+              <span className="text-2xl font-bold">Google</span>
+              <span className="text-xs uppercase tracking-wider text-muted-foreground">Drive Sync</span>
+            </div>
+            <div className="flex flex-col items-center gap-1">
+              <span className="text-2xl font-bold">AES-256</span>
+              <span className="text-xs uppercase tracking-wider text-muted-foreground">Encryption</span>
+            </div>
+            <div className="flex flex-col items-center gap-1">
+              <span className="text-2xl font-bold">24/7</span>
+              <span className="text-xs uppercase tracking-wider text-muted-foreground">Support</span>
+            </div>
           </div>
         </section>
 
-        {/* Sección de Características mejorada */}
-        <section className="w-full mt-16 animate-fade-up animation-delay-700">
-          <h2 className="text-2xl md:text-3xl font-bold mb-12 text-center relative">
-            <span className="relative inline-block after:content-[''] after:absolute after:-bottom-3 after:left-0 after:right-0 after:h-1 after:bg-gradient-to-r after:from-transparent after:via-green-500 after:to-transparent">
-              ¿Por qué elegir nuestro sistema?
-            </span>
-          </h2>
-          
+        {/* Features Section */}
+        <section id="features" className="w-full py-24 md:py-32 px-4 container mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Feature 1 */}
-            <div className="relative group">
-              <div className="absolute -inset-1 bg-gradient-to-r from-green-600/30 to-blue-600/30 rounded-xl blur opacity-25 group-hover:opacity-100 transition duration-500"></div>
-              <div className="relative bg-card/80 backdrop-blur-sm rounded-xl p-8 border border-border/50 shadow-lg group-hover:shadow-green-700/10 transition-all duration-300">
-                <div className="flex items-center mb-6">
-                  <div className="p-3 rounded-lg bg-green-500/10 mr-4">
-                    <svg className="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-semibold mb-2 group-hover:text-green-500 transition-colors">100% Digital</h3>
-                    <p className="text-muted-foreground text-sm">Sin papeleo, sin complicaciones</p>
-                  </div>
-                </div>
-                
-                <div className="space-y-3 text-sm text-muted-foreground">
-                  <div className="flex items-center gap-2">
-                    <svg className="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    Formularios inteligentes
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <svg className="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    Generación automática de documentos
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <svg className="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    Firma digital integrada
-                  </div>
-                </div>
+            {/* Feature 1: Digital */}
+            <div className="group relative p-8 rounded-3xl bg-card/30 border border-white/5 backdrop-blur-sm hover:bg-card/50 transition-all duration-500 hover:-translate-y-2">
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-3xl" />
+              <div className="w-12 h-12 bg-blue-500/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <ZapIcon className="w-6 h-6 text-blue-500" />
               </div>
+              <h3 className="text-xl font-bold mb-3">100% Digital y Veloz</h3>
+              <p className="text-muted-foreground leading-relaxed">
+                Olvídate del papel. Crea, firma y aprueba convenios en segundos con flujos de trabajo automatizados y plantillas inteligentes.
+              </p>
             </div>
 
-            {/* Feature 2 */}
-            <div className="relative group">
-              <div className="absolute -inset-1 bg-gradient-to-r from-blue-600/30 to-purple-600/30 rounded-xl blur opacity-25 group-hover:opacity-100 transition duration-500"></div>
-              <div className="relative bg-card/80 backdrop-blur-sm rounded-xl p-8 border border-border/50 shadow-lg group-hover:shadow-blue-700/10 transition-all duration-300">
-                <div className="flex items-center mb-6">
-                  <div className="p-3 rounded-lg bg-blue-500/10 mr-4">
-                    <svg className="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-semibold mb-2 group-hover:text-blue-500 transition-colors">Flujo Automático</h3>
-                    <p className="text-muted-foreground text-sm">Proceso optimizado y eficiente</p>
-                  </div>
-                </div>
-                
-                <div className="space-y-3 text-sm text-muted-foreground">
-                  <div className="flex items-center gap-2">
-                    <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    Notificaciones automáticas
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    Seguimiento en tiempo real
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    Flujo optimizado (aprobación manual)
-                  </div>
-                </div>
+            {/* Feature 2: Cloud */}
+            <div className="group relative p-8 rounded-3xl bg-card/30 border border-white/5 backdrop-blur-sm hover:bg-card/50 transition-all duration-500 hover:-translate-y-2">
+              <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-3xl" />
+              <div className="w-12 h-12 bg-green-500/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <CloudIcon className="w-6 h-6 text-green-500" />
               </div>
+              <h3 className="text-xl font-bold mb-3">Sincronización Cloud</h3>
+              <p className="text-muted-foreground leading-relaxed">
+                Tus datos donde los necesitas. Integración nativa con Google Drive, OneDrive y Dropbox. Copias de seguridad automáticas y acceso offline.
+              </p>
             </div>
 
-            {/* Feature 3 */}
-            <div className="relative group">
-              <div className="absolute -inset-1 bg-gradient-to-r from-purple-600/30 to-pink-600/30 rounded-xl blur opacity-25 group-hover:opacity-100 transition duration-500"></div>
-              <div className="relative bg-card/80 backdrop-blur-sm rounded-xl p-8 border border-border/50 shadow-lg group-hover:shadow-purple-700/10 transition-all duration-300">
-                <div className="flex items-center mb-6">
-                  <div className="p-3 rounded-lg bg-purple-500/10 mr-4">
-                    <svg className="w-8 h-8 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-semibold mb-2 group-hover:text-purple-500 transition-colors">Máxima Seguridad</h3>
-                    <p className="text-muted-foreground text-sm">Protección nivel bancario</p>
-                  </div>
-                </div>
-                
-                <div className="space-y-3 text-sm text-muted-foreground">
-                  <div className="flex items-center gap-2">
-                    <svg className="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    Cifrado de extremo a extremo
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <svg className="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    Control de acceso granular
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <svg className="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    Auditoría completa
-                  </div>
-                </div>
+            {/* Feature 3: Security */}
+            <div className="group relative p-8 rounded-3xl bg-card/30 border border-white/5 backdrop-blur-sm hover:bg-card/50 transition-all duration-500 hover:-translate-y-2">
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-3xl" />
+              <div className="w-12 h-12 bg-purple-500/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <ShieldCheckIcon className="w-6 h-6 text-purple-500" />
               </div>
-            </div>
-          </div>
-
-          {/* Estadísticas visuales */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-16">
-            <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-blue-500 mb-2">5+</div>
-              <div className="text-sm text-muted-foreground">Tipos de Convenio</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-green-500 mb-2">24/7</div>
-              <div className="text-sm text-muted-foreground">Disponibilidad</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-purple-500 mb-2">100%</div>
-              <div className="text-sm text-muted-foreground">Seguro</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-orange-500 mb-2">UTN</div>
-              <div className="text-sm text-muted-foreground">Oficial</div>
+              <h3 className="text-xl font-bold mb-3">Seguridad Enterprise</h3>
+              <p className="text-muted-foreground leading-relaxed">
+                Tranquilidad total con encriptación de grado militar, control de roles granular y auditoría completa de cada acción realizada.
+              </p>
             </div>
           </div>
         </section>
 
-        {/* CTA Final mejorado */}
-        <section className="w-full mt-20 animate-fade-up animation-delay-1200">
-          <div className="relative">
-            <div className="absolute -inset-1 bg-gradient-to-r from-blue-600/20 via-purple-600/20 to-teal-600/20 rounded-2xl blur-lg"></div>
-            <div className="relative bg-gradient-to-br from-card/80 via-card/60 to-card/80 backdrop-blur-xl border border-border/50 rounded-2xl p-12 text-center">
-              <div className="max-w-3xl mx-auto space-y-8">
-                <h2 className="text-3xl md:text-4xl font-bold">
-                  <span className="text-foreground">¿Listo para modernizar</span><br/>
-                  <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400">tus convenios institucionales?</span>
-                </h2>
-                
-                <p className="text-lg text-muted-foreground leading-relaxed">
-                  Únete a la transformación digital universitaria. Accede ahora con tu cuenta de Google y descubre lo fácil que es gestionar convenios de manera profesional y segura.
-                </p>
+        {/* Integration / Tech Section */}
+        <section className="w-full py-24 md:py-32 px-4 border-t border-white/5 bg-black/20 backdrop-blur-md">
+          <div className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-12">
+            <div className="flex-1 space-y-6">
+              <Badge variant="outline" className="border-teal-500/30 text-teal-500 bg-teal-500/5">
+                Infraestructura Híbrida
+              </Badge>
+              <h2 className="text-3xl md:text-5xl font-bold">
+                El poder de la nube,<br /> la seguridad de tu servidor.
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-xl">
+                Tú decides dónde viven tus datos. NexusDoc te permite elegir entre almacenamiento 100% cloud, servidores locales o una estrategia híbrida.
+              </p>
+              <ul className="space-y-3 mt-4">
+                <li className="flex items-center gap-3">
+                  <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center">
+                    <DatabaseIcon className="w-3 h-3 text-primary" />
+                  </div>
+                  <span className="font-medium">Bases de datos distribuidas</span>
+                </li>
+                <li className="flex items-center gap-3">
+                  <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center">
+                    <LockIcon className="w-3 h-3 text-primary" />
+                  </div>
+                  <span className="font-medium">Encriptación en reposo y tránsito</span>
+                </li>
+              </ul>
+            </div>
 
-                {/* Beneficios rápidos */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 my-8">
-                  <div className="flex items-center gap-3 justify-center">
-                    <div className="w-8 h-8 bg-green-500/10 rounded-full flex items-center justify-center">
-                      <svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                      </svg>
-                    </div>
-                    <span className="text-sm font-medium">Con tu cuenta Google</span>
-                  </div>
-                  <div className="flex items-center gap-3 justify-center">
-                    <div className="w-8 h-8 bg-green-500/10 rounded-full flex items-center justify-center">
-                      <svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                      </svg>
-                    </div>
-                    <span className="text-sm font-medium">Acceso inmediato</span>
-                  </div>
-                  <div className="flex items-center gap-3 justify-center">
-                    <div className="w-8 h-8 bg-green-500/10 rounded-full flex items-center justify-center">
-                      <svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                      </svg>
-                    </div>
-                    <span className="text-sm font-medium">Totalmente seguro</span>
-                  </div>
+            {/* Visual Abstracto de Integración */}
+            <div className="flex-1 relative w-full h-[400px] flex items-center justify-center">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 blur-[100px] rounded-full" />
+              <div className="relative z-10 grid grid-cols-2 gap-4">
+                <div className="p-6 bg-card/60 backdrop-blur-md rounded-2xl border border-white/10 transform -rotate-6 hover:rotate-0 transition-transform duration-500 hover:scale-105">
+                  <GlobeIcon className="w-8 h-8 text-blue-500 mb-4" />
+                  <div className="h-2 w-20 bg-blue-500/20 rounded mb-2" />
+                  <div className="h-2 w-12 bg-blue-500/20 rounded" />
                 </div>
-
-                {/* CTA único */}
-                <div className="flex justify-center">
-                  <AccessButton />
-                </div>
-
-                {/* Indicadores de confianza */}
-                <div className="pt-6 border-t border-border/30">
-                  <div className="flex flex-col sm:flex-row items-center justify-center gap-6 text-sm text-muted-foreground">
-                    <div className="flex items-center gap-2">
-                      <svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-                      </svg>
-                      <span>Seguridad universitaria</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <svg className="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                      </svg>
-                      <span>Plataforma oficial UTN</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <svg className="w-4 h-4 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M12 2.25a9.75 9.75 0 100 19.5 9.75 9.75 0 000-19.5z"></path>
-                      </svg>
-                      <span>Soporte técnico</span>
-                    </div>
-                  </div>
+                <div className="p-6 bg-card/60 backdrop-blur-md rounded-2xl border border-white/10 transform rotate-3 hover:rotate-0 transition-transform duration-500 hover:scale-105 mt-8">
+                  <CloudIcon className="w-8 h-8 text-green-500 mb-4" />
+                  <div className="h-2 w-20 bg-green-500/20 rounded mb-2" />
+                  <div className="h-2 w-12 bg-green-500/20 rounded" />
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Footer con animación */}
-        <footer className="w-full border-t border-border/50 pt-8 mt-16 text-center text-muted-foreground text-sm">
-          <div className="animate-fade-up animation-delay-1500">
-            <p>Universidad Tecnológica Nacional - Sistema de Gestión de Convenios</p>
-            <p className="mt-2">© {new Date().getFullYear()} - Todos los derechos reservados</p>
+        {/* Final CTA */}
+        <section className="w-full py-24 px-4 text-center">
+          <div className="max-w-3xl mx-auto space-y-8 p-12 rounded-3xl bg-gradient-to-b from-card/50 to-transparent border border-white/5">
+            <h2 className="text-3xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">
+              Comienza tu transformación hoy.
+            </h2>
+            <p className="text-xl text-muted-foreground">
+              Únete a las instituciones que ya están modernizando su gestión documental.
+            </p>
+            <div className="flex justify-center">
+              <Button size="lg" className="h-14 px-8 text-lg rounded-full shadow-2xl shadow-primary/25 hover:scale-105 transition-transform">
+                Obtener NexusDoc
+                <ArrowRightIcon className="ml-2 w-5 h-5" />
+              </Button>
+            </div>
           </div>
-        </footer>
-      </div>
-    </>
+        </section>
+      </main>
+
+      <footer className="w-full py-8 border-t border-white/5 bg-black/40 text-center text-sm text-muted-foreground backdrop-blur-xl">
+        <div className="container px-4 flex flex-col md:flex-row justify-between items-center">
+          <p>© 2024 NexusDoc Inc. Todos los derechos reservados.</p>
+          <div className="flex gap-6 mt-4 md:mt-0">
+            <Link href="#" className="hover:text-white transition-colors">Privacidad</Link>
+            <Link href="#" className="hover:text-white transition-colors">Términos</Link>
+            <Link href="#" className="hover:text-white transition-colors">Contacto</Link>
+          </div>
+        </div>
+      </footer>
+    </div>
   );
 }

@@ -1,10 +1,8 @@
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import { 
-  BackgroundPattern,
-  DashboardHeader
-} from "@/app/components/dashboard";
 import { ConveniosListaClient } from "./ConveniosListaClient";
+import { PageContainer } from "@/app/components/ui/page-container";
+import { FileTextIcon } from "lucide-react";
 
 export default async function ConveniosListaPage() {
   const supabase = await createClient();
@@ -28,15 +26,21 @@ export default async function ConveniosListaPage() {
   }
 
   return (
-    <div className="w-full">
-      <BackgroundPattern />
-      <div className="p-6">
-        <DashboardHeader
-          name="Mis Convenios"
-          subtitle="Aquí puedes ver todos los convenios que has creado"
-        />
-        <ConveniosListaClient convenios={convenios || []} />
+    <PageContainer>
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+        <div className="space-y-1">
+          <h1 className="text-3xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/70">
+            Mis Convenios
+          </h1>
+          <p className="text-muted-foreground max-w-2xl">
+            Aquí puedes ver y gestionar todos los convenios que has creado.
+          </p>
+        </div>
+        <div className="p-3 bg-primary/10 rounded-full">
+          <FileTextIcon className="w-6 h-6 text-primary" />
+        </div>
       </div>
-    </div>
+      <ConveniosListaClient convenios={convenios || []} />
+    </PageContainer>
   );
 }

@@ -2,11 +2,8 @@ import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { AdminPanelClient } from "@/app/protected/admin/AdminPanelClient";
-import {
-  SectionContainer,
-  BackgroundPattern,
-  DashboardHeader
-} from "@/app/components/dashboard";
+import { PageContainer } from "@/app/components/ui/page-container";
+import { ShieldCheckIcon } from "lucide-react";
 
 export default async function AdminPage() {
   const supabase = await createClient();
@@ -51,37 +48,34 @@ export default async function AdminPage() {
   if (error) {
     console.error("Error al obtener convenios:", error);
     return (
-      <>
-        <BackgroundPattern />
-        <div className="p-6 w-full relative">
-          <Suspense fallback={<div className="h-24 w-full skeleton"></div>}>
-            <DashboardHeader name="Panel Admin" subtitle="Error al cargar convenios" />
-          </Suspense>
-          <div className="mt-6">
-            <SectionContainer title="Error">
-              <div className="text-center py-8 text-red-500">
-                <p className="text-lg font-semibold">Error al cargar los convenios</p>
-                <p className="text-sm mt-2">Por favor, intenta recargar la página</p>
-              </div>
-            </SectionContainer>
-          </div>
+      <PageContainer>
+        <div className="text-center py-16 text-destructive">
+          <p className="text-lg font-semibold">Error al cargar los convenios</p>
+          <p className="text-sm mt-2">Por favor, intenta recargar la página</p>
         </div>
-      </>
+      </PageContainer>
     );
   }
 
   return (
-    <>
-      <BackgroundPattern />
-      <div className="p-6 w-full relative">
-        <Suspense fallback={<div className="h-24 w-full skeleton"></div>}>
-          <DashboardHeader 
-            name="Administración de Convenios" 
-            subtitle="Gestiona todos los convenios del sistema desde este panel" 
-          />
-        </Suspense>
-        <AdminPanelClient convenios={convenios || []} />
+    <PageContainer>
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+        <div className="space-y-1">
+          <h1 className="text-3xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/70">
+            Administración
+          </h1>
+          <p className="text-muted-foreground max-w-2xl">
+            Panel de control centralizado para la gestión de convenios.
+          </p>
+        </div>
+        <div className="p-3 bg-primary/10 rounded-full">
+          <ShieldCheckIcon className="w-6 h-6 text-primary" />
+        </div>
       </div>
-    </>
+
+      <Suspense fallback={<div className="h-64 w-full bg-muted/10 rounded-xl animate-pulse"></div>}>
+        <AdminPanelClient convenios={convenios || []} />
+      </Suspense>
+    </PageContainer>
   );
-} 
+}

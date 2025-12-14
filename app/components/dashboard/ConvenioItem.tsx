@@ -1,14 +1,12 @@
 import Link from "next/link";
 import { 
-  FileTextIcon, 
   ClockIcon, 
   CheckIcon, 
   AlertCircleIcon, 
   AlertTriangleIcon,
-  BuildingIcon,
-  FilePenIcon,
-  ClipboardCheckIcon
+  FileTextIcon
 } from "lucide-react";
+import { getRandomIconForId } from "@/app/lib/dashboard/utils";
 
 export type ConvenioStatus = "enviado" | "aprobado" | "rechazado" | "pendiente" | "borrador" | "revision_modificacion";
 
@@ -66,7 +64,7 @@ export const ConvenioItem = ({
         </div>
         <div className="flex justify-between mt-3 text-xs text-muted-foreground">
           <span className="flex items-center gap-1">
-            <BuildingIcon className="w-3 h-3" />
+            {getRandomIconForId(id)}
             {type}
           </span>
           <span className="flex items-center gap-1">

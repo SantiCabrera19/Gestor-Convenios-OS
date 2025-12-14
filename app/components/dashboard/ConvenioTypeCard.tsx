@@ -1,46 +1,24 @@
 import Link from "next/link";
 import { Button } from "@/app/components/ui/button";
-import { EyeIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export type ConvenioColor = "blue" | "green" | "amber" | "purple" | "rose" | "cyan" | "orange" | "red";
 
 export interface ConvenioTypeCardProps {
+  id?: number;
   title: string;
   description: string;
-  icon: React.ReactNode;
+  icon?: React.ReactNode; // Hacemos opcional o ignoramos
   color: ConvenioColor;
-  previewUrl: string;
+  previewUrl?: string; // Hacemos opcional o ignoramos
 }
 
-export const ConvenioTypeCard = ({ 
-  title, 
-  description,
-  icon,
-  color = "cyan",
-  previewUrl
-}: ConvenioTypeCardProps) => {
-  const iconGlowClasses = {
-    blue: "bg-blue-500/20 dark:bg-blue-500/30",
-    green: "bg-green-500/20 dark:bg-green-500/30",
-    amber: "bg-amber-500/20 dark:bg-amber-500/30",
-    purple: "bg-purple-500/20 dark:bg-purple-500/30",
-    rose: "bg-rose-500/20 dark:bg-rose-500/30",
-    cyan: "bg-cyan-500/20 dark:bg-cyan-500/30",
-    orange: "bg-orange-500/20 dark:bg-orange-500/30",
-    red: "bg-red-500/20 dark:bg-red-500/30",
-  };
-
-  const iconTextClasses = {
-    blue: "text-blue-400",
-    green: "text-green-400",
-    amber: "text-amber-400",
-    purple: "text-purple-400",
-    rose: "text-rose-400",
-    cyan: "text-cyan-400",
-    orange: "text-orange-400",
-    red: "text-red-400",
-  };
+export const ConvenioTypeCard = (props: ConvenioTypeCardProps) => {
+  const { 
+    title, 
+    description,
+    color = "cyan"
+  } = props;
 
   const buttonBgClasses = {
     blue: "bg-blue-600 hover:bg-blue-700",
@@ -64,64 +42,20 @@ export const ConvenioTypeCard = ({
     red: "hover:border-red-400/50",
   };
 
-  // Determinar el tipo de convenio y generar URL
-  const titleLower = title.toLowerCase();
-  const getConvenioUrl = () => {
-    // Condiciones específicas primero
-    if (titleLower === "convenio marco") {
-      return "/protected/convenio-detalle/nuevo?type=marco";
-    }
-    if (titleLower === "convenio específico" || titleLower === "convenio especifico") {
-      return "/protected/convenio-detalle/nuevo?type=especifico";
-    }
-    if (titleLower === "convenio particular de práctica supervisada" || titleLower === "convenio particular de practica supervisada") {
-      return "/protected/convenio-detalle/nuevo?type=particular";
-    }
-    if (titleLower === "acuerdo de colaboración" || titleLower === "acuerdo de colaboracion") {
-      return "/protected/convenio-detalle/nuevo?type=acuerdo";
-    }
-    // Condiciones más generales después
-    if (titleLower.includes("práctica supervisada") || titleLower.includes("practica supervisada")) {
-      return "/protected/convenio-detalle/nuevo?type=practica-marco";
-    }
-    return "#";
-  };
-  
-  const isEnabled = titleLower === "convenio marco" || 
-                   titleLower.includes("práctica supervisada") || 
-                   titleLower.includes("practica supervisada") ||
-                   titleLower === "convenio específico" ||
-                   titleLower === "convenio especifico" ||
-                   titleLower === "convenio particular de práctica supervisada" ||
-                   titleLower === "convenio particular de practica supervisada" ||
-                   titleLower === "acuerdo de colaboración" ||
-                   titleLower === "acuerdo de colaboracion";
+  const isEnabled = true;
 
   return (
     <div className={cn(
-      "border rounded-lg p-6 hover:shadow-md transition-all duration-200 bg-card group",
+      "border rounded-lg p-6 hover:shadow-md transition-all duration-200 bg-card group flex flex-col justify-between h-full",
       borderHoverClasses[color]
     )}>
-      <div className="flex items-start justify-between mb-4">
-        <div>
-          <h3 className="font-medium text-lg group-hover:text-primary transition-colors">{title}</h3>
-          <p className="mt-1 text-sm text-muted-foreground">{description}</p>
-        </div>
-        <div className={cn(
-          "relative flex items-center justify-center w-12 h-12 rounded-lg shrink-0",
-          iconGlowClasses[color]
-        )}>
-          <div className={cn(
-            "absolute inset-0 rounded-lg blur-md opacity-70",
-            iconGlowClasses[color]
-          )}></div>
-          <div className={cn("relative z-10", iconTextClasses[color])}>
-          {icon}
-          </div>
-        </div>
+      <div className="mb-4">
+        <h3 className="font-medium text-lg group-hover:text-primary transition-colors">{title}</h3>
+        <p className="mt-1 text-sm text-muted-foreground">{description}</p>
       </div>
-      <div className="mt-6 grid grid-cols-2 gap-2">
-        <Link href={getConvenioUrl()} legacyBehavior>
+      
+      <div className="mt-auto pt-4">
+        <Link href={`/protected/solicitudes/new/${(props as any).id || ''}`} legacyBehavior>
           <Button 
             className={cn(
               "w-full border-0",
@@ -129,15 +63,8 @@ export const ConvenioTypeCard = ({
               "text-primary-foreground"
             )}
             disabled={!isEnabled}
-            title={isEnabled ? undefined : "Próximamente disponible"}
           >
             Usar plantilla
-          </Button>
-        </Link>
-        <Link href={previewUrl} legacyBehavior>
-          <Button variant="outline" className="w-full border-border/60 flex items-center justify-center gap-1">
-            <EyeIcon className="h-4 w-4" />
-            <span>Vista previa</span>
           </Button>
         </Link>
       </div>

@@ -2,7 +2,7 @@ import { createClient } from "@/utils/supabase/server";
 import { NextResponse } from 'next/server';
 // Asumimos que estas utilidades no dependen del contexto de React y pueden importarse aquí
 // Si dependen de React, habrá que ajustar o no usarlas en la API.
-import { getIconForType, getColorForType } from "@/app/lib/dashboard/utils"; 
+import { getIconForType, getColorForType } from "@/app/lib/dashboard/utils";
 
 // Definimos la interfaz aquí también para claridad
 export interface ConvenioTypeApiData {
@@ -50,14 +50,7 @@ const defaultConvenioTypes: ConvenioTypeApiData[] = [
     colorName: "Convenio Particular de Práctica Supervisada",
     previewUrl: "/plantillas/practica-particular/preview"
   },
-  {
-    id: 5,
-    title: "Acuerdo de Colaboración",
-    description: "Colaboración general entre la Facultad Regional Resistencia y una entidad externa para actividades académicas y técnicas.",
-    iconName: "colaboracion",
-    colorName: "Acuerdo de Colaboración",
-    previewUrl: "/plantillas/acuerdo-colaboracion/preview"
-  }
+
 ];
 
 export async function GET() {
@@ -70,36 +63,40 @@ export async function GET() {
   // }
 
   try {
-    // TEMPORAL: Forzamos el uso del fallback para asegurar nombres correctos
-    // const { data, error } = await supabase
-    //   .from('convenio_types')
-    //   .select('id, name, description, active')
-    //   .eq('active', true);
+    // 1. Obtener tipos de convenio que tengan una definición de formulario activa
+    const { data, error } = await supabase
+      .from('form_definitions')
+      .select(`
+        id,
+        convenio_types (
+          id,
+          name,
+          description
+        )
+      `)
+      .eq('active', true);
 
-    // if (error) {
-    //   console.error("API Error fetching convenio types:", error);
-    //   return NextResponse.json({ error: 'Error al obtener tipos de convenio', details: error.message }, { status: 500 });
-    // }
+    if (error) {
+      console.error("API Error fetching convenio types:", error);
+      return NextResponse.json({ error: 'Error al obtener tipos de convenio', details: error.message }, { status: 500 });
+    }
 
     let responseData: ConvenioTypeApiData[];
 
-    // TEMPORAL: Siempre usamos fallback para asegurar consistencia
-    responseData = defaultConvenioTypes;
-    
-    // if (!data || data.length === 0) {
-    //   // Si no hay datos, usamos los de fallback
-    //   responseData = defaultConvenioTypes;
-    // } else {
-    //   // Transformamos los datos de la DB al formato de la API
-    //   responseData = data.map(type => ({
-    //     id: type.id,
-    //     title: type.name,
-    //     description: type.description || "Sin descripción",
-    //     iconName: type.name.toLowerCase().replace(/ /g, '-'),
-    //     colorName: type.name.toLowerCase().replace(/ /g, '-'),
-    //     previewUrl: `/protected/convenio-types/${type.id}/preview`
-    //   }));
-    // }
+    if (!data || data.length === 0) {
+      // Si no hay datos, devolvemos array vacío (o fallback si prefieres mantener los viejos mientras migras)
+      responseData = [];
+    } else {
+      // Transformamos los datos de la DB al formato de la API
+      responseData = data.map((form: any) => ({
+        id: form.id, // Usamos el ID del formulario, no del tipo, para enlazar directo
+        title: form.convenio_types.name,
+        description: form.convenio_types.description || "Sin descripción",
+        iconName: "file-text", // Icono genérico por ahora
+        colorName: "blue", // Color genérico por ahora
+        previewUrl: "#" // Sin preview por ahora
+      }));
+    }
 
     return NextResponse.json(responseData);
 

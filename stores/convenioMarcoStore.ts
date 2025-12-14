@@ -35,7 +35,7 @@ interface ConvenioMarcoState {
     id?: string;
     status?: string;
     title?: string;
-    
+
     // Campos para Convenio Marco
     datosBasicos?: {
       nombre?: string;
@@ -55,7 +55,7 @@ interface ConvenioMarcoState {
       cargoRepresentante?: string;
     }>;
     clausulas?: any[];
-    
+
     // Campos para Convenio Particular de Práctica Supervisada
     empresa_nombre?: string;
     empresa_cuit?: string;
@@ -75,42 +75,32 @@ interface ConvenioMarcoState {
     facultad_docente_tutor_nombre?: string;
     fecha_firma?: string;
     practica_fecha_firma?: string;
-    
-    // Campos para Acuerdo de Colaboración
-    entidad_nombre?: string;
-    entidad_domicilio?: string;
-    entidad_ciudad?: string;
-    entidad_cuit?: string;
-    entidad_representante?: string;
-    entidad_dni?: string;
-    entidad_cargo?: string;
-    dia?: string;
-    mes?: string;
-    
+
+
     // Campos para Convenio Marco Práctica Supervisada
     entidad_tipo?: string;
     entidad_rubro?: string;
     representante_nombre?: string;
     representante_cargo?: string;
     representante_dni?: string;
-    
+
     // Campos adicionales que pueden aparecer
     [key: string]: any;
   };
   initialConvenioData: Partial<ConvenioData> | null;
   convenioId: string | null;
-  
+
   // Estado de navegación y formulario
   currentStep: number;
   stepStates: Record<number, StepState>;
   formFields: FieldDefinition[];
-  
+
   // Estado de UI
   isLoading: boolean;
   isSaving: boolean;
   isInitialized: boolean;
   updateLogTimestamp?: number;
-  
+
   // Acciones
   initialize: (convenioId?: string | number) => Promise<void>;
   updateConvenioData: (section: keyof ConvenioData | string, data: any) => void;
@@ -126,7 +116,7 @@ export const useConvenioMarcoStore = create<ConvenioMarcoState>((set, get) => ({
 
   initialize: async (convenioId) => {
     set({ isLoading: true, isInitialized: false, convenioId: convenioId ? String(convenioId) : null });
-    
+
     try {
       // Definición de campos genérica para todos los tipos de convenio
       const fetchedFields: FieldDefinition[] = [
@@ -135,7 +125,7 @@ export const useConvenioMarcoStore = create<ConvenioMarcoState>((set, get) => ({
         { name: 'title', label: 'Título', type: 'text', required: true, step: 1 },
         { name: 'status', label: 'Estado', type: 'text', required: false, step: 1 }
       ];
-      
+
       set({ formFields: fetchedFields });
 
       // Si hay convenioId, cargar los datos del convenio existente
@@ -143,17 +133,17 @@ export const useConvenioMarcoStore = create<ConvenioMarcoState>((set, get) => ({
         const response = await fetch(`/api/convenios/${convenioId}`);
         if (!response.ok) throw new Error('Error al cargar el convenio');
         const loadedData = await response.json();
-        
+
         console.log('Raw data from API:', loadedData);
-        
+
         // Priorizar form_data, luego content_data
         const sourceData = loadedData.form_data || loadedData.content_data || {};
-        
+
         console.log('Source data from API:', sourceData);
-        
+
         // Mapeo genérico que funciona para TODOS los tipos de convenio
         let mappedData: any = {};
-        
+
         // Mapeo genérico que funciona para TODOS los tipos de convenio
         mappedData = {
           id: loadedData.id,
@@ -163,7 +153,7 @@ export const useConvenioMarcoStore = create<ConvenioMarcoState>((set, get) => ({
           ...sourceData,
           // Asegurar campos específicos por tipo
         };
-        
+
         // Mapeo específico para Acuerdo de Colaboración
         if (sourceData.entidad_nombre && !sourceData.empresa_nombre) {
           mappedData = {
@@ -179,7 +169,7 @@ export const useConvenioMarcoStore = create<ConvenioMarcoState>((set, get) => ({
             mes: sourceData.mes,
           };
         }
-        
+
         // Mapeo específico para Convenio Particular
         if (sourceData.empresa_nombre || sourceData.alumno_nombre) {
           mappedData = {
@@ -206,7 +196,7 @@ export const useConvenioMarcoStore = create<ConvenioMarcoState>((set, get) => ({
             mes: sourceData.mes,
           };
         }
-        
+
         // Mapeo específico para Convenio Marco Práctica Supervisada
         if (sourceData.entidad_nombre && sourceData.entidad_rubro) {
           mappedData = {
@@ -225,7 +215,7 @@ export const useConvenioMarcoStore = create<ConvenioMarcoState>((set, get) => ({
             mes: sourceData.mes,
           };
         }
-        
+
         // Mapeo específico para Convenio Específico
         if (sourceData.entidad_nombre && sourceData.convenio_marco_fecha) {
           mappedData = {
@@ -248,7 +238,7 @@ export const useConvenioMarcoStore = create<ConvenioMarcoState>((set, get) => ({
             anexo: sourceData.anexo,
           };
         }
-        
+
         // Mapeo para Convenio Marco y otros tipos tradicionales
         if (sourceData.datosBasicos || sourceData.datos_basicos) {
           mappedData = {
@@ -258,15 +248,15 @@ export const useConvenioMarcoStore = create<ConvenioMarcoState>((set, get) => ({
             clausulas: sourceData.clausulas || []
           };
         }
-        
+
         console.log('Mapped data for store:', mappedData);
-        
+
         // Asegurar estructura de datos completa con valores por defecto seguros
         const initialDataWithDefaults = {
           ...mappedData
         };
 
-        set({ 
+        set({
           convenioData: initialDataWithDefaults,
           initialConvenioData: JSON.parse(JSON.stringify(initialDataWithDefaults))
         });
@@ -275,21 +265,21 @@ export const useConvenioMarcoStore = create<ConvenioMarcoState>((set, get) => ({
       // Inicializar estados de pasos de forma genérica
       const steps = [1, 2, 3, 4]; // Máximo 4 pasos para cualquier convenio
       const initialStepStates: Record<number, StepState> = {};
-      
+
       for (const stepNum of steps) {
         // Por ahora, marcar como válidos si hay datos cargados
         const isStepInitiallyValid = !!convenioId && Object.keys(get().convenioData).length > 0;
-        
-        initialStepStates[stepNum] = { 
-          isValid: isStepInitiallyValid, 
-          isTouched: !!convenioId 
+
+        initialStepStates[stepNum] = {
+          isValid: isStepInitiallyValid,
+          isTouched: !!convenioId
         };
       }
-      
-      set({ 
-        stepStates: initialStepStates, 
-        isLoading: false, 
-        isInitialized: true 
+
+      set({
+        stepStates: initialStepStates,
+        isLoading: false,
+        isInitialized: true
       });
 
     } catch (error) {
@@ -352,7 +342,7 @@ export const useConvenioMarcoStore = create<ConvenioMarcoState>((set, get) => ({
     // Validación genérica basada en si hay datos en la sección actualizada
     const { currentStep, convenioData } = get();
     const hasRelevantData = section === 'all' || Object.keys(data).length > 0;
-    
+
     get().setStepValidity(currentStep, hasRelevantData, true);
   },
 
@@ -376,7 +366,7 @@ export const useConvenioMarcoStore = create<ConvenioMarcoState>((set, get) => ({
 
   saveConvenio: async () => {
     const { convenioData, convenioId, stepStates } = get();
-    
+
     // Validación genérica - verificar que al menos tengamos algunos datos
     const hasData = Object.keys(convenioData).length > 0;
     if (!hasData) {
@@ -390,10 +380,10 @@ export const useConvenioMarcoStore = create<ConvenioMarcoState>((set, get) => ({
         content_data: convenioData
       };
 
-      const url = convenioId 
+      const url = convenioId
         ? `/api/convenios/${convenioId}`
         : "/api/convenios";
-      
+
       const response = await fetch(url, {
         method: convenioId ? "PATCH" : "POST",
         headers: { "Content-Type": "application/json" },
@@ -406,7 +396,7 @@ export const useConvenioMarcoStore = create<ConvenioMarcoState>((set, get) => ({
       }
 
       const savedConvenio = await response.json();
-      
+
       set({
         convenioData: savedConvenio,
         initialConvenioData: JSON.parse(JSON.stringify(savedConvenio)),
@@ -427,14 +417,14 @@ export const useConvenioMarcoStore = create<ConvenioMarcoState>((set, get) => ({
 // Selector para obtener campos planos
 export function getFieldsFromStore(convenioData: Partial<ConvenioData>): Record<string, any> {
   const fields: Record<string, any> = {};
-  
+
   // Datos Básicos
   if (convenioData.datosBasicos) {
     Object.entries(convenioData.datosBasicos).forEach(([key, value]) => {
       fields[`datosBasicos.${key}`] = value;
     });
   }
-  
+
   // Partes (solo la primera parte para convenio marco)
   if (convenioData.partes && convenioData.partes.length > 0) {
     const parte = convenioData.partes[0];
@@ -442,9 +432,9 @@ export function getFieldsFromStore(convenioData: Partial<ConvenioData>): Record<
       fields[`partes.${key}`] = value;
     });
   }
-  
+
   // Cláusulas
   fields.clausulas = convenioData.clausulas || [];
-  
+
   return fields;
 } 
