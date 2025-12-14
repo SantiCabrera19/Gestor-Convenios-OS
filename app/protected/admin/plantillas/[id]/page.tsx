@@ -1,5 +1,5 @@
 import { createClient } from "@/infrastructure/supabase/server";
-import { TemplateWizard } from "@/app/components/admin/TemplateWizard";
+import { TemplateWizard } from "@/features/templates";
 import { notFound } from "next/navigation";
 import { PageContainer } from "@/shared/components/ui/page-container";
 import { EditIcon } from "lucide-react";
