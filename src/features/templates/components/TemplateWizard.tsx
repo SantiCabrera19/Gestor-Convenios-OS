@@ -9,7 +9,7 @@ import { Upload, FileText, Check, ArrowRight, Loader2, Trash2, ArrowLeft, Sparkl
 import { motion, AnimatePresence } from "framer-motion";
 import { useToast } from "@/shared/components/ui/toast";
 import { FormSchema, FormField } from "@/shared/types/dynamic-form";
-import { HorizontalStepper } from "@/app/components/forms/HorizontalStepper";
+import { HorizontalStepper } from "@/app/components/forms";
 import { useRouter } from "next/navigation";
 import { Badge } from "@/shared/components/ui/badge";
 import { FieldEditor } from "./FieldEditor";

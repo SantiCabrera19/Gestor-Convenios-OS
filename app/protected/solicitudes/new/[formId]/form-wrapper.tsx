@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { DynamicFormRenderer } from "@/app/components/forms/DynamicFormRenderer";
+import { DynamicFormRenderer } from "@/app/components/forms";
 import { submitSolicitud } from "@/app/actions/submit-solicitud";
 import { FormSchema } from "@/shared/types/dynamic-form";
 // import { useToast } from "@/app/components/ui/use-toast"; // Assuming you have a toast hook

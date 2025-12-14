@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { ChevronLeftIcon, ChevronRightIcon, XIcon, ZoomInIcon, ZoomOutIcon } from "lucide-react";
-import DocumentoPreviewContent from "./documento-preview-content";
+import DocumentoPreviewContent from "@/app/components/convenios/documento-preview-content";
 import { FileTextIcon } from "lucide-react";
-import { DocumentoPreview } from "./documento-preview";
+import { DocumentoPreview } from "@/app/components/convenios/documento-preview";
 import { useConvenioStore } from "@/stores/convenioStore";
 
 interface FullScreenPreviewProps {
@@ -45,11 +45,11 @@ export const FullScreenPreview = ({
           </div>
           <h2 className="text-foreground text-sm font-medium">Vista previa del documento</h2>
         </div>
-        
+
         <div className="flex items-center">
           <div className="flex items-center text-foreground/70 px-4">
-            <button 
-              onClick={prevPage} 
+            <button
+              onClick={prevPage}
               disabled={currentPage === 1}
               className={`p-1.5 rounded-full ${currentPage === 1 ? 'text-foreground/30 cursor-not-allowed' : 'hover:bg-border/10 text-foreground/90'}`}
               title="Página anterior"
@@ -59,8 +59,8 @@ export const FullScreenPreview = ({
             <span className="text-sm mx-2 select-none">
               Página {currentPage} de {totalPages}
             </span>
-            <button 
-              onClick={nextPage} 
+            <button
+              onClick={nextPage}
               disabled={currentPage === totalPages}
               className={`p-1.5 rounded-full ${currentPage === totalPages ? 'text-foreground/30 cursor-not-allowed' : 'hover:bg-border/10 text-foreground/90'}`}
               title="Página siguiente"
@@ -68,7 +68,7 @@ export const FullScreenPreview = ({
               <ChevronRightIcon className="h-5 w-5" />
             </button>
           </div>
-          
+
           <div className="flex items-center text-foreground/70 mx-2 border-l border-border/20 pl-4">
             <button onClick={zoomOut} className="p-1.5 rounded-full hover:bg-border/10 text-foreground/90 mr-1" title="Alejar">
               <ZoomOutIcon className="h-5 w-5" />
@@ -78,7 +78,7 @@ export const FullScreenPreview = ({
               <ZoomInIcon className="h-5 w-5" />
             </button>
           </div>
-          
+
           <button onClick={onClose} className="p-1.5 rounded-full hover:bg-border/10 text-foreground/70 ml-4" title="Cerrar vista previa">
             <XIcon className="h-5 w-5" />
           </button>
@@ -86,11 +86,11 @@ export const FullScreenPreview = ({
       </div>
 
       <div className="flex-1 overflow-auto flex justify-center py-8 px-4 bg-gray-100/30">
-        <div 
-          className="bg-white max-w-3xl w-full shadow-xl transition-transform duration-150 ease-out" 
+        <div
+          className="bg-white max-w-3xl w-full shadow-xl transition-transform duration-150 ease-out"
           style={{ transform: `scale(${scale})`, transformOrigin: 'top center' }}
         >
-          <div className="p-12"> 
+          <div className="p-12">
             <DocumentoPreview templateContent={templateContent} fields={fields} />
           </div>
         </div>
