@@ -1,7 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
 import { notFound } from "next/navigation";
 import { FormSchema } from "@/lib/types/dynamic-form";
-import { PageContainer } from "@/app/components/ui/page-container";
+import { PageContainer } from "@/shared/components/ui/page-container";
 import { FormWrapper } from "./form-wrapper";
 import { FileTextIcon } from "lucide-react";
 

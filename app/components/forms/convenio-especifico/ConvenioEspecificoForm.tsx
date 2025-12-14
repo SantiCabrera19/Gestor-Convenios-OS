@@ -5,16 +5,16 @@ import { useRouter } from 'next/navigation';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { Button } from "@/app/components/ui/button";
-import { Input } from "@/app/components/ui/input";
-import { Label } from "@/app/components/ui/label";
+import { Button } from "@/shared/components/ui/button";
+import { Input } from "@/shared/components/ui/input";
+import { Label } from "@/shared/components/ui/label";
 import {
   Form,
-} from "@/app/components/ui/form";
+} from "@/shared/components/ui/form";
 import { BuildingIcon, UserIcon, FileTextIcon, CheckIcon, ChevronLeftIcon, ChevronRightIcon, MaximizeIcon, XIcon, UploadIcon } from "lucide-react";
 import { useConvenioMarcoStore } from "@/stores/convenioMarcoStore";
-import { Modal } from '@/app/components/ui/modal';
-import { SuccessModal } from '@/app/components/ui/success-modal';
+import { Modal } from '@/shared/components/ui/modal';
+import { SuccessModal } from '@/shared/components/ui/success-modal';
 import dynamic from 'next/dynamic';
 
 // Importar React Quill dinámicamente para evitar problemas de SSR

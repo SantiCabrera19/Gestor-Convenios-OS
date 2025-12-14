@@ -1,17 +1,17 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Button } from "@/app/components/ui/button";
-import { Input } from "@/app/components/ui/input";
-import { Label } from "@/app/components/ui/label";
-import { Card, CardContent } from "@/app/components/ui/card";
+import { Button } from "@/shared/components/ui/button";
+import { Input } from "@/shared/components/ui/input";
+import { Label } from "@/shared/components/ui/label";
+import { Card, CardContent } from "@/shared/components/ui/card";
 import { Upload, FileText, Check, ArrowRight, Loader2, Trash2, ArrowLeft, SparklesIcon, PencilIcon } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useToast } from "@/app/components/ui/toast";
+import { useToast } from "@/shared/components/ui/toast";
 import { FormSchema, FormField } from "@/lib/types/dynamic-form";
 import { HorizontalStepper } from "@/app/components/forms/HorizontalStepper";
 import { useRouter } from "next/navigation";
-import { Badge } from "@/app/components/ui/badge";
+import { Badge } from "@/shared/components/ui/badge";
 import { FieldEditor } from "./FieldEditor";
 import {
     AlertDialog,
@@ -23,7 +23,7 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
     AlertDialogTrigger,
-} from "@/app/components/ui/alert-dialog";
+} from "@/shared/components/ui/alert-dialog";
 
 interface TemplateWizardProps {
     initialData?: {

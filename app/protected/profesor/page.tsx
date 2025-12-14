@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { ProfesorPanelClient } from "./ProfesorPanelClient";
-import { PageContainer } from "@/app/components/ui/page-container";
+import { PageContainer } from "@/shared/components/ui/page-container";
 import { GraduationCapIcon } from "lucide-react";
 
 export default function ProfesorPage() {

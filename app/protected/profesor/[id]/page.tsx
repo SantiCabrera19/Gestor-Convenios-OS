@@ -3,11 +3,11 @@
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
-import { 
-  ChevronLeftIcon, 
-  BuildingIcon, 
-  UserIcon, 
-  CalendarIcon, 
+import {
+  ChevronLeftIcon,
+  BuildingIcon,
+  UserIcon,
+  CalendarIcon,
   FileTextIcon,
   ClipboardCheckIcon,
   CheckIcon
@@ -18,7 +18,7 @@ import {
   BackgroundPattern,
   DashboardHeader
 } from "@/app/components/dashboard";
-import { Button } from "@/app/components/ui/button";
+import { Button } from "@/shared/components/ui/button";
 
 export default function ConvenioDetallePage() {
   const params = useParams<{ id: string }>();
@@ -31,10 +31,10 @@ export default function ConvenioDetallePage() {
     async function fetchConvenio() {
       try {
         setLoading(true);
-        
+
         const supabase = createClient();
         const { data: { user } } = await supabase.auth.getUser();
-        
+
         if (!user) {
           router.push("/sign-in");
           return;
@@ -92,9 +92,9 @@ export default function ConvenioDetallePage() {
 
   const renderEntidadData = (data: any) => {
     if (!data) return null;
-    
+
     let entidadInfo: any = {};
-    
+
     if (data.entidad_nombre) {
       entidadInfo = {
         nombre: data.entidad_nombre,
@@ -165,9 +165,9 @@ export default function ConvenioDetallePage() {
 
   const renderRepresentanteData = (data: any) => {
     if (!data) return null;
-    
+
     let representanteInfo: any = {};
-    
+
     if (data.entidad_representante) {
       representanteInfo = {
         nombre: data.entidad_representante,
@@ -274,9 +274,9 @@ export default function ConvenioDetallePage() {
         );
 
       default:
-        const fechaInfo = data.dia && data.mes ? `${data.dia} de ${data.mes}` : 
-                          data.datosBasicos?.dia && data.datosBasicos?.mes ? `${data.datosBasicos.dia} de ${data.datosBasicos.mes}` : 
-                          null;
+        const fechaInfo = data.dia && data.mes ? `${data.dia} de ${data.mes}` :
+          data.datosBasicos?.dia && data.datosBasicos?.mes ? `${data.datosBasicos.dia} de ${data.datosBasicos.mes}` :
+            null;
 
         if (fechaInfo) {
           return (
@@ -360,7 +360,7 @@ export default function ConvenioDetallePage() {
     };
 
     const { label, className } = statusMap[status] || { label: status, className: "bg-gray-100 text-gray-700" };
-    
+
     return (
       <span className={`px-3 py-1 rounded-full text-xs font-medium ${className}`}>
         {label}
@@ -417,40 +417,40 @@ export default function ConvenioDetallePage() {
             </div>
 
             <div className="w-full space-y-6">
-                {/* Mostrar bloques con datos si están disponibles, sino mensaje explicativo */}
-                {convenio.form_data ? (
-                  <>
-                    {renderEntidadData(convenio.form_data)}
-                    {renderRepresentanteData(convenio.form_data)}
-                    {renderSpecificData(convenio.form_data, convenio.convenio_types?.name)}
-                  </>
-                ) : (
-                  <div className="relative w-full">
-                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-blue-500/10 to-blue-600/10 rounded-xl blur-xl"></div>
-                    <div className="relative bg-card/80 backdrop-blur-xl border border-border/60 rounded-xl p-8 w-full">
-                      <h3 className="text-lg font-semibold text-blue-600 mb-6 flex items-center gap-2">
-                        <BuildingIcon className="h-5 w-5" />
-                        Datos del Convenio
-                      </h3>
-                      <div className="text-center py-12">
-                        <FileTextIcon className="h-16 w-16 mx-auto mb-6 text-muted-foreground/50" />
-                        <p className="text-lg text-muted-foreground mb-3">
-                          Los datos detallados del formulario no están disponibles para este convenio.
+              {/* Mostrar bloques con datos si están disponibles, sino mensaje explicativo */}
+              {convenio.form_data ? (
+                <>
+                  {renderEntidadData(convenio.form_data)}
+                  {renderRepresentanteData(convenio.form_data)}
+                  {renderSpecificData(convenio.form_data, convenio.convenio_types?.name)}
+                </>
+              ) : (
+                <div className="relative w-full">
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-blue-500/10 to-blue-600/10 rounded-xl blur-xl"></div>
+                  <div className="relative bg-card/80 backdrop-blur-xl border border-border/60 rounded-xl p-8 w-full">
+                    <h3 className="text-lg font-semibold text-blue-600 mb-6 flex items-center gap-2">
+                      <BuildingIcon className="h-5 w-5" />
+                      Datos del Convenio
+                    </h3>
+                    <div className="text-center py-12">
+                      <FileTextIcon className="h-16 w-16 mx-auto mb-6 text-muted-foreground/50" />
+                      <p className="text-lg text-muted-foreground mb-3">
+                        Los datos detallados del formulario no están disponibles para este convenio.
+                      </p>
+                      <p className="text-sm text-muted-foreground mb-6">
+                        Este convenio fue creado con una versión anterior del sistema.
+                      </p>
+                      <div className="bg-primary/10 border border-primary/20 rounded-lg p-4 max-w-md mx-auto">
+                        <p className="text-sm text-primary font-medium">
+                          💡 Para ver los datos detallados, crea un nuevo convenio usando el sistema actual.
                         </p>
-                        <p className="text-sm text-muted-foreground mb-6">
-                          Este convenio fue creado con una versión anterior del sistema.
-                        </p>
-                        <div className="bg-primary/10 border border-primary/20 rounded-lg p-4 max-w-md mx-auto">
-                          <p className="text-sm text-primary font-medium">
-                            💡 Para ver los datos detallados, crea un nuevo convenio usando el sistema actual.
-                          </p>
-                        </div>
                       </div>
                     </div>
                   </div>
-                )}
-              </div>
+                </div>
+              )}
             </div>
+          </div>
 
           {/* Observaciones */}
           {convenio.observaciones && convenio.observaciones.length > 0 && (
@@ -459,11 +459,10 @@ export default function ConvenioDetallePage() {
                 {convenio.observaciones.map((obs: any) => (
                   <div key={obs.id} className="bg-card/80 backdrop-blur-sm border border-border/60 rounded-lg p-4">
                     <div className="flex justify-between items-start mb-2">
-                      <span className={`px-2 py-1 rounded text-xs font-medium ${
-                        obs.resolved 
-                          ? 'bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400' 
+                      <span className={`px-2 py-1 rounded text-xs font-medium ${obs.resolved
+                          ? 'bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400'
                           : 'bg-orange-100 text-orange-800 dark:bg-orange-900/20 dark:text-orange-300'
-                      }`}>
+                        }`}>
                         {obs.resolved ? 'Resuelta' : 'Pendiente'}
                       </span>
                       <span className="text-xs text-muted-foreground">

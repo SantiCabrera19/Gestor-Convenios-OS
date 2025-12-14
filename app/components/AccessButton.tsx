@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
-import { Button } from "@/app/components/ui/button";
+import { Button } from "@/shared/components/ui/button";
 
 export default function AccessButton() {
   const router = useRouter();

@@ -17,9 +17,9 @@ import {
   CalendarIcon,
   FileTextIcon
 } from "lucide-react";
-import { useToast } from "@/app/components/ui/toast";
-import { Button } from "@/app/components/ui/button";
-import { Progress } from "@/app/components/ui/progress";
+import { useToast } from "@/shared/components/ui/toast";
+import { Button } from "@/shared/components/ui/button";
+import { Progress } from "@/shared/components/ui/progress";
 import { BackgroundPattern, SectionContainer } from "@/app/components/dashboard";
 import { cn } from "@/lib/utils";
 

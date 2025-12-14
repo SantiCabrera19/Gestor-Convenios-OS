@@ -12,9 +12,9 @@ import {
   ArrowRightIcon,
   SettingsIcon
 } from "lucide-react";
-import { Button } from "@/app/components/ui/button";
+import { Button } from "@/shared/components/ui/button";
 import { cn } from "@/lib/utils";
-import { useToast } from "@/app/components/ui/toast";
+import { useToast } from "@/shared/components/ui/toast";
 import { FormSchema } from "@/lib/types/dynamic-form";
 import { SchemaEditor } from "./SchemaEditor";
 

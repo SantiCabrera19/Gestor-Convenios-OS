@@ -5,10 +5,10 @@ import { useRouter } from 'next/navigation';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { Button } from "@/app/components/ui/button";
-import { LoadingButton } from "@/app/components/ui/loading-button";
-import { Input } from "@/app/components/ui/input";
-import { Label } from "@/app/components/ui/label";
+import { Button } from "@/shared/components/ui/button";
+import { LoadingButton } from "@/shared/components/ui/loading-button";
+import { Input } from "@/shared/components/ui/input";
+import { Label } from "@/shared/components/ui/label";
 import {
   Form,
   FormControl,
@@ -16,12 +16,12 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/app/components/ui/form";
+} from "@/shared/components/ui/form";
 import { BuildingIcon, UserIcon, CalendarIcon, CheckIcon, ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useConvenioMarcoStore } from "@/stores/convenioMarcoStore";
 import { ConvenioData, ParteData, DatosBasicosData } from '@/types/convenio';
-import { Modal } from '@/app/components/ui/modal';
-import { SuccessModal } from '@/app/components/ui/success-modal';
+import { Modal } from '@/shared/components/ui/modal';
+import { SuccessModal } from '@/shared/components/ui/success-modal';
 import { useAsyncOperation } from '@/app/hooks/use-async-operation';
 import { useFeedback } from '@/app/components/providers/feedback-provider';
 

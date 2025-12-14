@@ -5,11 +5,11 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { FormSchema, FormStep, FormField } from '@/lib/types/dynamic-form';
-import { Button } from "@/app/components/ui/button";
-import { Form } from "@/app/components/ui/form";
+import { Button } from "@/shared/components/ui/button";
+import { Form } from "@/shared/components/ui/form";
 import { DynamicField } from './DynamicField';
 import { BuildingIcon, UserIcon, CalendarIcon, CheckIcon, ChevronLeftIcon, ChevronRightIcon, FileTextIcon } from "lucide-react";
-import { Modal } from '@/app/components/ui/modal';
+import { Modal } from '@/shared/components/ui/modal';
 
 // Mapa de iconos disponibles
 const ICON_MAP: Record<string, any> = {

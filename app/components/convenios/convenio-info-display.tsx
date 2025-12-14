@@ -17,11 +17,11 @@ import {
   InfoIcon
 } from 'lucide-react';
 import Link from 'next/link';
-import { Button } from '@/app/components/ui/button';
-import { RequestModificationModal } from '@/app/components/ui/request-modification-modal';
-import { Card, CardContent, CardHeader, CardTitle } from '@/app/components/ui/card';
-import { Badge } from '@/app/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
+import { Button } from '@/shared/components/ui/button';
+import { RequestModificationModal } from '@/shared/components/ui/request-modification-modal';
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card';
+import { Badge } from '@/shared/components/ui/badge';
+import { Separator } from '@/shared/components/ui/separator';
 
 interface ConvenioInfoDisplayProps {
   convenioId: string;

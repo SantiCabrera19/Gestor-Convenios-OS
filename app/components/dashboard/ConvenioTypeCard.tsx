@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Button } from "@/app/components/ui/button";
+import { Button } from "@/shared/components/ui/button";
 import { cn } from "@/lib/utils";
 
 export type ConvenioColor = "blue" | "green" | "amber" | "purple" | "rose" | "cyan" | "orange" | "red";

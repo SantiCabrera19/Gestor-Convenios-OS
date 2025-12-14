@@ -1,7 +1,7 @@
 "use client";
 
-import { Button } from "@/app/components/ui/button";
-import { Spinner } from "@/app/components/ui/spinner";
+import { Button } from "@/shared/components/ui/button";
+import { Spinner } from "@/shared/components/ui/spinner";
 import { type ComponentProps } from "react";
 import { useFormStatus } from "react-dom";
 

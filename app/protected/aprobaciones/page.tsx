@@ -1,7 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { AprobacionesClient } from "./AprobacionesClient";
-import { PageContainer } from "@/app/components/ui/page-container";
+import { PageContainer } from "@/shared/components/ui/page-container";
 import { CheckCircle2 } from "lucide-react";
 
 export default async function AprobacionesPage() {

@@ -1,4 +1,4 @@
-import { AprobacionesSkeleton } from "@/app/components/ui/skeleton";
+import { AprobacionesSkeleton } from "@/shared/components/ui/skeleton";
 
 export default function Loading() {
   return <AprobacionesSkeleton />;

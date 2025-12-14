@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { Button } from '@/app/components/ui/button';
-import { Spinner } from '@/app/components/ui/spinner';
+import { Button } from '@/shared/components/ui/button';
+import { Spinner } from '@/shared/components/ui/spinner';
 import { cn } from '@/lib/utils';
 
 interface LoadingButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {

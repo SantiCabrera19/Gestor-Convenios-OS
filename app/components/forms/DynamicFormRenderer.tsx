@@ -3,19 +3,19 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FormSchema, FormField } from "@/lib/types/dynamic-form";
-import { Button } from "@/app/components/ui/button";
-import { Input } from "@/app/components/ui/input";
-import { Label } from "@/app/components/ui/label";
-import { Textarea } from "@/app/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/shared/components/ui/button";
+import { Input } from "@/shared/components/ui/input";
+import { Label } from "@/shared/components/ui/label";
+import { Textarea } from "@/shared/components/ui/textarea";
+import { Checkbox } from "@/shared/components/ui/checkbox";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/app/components/ui/select";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from "@/app/components/ui/card";
+} from "@/shared/components/ui/select";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from "@/shared/components/ui/card";
 import { ArrowLeft, ArrowRight, CheckCircle2, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { StepIndicator } from "./StepIndicator";

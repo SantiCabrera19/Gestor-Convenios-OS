@@ -21,8 +21,8 @@ import {
   TableRow,
 } from "components/ui/table";
 
-import { Button } from "@/app/components/ui/button";
-import { Input } from "@/app/components/ui/input";
+import { Button } from "@/shared/components/ui/button";
+import { Input } from "@/shared/components/ui/input";
 import { useState } from "react";
 import { SearchIcon, InfoIcon, ChevronLeft, ChevronRight } from "lucide-react";
 

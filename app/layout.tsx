@@ -3,8 +3,8 @@ import { Inter } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import Link from "next/link";
 import { LoadingProvider } from "@/app/components/providers/loading-provider";
-import { ToastProvider } from "@/app/components/ui/toast";
-import { LoadingOverlay } from "@/app/components/ui/loading-overlay";
+import { ToastProvider } from "@/shared/components/ui/toast";
+import { LoadingOverlay } from "@/shared/components/ui/loading-overlay";
 import { FeedbackProvider } from "@/app/components/providers/feedback-provider";
 import "./globals.css";
 
@@ -23,7 +23,7 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
-import { AnimatedBackground } from "@/app/components/ui/animated-background";
+import { AnimatedBackground } from "@/shared/components/ui/animated-background";
 
 export default function RootLayout({
   children,

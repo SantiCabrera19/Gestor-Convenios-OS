@@ -5,7 +5,7 @@ import { getFormDefinition } from "@/app/actions/get-form-definition";
 import { DynamicFormRenderer } from "@/app/components/forms/dynamic/DynamicFormRenderer";
 import { FormDefinition } from "@/lib/types/dynamic-form";
 import { Loader2 } from "lucide-react";
-import { useToast } from "@/app/components/ui/toast";
+import { useToast } from "@/shared/components/ui/toast";
 
 export default function TestDynamicPage() {
   const [formDef, setFormDef] = useState<FormDefinition | null>(null);

@@ -2,26 +2,26 @@
 
 import { useState } from "react";
 import { FormSchema, FormField } from "@/lib/types/dynamic-form";
-import { Button } from "@/app/components/ui/button";
-import { Input } from "@/app/components/ui/input";
-import { Label } from "@/app/components/ui/label";
+import { Button } from "@/shared/components/ui/button";
+import { Input } from "@/shared/components/ui/input";
+import { Label } from "@/shared/components/ui/label";
 import { 
   Select, 
   SelectContent, 
   SelectItem, 
   SelectTrigger, 
   SelectValue 
-} from "@/app/components/ui/select";
+} from "@/shared/components/ui/select";
 import { 
   Accordion, 
   AccordionContent, 
   AccordionItem, 
   AccordionTrigger 
-} from "@/app/components/ui/accordion";
+} from "@/shared/components/ui/accordion";
 import { 
   Card, 
   CardContent, 
-} from "@/app/components/ui/card";
+} from "@/shared/components/ui/card";
 import { 
   Dialog,
   DialogContent,
@@ -29,9 +29,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/app/components/ui/dialog";
+} from "@/shared/components/ui/dialog";
 import { TrashIcon, PlusIcon, SaveIcon, EyeIcon, SettingsIcon, FileTextIcon } from "lucide-react";
-import { Switch } from "@/app/components/ui/switch";
+import { Switch } from "@/shared/components/ui/switch";
 
 interface SchemaEditorProps {
   initialSchema: FormSchema;

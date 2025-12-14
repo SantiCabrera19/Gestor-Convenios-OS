@@ -1,8 +1,8 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button";
+import { Badge } from "@/shared/components/ui/badge"
+import { Button } from "@/shared/components/ui/button";
 import { 
   MoreHorizontal, 
   Check, 
@@ -20,7 +20,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/shared/components/ui/dropdown-menu";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { useState } from "react";

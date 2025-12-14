@@ -1,11 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { Modal } from '@/app/components/ui/modal';
+import { Modal } from '@/shared/components/ui/modal';
 import { AlertTriangle, Send } from 'lucide-react';
-import { Button } from '@/app/components/ui/button';
-import { Textarea } from '@/app/components/ui/textarea';
-import { Label } from '@/app/components/ui/label';
+import { Button } from '@/shared/components/ui/button';
+import { Textarea } from '@/shared/components/ui/textarea';
+import { Label } from '@/shared/components/ui/label';
 
 interface RequestModificationModalProps {
   isOpen: boolean;

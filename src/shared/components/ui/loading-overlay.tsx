@@ -1,7 +1,7 @@
 'use client';
 
 import { useLoading } from "@/app/components/providers/loading-provider";
-import { Spinner } from "@/app/components/ui/spinner";
+import { Spinner } from "@/shared/components/ui/spinner";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 

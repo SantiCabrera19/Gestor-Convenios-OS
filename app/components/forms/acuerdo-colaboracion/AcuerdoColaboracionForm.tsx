@@ -7,13 +7,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { BuildingIcon, UserIcon, CalendarIcon, CheckIcon, ClipboardCheckIcon, ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
-import { Button } from "@/app/components/ui/button";
-import { Input } from "@/app/components/ui/input";
-import { Textarea } from "@/app/components/ui/textarea";
-import { Label } from "@/app/components/ui/label";
-import { Form } from "@/app/components/ui/form";
-import { Modal } from '@/app/components/ui/modal';
-import { SuccessModal } from "@/app/components/ui/success-modal";
+import { Button } from "@/shared/components/ui/button";
+import { Input } from "@/shared/components/ui/input";
+import { Textarea } from "@/shared/components/ui/textarea";
+import { Label } from "@/shared/components/ui/label";
+import { Form } from "@/shared/components/ui/form";
+import { Modal } from '@/shared/components/ui/modal';
+import { SuccessModal } from "@/shared/components/ui/success-modal";
 import { cn } from "@/lib/utils";
 
 // Esquemas de validación para cada paso

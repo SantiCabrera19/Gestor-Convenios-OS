@@ -2,17 +2,17 @@
 
 import { useState } from "react";
 import { FormField } from "@/lib/types/dynamic-form";
-import { Button } from "@/app/components/ui/button";
-import { Input } from "@/app/components/ui/input";
-import { Label } from "@/app/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/shared/components/ui/button";
+import { Input } from "@/shared/components/ui/input";
+import { Label } from "@/shared/components/ui/label";
+import { Checkbox } from "@/shared/components/ui/checkbox";
 import {
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/app/components/ui/select";
+} from "@/shared/components/ui/select";
 import {
     Dialog,
     DialogContent,
@@ -20,7 +20,7 @@ import {
     DialogFooter,
     DialogHeader,
     DialogTitle,
-} from "@/app/components/ui/dialog";
+} from "@/shared/components/ui/dialog";
 import { PencilIcon, CheckIcon } from "lucide-react";
 
 interface FieldEditorProps {

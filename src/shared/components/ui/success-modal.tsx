@@ -1,9 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Modal } from '@/app/components/ui/modal';
+import { Modal } from '@/shared/components/ui/modal';
 import { CheckCircle, ArrowRight } from 'lucide-react';
-import { Button } from '@/app/components/ui/button';
+import { Button } from '@/shared/components/ui/button';
 
 interface SuccessModalProps {
   isOpen: boolean;

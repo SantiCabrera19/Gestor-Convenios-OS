@@ -1,12 +1,12 @@
 "use client";
 
 import React from "react";
-import { Input } from "@/app/components/ui/input";
-import { Textarea } from "@/app/components/ui/textarea";
-import { Label } from "@/app/components/ui/label";
+import { Input } from "@/shared/components/ui/input";
+import { Textarea } from "@/shared/components/ui/textarea";
+import { Label } from "@/shared/components/ui/label";
 import { FormField } from "@/lib/types/dynamic-form";
 import { UseFormReturn } from "react-hook-form";
-import { FormControl, FormField as UIFormField, FormItem, FormLabel, FormMessage } from "@/app/components/ui/form";
+import { FormControl, FormField as UIFormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
 
 interface DynamicFieldProps {
   field: FormField;

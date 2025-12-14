@@ -9,10 +9,10 @@ import {
   TrendingUpIcon
 } from "lucide-react";
 import Link from "next/link";
-import { Button } from "@/app/components/ui/button";
-import { Card, CardContent } from "@/app/components/ui/card";
-import { Badge } from "@/app/components/ui/badge";
-import { PageContainer } from "@/app/components/ui/page-container";
+import { Button } from "@/shared/components/ui/button";
+import { Card, CardContent } from "@/shared/components/ui/card";
+import { Badge } from "@/shared/components/ui/badge";
+import { PageContainer } from "@/shared/components/ui/page-container";
 
 // Importar funciones de carga de datos
 import {

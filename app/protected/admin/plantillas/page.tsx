@@ -1,15 +1,15 @@
 import { createClient } from "@/utils/supabase/server";
-import { Button } from "@/app/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/app/components/ui/card";
+import { Button } from "@/shared/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
 import { Plus, FileText, Calendar, MoreVertical, Trash2, Edit, SparklesIcon } from "lucide-react";
 import Link from "next/link";
-import { Badge } from "@/app/components/ui/badge";
+import { Badge } from "@/shared/components/ui/badge";
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/shared/components/ui/dropdown-menu";
 
 export default async function AdminModelosPage() {
     const supabase = await createClient();

@@ -18,13 +18,13 @@ import {
   BackgroundPattern, 
   SectionContainer 
 } from "@/app/components/dashboard";
-import { Button } from "@/app/components/ui/button";
-import { Progress } from "@/app/components/ui/progress";
+import { Button } from "@/shared/components/ui/button";
+import { Progress } from "@/shared/components/ui/progress";
 import { useConvenioMarcoStore } from "@/stores/convenioMarcoStore";
 import { cn } from "@/lib/utils";
 import { FullScreenPreview } from "@/app/components/convenios/full-screen-preview";
 import { useConvenioStore, getFieldsFromStore } from "@/stores/convenioStore";
-import { SuccessModal } from '@/app/components/ui/success-modal';
+import { SuccessModal } from '@/shared/components/ui/success-modal';
 
 // Tipos
 type Step = {

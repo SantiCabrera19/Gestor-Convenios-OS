@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { Button } from "@/app/components/ui/button";
+import { Button } from "@/shared/components/ui/button";
 import AccessButton from "@/app/components/AccessButton";
 import { ArrowRightIcon, CloudIcon, ShieldCheckIcon, ZapIcon, GlobeIcon, DatabaseIcon, LockIcon } from "lucide-react";
-import { Badge } from "@/app/components/ui/badge";
+import { Badge } from "@/shared/components/ui/badge";
 
 export default function Home() {
   return (

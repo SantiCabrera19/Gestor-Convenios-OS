@@ -1,6 +1,6 @@
 import React from "react";
-import { Button } from "@/app/components/ui/button";
-import { Spinner } from "@/app/components/ui/spinner";
+import { Button } from "@/shared/components/ui/button";
+import { Spinner } from "@/shared/components/ui/spinner";
 import { ChevronLeftIcon, ChevronRightIcon, SaveIcon, ClipboardCheckIcon } from "lucide-react";
 
 // Importar el store
