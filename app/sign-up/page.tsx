@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/infrastructure/supabase/server";
 import { redirect } from "next/navigation";
 import LoginWithGoogle from "@/app/components/auth/login-with-google";
 import { signUpAction } from "@/app/actions";

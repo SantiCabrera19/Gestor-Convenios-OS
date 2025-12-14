@@ -4,7 +4,7 @@ import React from "react";
 import { UserIcon } from "lucide-react";
 import { useConvenioMarcoStore } from "@/stores/convenioMarcoStore";
 import { DynamicField } from "./DynamicField";
-import { validateRepresentante } from "@/lib/types/convenio-marco";
+import { validateRepresentante } from "@/shared/types/convenio-marco";
 
 const representanteFields = [
   {

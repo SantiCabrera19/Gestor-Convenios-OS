@@ -1,9 +1,9 @@
 "use client";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/shared/utils/cn";
 import { motion } from "framer-motion";
 import { Check } from "lucide-react";
-import { FormStep } from "@/lib/types/dynamic-form";
+import { FormStep } from "@/shared/types/dynamic-form";
 
 interface HorizontalStepperProps {
     steps: FormStep[];

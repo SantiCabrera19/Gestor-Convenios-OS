@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@/shared/utils/cn";
 
 interface PageContainerProps extends React.HTMLAttributes<HTMLDivElement> {
     children: React.ReactNode;

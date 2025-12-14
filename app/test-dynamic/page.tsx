@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { getFormDefinition } from "@/app/actions/get-form-definition";
 import { DynamicFormRenderer } from "@/app/components/forms/dynamic/DynamicFormRenderer";
-import { FormDefinition } from "@/lib/types/dynamic-form";
+import { FormDefinition } from "@/shared/types/dynamic-form";
 import { Loader2 } from "lucide-react";
 import { useToast } from "@/shared/components/ui/toast";
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { FormField } from "@/lib/types/dynamic-form";
+import { FormField } from "@/shared/types/dynamic-form";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Label } from "@/shared/components/ui/label";

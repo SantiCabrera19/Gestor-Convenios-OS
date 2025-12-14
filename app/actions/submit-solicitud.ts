@@ -1,14 +1,14 @@
 "use server";
 
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/infrastructure/supabase/server";
 import { redirect } from "next/navigation";
-import { DocumentGenerator } from "@/lib/services/document-generator";
-import { getStorageProvider } from "@/lib/storage";
+import { DocumentGenerator } from "@/shared/services/document-generator";
+import { getStorageProvider } from "@/shared/storage";
 import { revalidatePath } from "next/cache";
 
 export async function submitSolicitud(formId: string, formData: any) {
   const supabase = createClient();
-  
+
   // 1. Obtener el usuario actual
   const { data: { user }, error: authError } = await supabase.auth.getUser();
   if (authError || !user) {
@@ -47,26 +47,26 @@ export async function submitSolicitud(formId: string, formData: any) {
   // 4. Generar el documento
   try {
     if (formDef.template_path) {
-        const generatedDocBuffer = await DocumentGenerator.generateDocument(formDef.template_path, formData);
-        
-        const storage = getStorageProvider();
-        const fileName = `convenio_${convenio.id}.docx`;
-        const pendingFolderId = storage.getSystemFolderId ? storage.getSystemFolderId('pending') : undefined;
-        
-        const savedFile = await storage.saveFile(
-            generatedDocBuffer,
-            fileName,
-            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-            pendingFolderId
-        );
+      const generatedDocBuffer = await DocumentGenerator.generateDocument(formDef.template_path, formData);
 
-        // Actualizar el convenio con la ruta del documento
-        await supabase
-            .from('convenios')
-            .update({ document_path: savedFile.webViewLink }) // Guardamos el link web para acceso fácil
-            .eq('id', convenio.id);
-            
-        console.log("Document generated and saved:", savedFile.id);
+      const storage = getStorageProvider();
+      const fileName = `convenio_${convenio.id}.docx`;
+      const pendingFolderId = storage.getSystemFolderId ? storage.getSystemFolderId('pending') : undefined;
+
+      const savedFile = await storage.saveFile(
+        generatedDocBuffer,
+        fileName,
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        pendingFolderId
+      );
+
+      // Actualizar el convenio con la ruta del documento
+      await supabase
+        .from('convenios')
+        .update({ document_path: savedFile.webViewLink }) // Guardamos el link web para acceso fácil
+        .eq('id', convenio.id);
+
+      console.log("Document generated and saved:", savedFile.id);
     }
   } catch (genError) {
     console.error("Error generating document:", genError);

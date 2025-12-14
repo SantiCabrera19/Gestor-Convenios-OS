@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { createClient } from "@/utils/supabase/client";
+import { createClient } from "@/infrastructure/supabase/client";
 import { Button } from "@/shared/components/ui/button";
 
 export default function AccessButton() {

@@ -6,7 +6,7 @@ import {
   AlertTriangleIcon,
   FileTextIcon
 } from "lucide-react";
-import { getRandomIconForId } from "@/app/lib/dashboard/utils";
+import { getRandomIconForId } from "@/shared/dashboard/utils";
 
 export type ConvenioStatus = "enviado" | "aprobado" | "rechazado" | "pendiente" | "borrador" | "revision_modificacion";
 

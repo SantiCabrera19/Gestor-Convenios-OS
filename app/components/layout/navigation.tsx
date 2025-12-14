@@ -16,7 +16,7 @@ import {
   CheckSquareIcon
 } from "lucide-react";
 import { useLoadingNavigation } from "@/app/hooks/use-loading-navigation";
-import { cn } from "@/lib/utils";
+import { cn } from "@/shared/utils/cn";
 
 interface NavigationProps {
   userRole?: string;

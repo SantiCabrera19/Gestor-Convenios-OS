@@ -1,8 +1,8 @@
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/infrastructure/supabase/server";
 import { NextResponse } from 'next/server';
 // Asumimos que estas utilidades no dependen del contexto de React y pueden importarse aquí
 // Si dependen de React, habrá que ajustar o no usarlas en la API.
-import { getIconForType, getColorForType } from "@/app/lib/dashboard/utils";
+import { getIconForType, getColorForType } from "@/shared/dashboard/utils";
 
 // Definimos la interfaz aquí también para claridad
 export interface ConvenioTypeApiData {

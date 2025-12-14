@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Button } from '@/shared/components/ui/button';
 import { Spinner } from '@/shared/components/ui/spinner';
-import { cn } from '@/lib/utils';
+import { cn } from '@/shared/utils/cn';
 
 interface LoadingButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;

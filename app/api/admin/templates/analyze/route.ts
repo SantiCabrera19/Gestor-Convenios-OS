@@ -1,7 +1,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import mammoth from "mammoth";
-import { FormSchema, FormStep, FormField } from "@/lib/types/dynamic-form";
+import { FormSchema, FormStep, FormField } from "@/shared/types/dynamic-form";
 
 export async function POST(request: NextRequest) {
   try {

@@ -1,4 +1,4 @@
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/infrastructure/supabase/server";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { AdminPanelClient } from "@/app/protected/admin/AdminPanelClient";

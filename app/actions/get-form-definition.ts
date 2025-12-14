@@ -1,7 +1,7 @@
 'use server';
 
-import { createClient } from '@/utils/supabase/server';
-import { FormDefinition } from '@/lib/types/dynamic-form';
+import { createClient } from '@/infrastructure/supabase/server';
+import { FormDefinition } from '@/shared/types/dynamic-form';
 
 export async function getFormDefinition(convenioTypeId: number): Promise<FormDefinition | null> {
   const supabase = await createClient();

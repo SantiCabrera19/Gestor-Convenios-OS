@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { createClient } from "@/utils/supabase/client";
+import { createClient } from "@/infrastructure/supabase/client";
 import {
   ChevronLeftIcon,
   BuildingIcon,
@@ -460,8 +460,8 @@ export default function ConvenioDetallePage() {
                   <div key={obs.id} className="bg-card/80 backdrop-blur-sm border border-border/60 rounded-lg p-4">
                     <div className="flex justify-between items-start mb-2">
                       <span className={`px-2 py-1 rounded text-xs font-medium ${obs.resolved
-                          ? 'bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400'
-                          : 'bg-orange-100 text-orange-800 dark:bg-orange-900/20 dark:text-orange-300'
+                        ? 'bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400'
+                        : 'bg-orange-100 text-orange-800 dark:bg-orange-900/20 dark:text-orange-300'
                         }`}>
                         {obs.resolved ? 'Resuelta' : 'Pendiente'}
                       </span>

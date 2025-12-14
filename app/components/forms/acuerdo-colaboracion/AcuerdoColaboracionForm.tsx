@@ -14,7 +14,7 @@ import { Label } from "@/shared/components/ui/label";
 import { Form } from "@/shared/components/ui/form";
 import { Modal } from '@/shared/components/ui/modal';
 import { SuccessModal } from "@/shared/components/ui/success-modal";
-import { cn } from "@/lib/utils";
+import { cn } from "@/shared/utils/cn";
 
 // Esquemas de validación para cada paso
 const entidadSchema = z.object({

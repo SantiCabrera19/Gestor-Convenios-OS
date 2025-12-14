@@ -21,7 +21,7 @@ import {
 import { Button } from "@/shared/components/ui/button";
 import { Progress } from "@/shared/components/ui/progress";
 import { useConvenioMarcoStore } from "@/stores/convenioMarcoStore";
-import { cn } from "@/lib/utils";
+import { cn } from "@/shared/utils/cn";
 import { FullScreenPreview } from "@/app/components/convenios/full-screen-preview";
 import { useConvenioStore, getFieldsFromStore } from "@/stores/convenioStore";
 import { SuccessModal } from '@/shared/components/ui/success-modal';

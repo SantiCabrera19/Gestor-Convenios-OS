@@ -1,4 +1,4 @@
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/infrastructure/supabase/server";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(
@@ -29,8 +29,8 @@ export async function POST(
 
     // Solo permitir solicitudes en convenios aprobados
     if (convenio.status !== 'aprobado') {
-      return NextResponse.json({ 
-        error: "Solo se pueden solicitar modificaciones en convenios aprobados" 
+      return NextResponse.json({
+        error: "Solo se pueden solicitar modificaciones en convenios aprobados"
       }, { status: 400 });
     }
 
@@ -66,7 +66,7 @@ export async function POST(
     // Cambiar el estado del convenio a "revision_modificacion"
     const { error: updateError } = await supabase
       .from('convenios')
-      .update({ 
+      .update({
         status: 'revision_modificacion',
         updated_at: new Date().toISOString()
       })
@@ -77,7 +77,7 @@ export async function POST(
       return NextResponse.json({ error: "Error al actualizar el estado del convenio" }, { status: 500 });
     }
 
-    return NextResponse.json({ 
+    return NextResponse.json({
       message: "Solicitud enviada correctamente",
       status: "revision_modificacion"
     });

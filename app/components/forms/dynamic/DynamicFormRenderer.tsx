@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { FormSchema, FormStep, FormField } from '@/lib/types/dynamic-form';
+import { FormSchema, FormStep, FormField } from '@/shared/types/dynamic-form';
 import { Button } from "@/shared/components/ui/button";
 import { Form } from "@/shared/components/ui/form";
 import { DynamicField } from './DynamicField';

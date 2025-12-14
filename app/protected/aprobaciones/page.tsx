@@ -1,4 +1,4 @@
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/infrastructure/supabase/server";
 import { redirect } from "next/navigation";
 import { AprobacionesClient } from "./AprobacionesClient";
 import { PageContainer } from "@/shared/components/ui/page-container";

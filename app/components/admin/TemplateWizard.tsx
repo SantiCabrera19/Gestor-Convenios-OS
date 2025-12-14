@@ -8,7 +8,7 @@ import { Card, CardContent } from "@/shared/components/ui/card";
 import { Upload, FileText, Check, ArrowRight, Loader2, Trash2, ArrowLeft, SparklesIcon, PencilIcon } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useToast } from "@/shared/components/ui/toast";
-import { FormSchema, FormField } from "@/lib/types/dynamic-form";
+import { FormSchema, FormField } from "@/shared/types/dynamic-form";
 import { HorizontalStepper } from "@/app/components/forms/HorizontalStepper";
 import { useRouter } from "next/navigation";
 import { Badge } from "@/shared/components/ui/badge";

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { FormSchema, FormField } from "@/lib/types/dynamic-form";
+import { FormSchema, FormField } from "@/shared/types/dynamic-form";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Label } from "@/shared/components/ui/label";
@@ -17,7 +17,7 @@ import {
 } from "@/shared/components/ui/select";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from "@/shared/components/ui/card";
 import { ArrowLeft, ArrowRight, CheckCircle2, Loader2 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/shared/utils/cn";
 import { StepIndicator } from "./StepIndicator";
 import { motion, AnimatePresence } from "framer-motion";
 import { HorizontalStepper } from "./HorizontalStepper";

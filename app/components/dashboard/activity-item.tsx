@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
-import { cn } from "@/lib/utils";
-import { ActivityType } from "@/lib/types";
+import { cn } from "@/shared/utils/cn";
+import { ActivityType } from "@/shared/types";
 
 interface ActivityItemProps {
   title: string;

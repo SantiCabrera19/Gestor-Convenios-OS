@@ -1,7 +1,7 @@
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/infrastructure/supabase/server";
 import { NextResponse } from 'next/server';
 import { type NextRequest } from 'next/server';
-import { formatTimeAgo } from "@/app/lib/dashboard/utils"; // Reutilizamos la función de formato de tiempo
+import { formatTimeAgo } from "@/shared/dashboard/utils"; // Reutilizamos la función de formato de tiempo
 
 // Tipos para la respuesta de la API
 export type ApiActivityType = "info" | "success" | "warning" | "error";

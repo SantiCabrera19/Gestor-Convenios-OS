@@ -13,9 +13,9 @@ import {
   SettingsIcon
 } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
-import { cn } from "@/lib/utils";
+import { cn } from "@/shared/utils/cn";
 import { useToast } from "@/shared/components/ui/toast";
-import { FormSchema } from "@/lib/types/dynamic-form";
+import { FormSchema } from "@/shared/types/dynamic-form";
 import { SchemaEditor } from "./SchemaEditor";
 
 export function TemplateManagerClient() {

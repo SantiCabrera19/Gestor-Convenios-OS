@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { getFormDefinition } from "@/app/actions/get-form-definition";
 import { DynamicFormRenderer } from "@/app/components/forms/dynamic/DynamicFormRenderer";
-import { FormDefinition } from "@/lib/types/dynamic-form";
+import { FormDefinition } from "@/shared/types/dynamic-form";
 import { 
   Loader2, 
   Wrench, 
@@ -21,7 +21,7 @@ import { useToast } from "@/shared/components/ui/toast";
 import { Button } from "@/shared/components/ui/button";
 import { Progress } from "@/shared/components/ui/progress";
 import { BackgroundPattern, SectionContainer } from "@/app/components/dashboard";
-import { cn } from "@/lib/utils";
+import { cn } from "@/shared/utils/cn";
 
 // Mapa de iconos para el sidebar
 const ICON_MAP: Record<string, any> = {

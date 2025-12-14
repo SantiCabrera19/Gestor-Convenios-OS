@@ -1,4 +1,4 @@
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/infrastructure/supabase/server";
 import { TemplateWizard } from "@/app/components/admin/TemplateWizard";
 import { notFound } from "next/navigation";
 import { PageContainer } from "@/shared/components/ui/page-container";

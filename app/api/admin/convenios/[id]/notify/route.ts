@@ -1,4 +1,4 @@
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/infrastructure/supabase/server";
 import { NextResponse, NextRequest } from "next/server";
 import { sendCorrectionRequestEmail } from '@/app/lib/services/email-service';
 
