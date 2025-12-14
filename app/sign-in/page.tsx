@@ -12,7 +12,7 @@ import { CommandIcon } from "lucide-react";
 export default async function SignIn({
   searchParams,
 }: {
-  searchParams: { message?: string } | Promise<{ message?: string }>
+  searchParams: { message?: string; error?: string; success?: string; email?: string } | Promise<{ message?: string; error?: string; success?: string; email?: string }>
 }) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();

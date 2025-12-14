@@ -116,7 +116,7 @@ async function getOAuthClient() {
               ? new Date(credentials.expiry_date).toISOString()
               : null,
           })
-          .eq('user_id', tokens.user_id); 
+          .eq('user_id', tokens.user_id);
 
         console.log(
           '✅ [OAuth] Token renovado y actualizado en la base de datos.'
@@ -143,9 +143,9 @@ export async function uploadFileToDrive(
 ) {
   try {
     console.log(`📄 [OAuth Drive] Subiendo archivo: ${fileName}`);
-    
+
     const driveClient = await getOAuthClient();
-    
+
     const fileMetadata: any = {
       name: fileName,
       parents: [folderId],
@@ -189,9 +189,9 @@ export async function createFolderInDrive(
 ) {
   try {
     console.log(`📁 [OAuth Drive] Creando carpeta: ${folderName}`);
-    
+
     const driveClient = await getOAuthClient();
-    
+
     const fileMetadata = {
       name: folderName,
       mimeType: 'application/vnd.google-apps.folder',
@@ -224,7 +224,7 @@ export async function uploadConvenioEspecifico(
 ) {
   try {
     console.log('📁 [OAuth Drive] Procesando convenio específico:', convenioName);
-    
+
     // 1. Crear carpeta para el convenio
     const folderResponse = await createFolderInDrive(convenioName, parentFolderId);
     const convenioFolderId = folderResponse.folderId!;
@@ -242,16 +242,16 @@ export async function uploadConvenioEspecifico(
     const anexosUploaded = [];
     for (const anexo of anexos) {
       console.log(`📎 [OAuth Drive] Subiendo anexo: ${anexo.name}`);
-      
+
       const anexoBuffer = Buffer.from(anexo.buffer);
-      
+
       const anexoResponse = await uploadFileToDrive(
         anexoBuffer,
         `ANEXO-${anexo.name}`,
         convenioFolderId,
         false
       );
-      
+
       anexosUploaded.push({
         name: anexo.name,
         ...anexoResponse
@@ -281,9 +281,9 @@ export async function uploadConvenioEspecifico(
 export async function moveFileToFolder(fileId: string, targetFolderId: string) {
   try {
     console.log(`📁 [OAuth Drive] Moviendo archivo ${fileId} a carpeta ${targetFolderId}`);
-    
+
     const driveClient = await getOAuthClient();
-    
+
     // Obtener padres actuales
     const file = await driveClient.files.get({
       fileId,
@@ -313,9 +313,9 @@ export async function moveFileToFolder(fileId: string, targetFolderId: string) {
 export async function moveFolderToFolder(folderId: string, targetFolderId: string) {
   try {
     console.log(`📁 [OAuth Drive] Moviendo carpeta ${folderId} a carpeta ${targetFolderId}`);
-    
+
     const driveClient = await getOAuthClient();
-    
+
     // Obtener padres actuales
     const folder = await driveClient.files.get({
       fileId: folderId,
@@ -326,7 +326,7 @@ export async function moveFolderToFolder(folderId: string, targetFolderId: strin
     const previousParents = folder.data.parents?.join(',');
     if (previousParents) {
       await driveClient.files.update({
-        fileId,
+        fileId: folderId,
         removeParents: previousParents,
         addParents: targetFolderId,
         fields: 'id, parents',
@@ -345,9 +345,9 @@ export async function moveFolderToFolder(folderId: string, targetFolderId: strin
 export async function deleteFileFromDrive(fileId: string) {
   try {
     console.log(`🗑️ [OAuth Drive] Eliminando archivo: ${fileId}`);
-    
+
     const driveClient = await getOAuthClient();
-    
+
     await driveClient.files.delete({
       fileId: fileId,
     });
@@ -358,4 +358,8 @@ export async function deleteFileFromDrive(fileId: string) {
     console.error('❌ [OAuth Drive] Error eliminando archivo:', error);
     throw error;
   }
-} 
+}
+
+// Alias exports for backward compatibility
+export const moveFileToFolderOAuth = moveFileToFolder;
+export const moveFolderToFolderOAuth = moveFolderToFolder; 
