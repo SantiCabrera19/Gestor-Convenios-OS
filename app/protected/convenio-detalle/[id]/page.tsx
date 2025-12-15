@@ -6,9 +6,8 @@ import Link from "next/link";
 import { useEffect } from "react";
 
 import { Button } from "@/shared/components/ui/button";
-import { ConvenioFormLayout } from "@/app/components/convenios/ConvenioFormLayout";
-import { ConvenioInfoDisplay } from "@/app/components/convenios/convenio-info-display";
-import { convenioConfigs } from "@/app/components/convenios";
+import { ConvenioFormLayout, ConvenioInfoDisplay, convenioConfigs } from "@/app/components/convenios";
+
 import { useConvenioMarcoStore } from "@/stores/convenioMarcoStore";
 import { DynamicConvenioPage } from "@/app/components/forms";
 import { PageContainer } from "@/shared/components/ui/page-container";

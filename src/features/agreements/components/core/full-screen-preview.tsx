@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { ChevronLeftIcon, ChevronRightIcon, XIcon, ZoomInIcon, ZoomOutIcon } from "lucide-react";
-import DocumentoPreviewContent from "@/app/components/convenios/documento-preview-content";
+import DocumentoPreviewContent from "@/features/agreements/components/layout/documento-preview-content";
 import { FileTextIcon } from "lucide-react";
-import { DocumentoPreview } from "@/app/components/convenios/documento-preview";
+import { DocumentoPreview } from "@/features/agreements/components/layout/documento-preview";
 import { useConvenioStore } from "@/stores/convenioStore";
 
 interface FullScreenPreviewProps {
