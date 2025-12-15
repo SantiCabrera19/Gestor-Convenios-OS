@@ -1,6 +1,6 @@
 import { createClient } from "@/infrastructure/supabase/server";
 import { NextResponse, NextRequest } from "next/server";
-import { sendCorrectionRequestEmail } from '@/app/lib/services/email-service';
+import { sendCorrectionRequestEmail } from '@/shared/services/email-service';
 
 export async function POST(request: NextRequest, { params }: { params: { id: string } }) {
   const supabase = await createClient();

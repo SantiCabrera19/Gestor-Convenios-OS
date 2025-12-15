@@ -5,7 +5,7 @@ import { CreateConvenioDTO } from "@/shared/types/convenio";
 import { Packer } from 'docx';
 import { createDocument } from '@/shared/utils/doc-generator';
 import { renderDocx } from '@/shared/utils/docx-templater';
-import { getStorageProvider } from '@/lib/storage';
+import { getStorageProvider } from '@/shared/storage';
 import { NotificationService } from '@/shared/services/notification-service';
 import path from 'path';
 import fs from 'fs';

@@ -1,7 +1,7 @@
 import { createClient } from "@/infrastructure/supabase/server";
 import { NextResponse } from "next/server";
 import { moveFileToFolder, moveFileToFolderOAuth, moveFolderToFolderOAuth, DRIVE_FOLDERS } from '@/infrastructure/google-drive/client';
-import { NotificationService } from '@/app/lib/services/notification-service';
+import { NotificationService } from '@/shared/services/notification-service';
 
 export async function POST(
   request: Request,

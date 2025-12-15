@@ -1,5 +1,5 @@
 import { cookies } from 'next/headers';
-import type { Convenio } from "@/lib/types/convenio";
+import type { Convenio } from "@/shared/types/convenio";
 import { getApiUrl } from "../utils/api";
 import { headers } from 'next/headers';
 
@@ -33,7 +33,7 @@ export async function getUserConvenios(limit: number = 4): Promise<UserConvenioD
       cache: 'no-store'
     });
 
-    if (!response.ok) { 
+    if (!response.ok) {
       console.error(`API request failed for getUserConvenios with status ${response.status}`);
       const errorBody = await response.text();
       console.error(`Error details: ${errorBody}`);

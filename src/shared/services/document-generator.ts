@@ -1,6 +1,6 @@
 import PizZip from "pizzip";
 import Docxtemplater from "docxtemplater";
-import { getStorageProvider } from "@/lib/storage";
+import { getStorageProvider } from "@/shared/storage";
 
 export class DocumentGenerator {
   /**
@@ -13,13 +13,13 @@ export class DocumentGenerator {
     try {
       // 1. Obtener el archivo de plantilla del storage
       const storage = getStorageProvider();
-      
+
       // Si templatePath es una URL completa, intentamos extraer el ID
       // Si no, asumimos que es el ID o Path directo
       let fileId = templatePath;
       const extractedId = storage.getFileIdFromUrl ? storage.getFileIdFromUrl(templatePath) : null;
       if (extractedId) {
-          fileId = extractedId;
+        fileId = extractedId;
       }
 
       const content = await storage.getFileContent(fileId);

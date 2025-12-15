@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { createClient } from '@/infrastructure/supabase/server';
 import { UpdateConvenioDTO } from "@/shared/types/convenio";
 import { getStorageProvider } from '@/shared/storage';
-import { NotificationService } from '@/app/lib/services/notification-service';
+import { NotificationService } from '@/shared/services/notification-service';
 import { renderDocx } from '@/shared/utils/docx-templater';
 import { createDocument } from '@/shared/utils/doc-generator';
 import { Packer } from 'docx';
