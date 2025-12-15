@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { getFormDefinition } from "@/app/actions/get-form-definition";
-import { DynamicFormRenderer } from "@/app/components/forms/dynamic/DynamicFormRenderer";
+import { DynamicFormRenderer } from "@/features/agreements/components/forms/dynamic/DynamicFormRenderer";
 import { FormDefinition } from "@/shared/types/dynamic-form";
 import { Loader2 } from "lucide-react";
 import { useToast } from "@/shared/components/ui/toast";
@@ -24,7 +24,7 @@ export default function TestDynamicPage() {
 
   const handleSubmit = async (data: any) => {
     console.log("📝 Datos del formulario dinámico:", data);
-    
+
     // Simular envío a la API
     try {
       const response = await fetch('/api/convenios', {
@@ -38,11 +38,11 @@ export default function TestDynamicPage() {
       });
 
       const result = await response.json();
-      
+
       if (!response.ok) throw new Error(result.error);
 
       toast.success("¡Éxito!", "El convenio dinámico se creó correctamente.");
-      
+
     } catch (error: any) {
       toast.error("Error", error.message);
     }
@@ -71,8 +71,8 @@ export default function TestDynamicPage() {
       </div>
 
       <div className="bg-card border rounded-xl shadow-sm">
-        <DynamicFormRenderer 
-          schema={formDef.schema} 
+        <DynamicFormRenderer
+          schema={formDef.schema}
           onSubmit={handleSubmit}
         />
       </div>

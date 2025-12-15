@@ -10,7 +10,7 @@ import { ConvenioFormLayout } from "@/app/components/convenios/ConvenioFormLayou
 import { ConvenioInfoDisplay } from "@/app/components/convenios/convenio-info-display";
 import { convenioConfigs } from "@/app/components/convenios";
 import { useConvenioMarcoStore } from "@/stores/convenioMarcoStore";
-import { DynamicConvenioPage } from "@/app/components/forms/dynamic/DynamicConvenioPage";
+import { DynamicConvenioPage } from "@/app/components/forms";
 import { PageContainer } from "@/shared/components/ui/page-container";
 import { Card, CardContent } from "@/shared/components/ui/card";
 

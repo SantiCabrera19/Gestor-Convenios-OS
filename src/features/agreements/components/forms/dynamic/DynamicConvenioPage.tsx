@@ -4,13 +4,13 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { getFormDefinition } from "@/app/actions/get-form-definition";
-import { DynamicFormRenderer } from "@/app/components/forms/dynamic/DynamicFormRenderer";
+import { DynamicFormRenderer } from "./DynamicFormRenderer";
 import { FormDefinition } from "@/shared/types/dynamic-form";
-import { 
-  Loader2, 
-  Wrench, 
-  ChevronLeftIcon, 
-  CheckIcon, 
+import {
+  Loader2,
+  Wrench,
+  ChevronLeftIcon,
+  CheckIcon,
   EyeIcon,
   BuildingIcon,
   UserIcon,
@@ -81,12 +81,12 @@ export function DynamicConvenioPage({ convenioTypeId, title, slug }: DynamicConv
       });
 
       const result = await response.json();
-      
+
       if (!response.ok) throw new Error(result.error || "Error al crear el convenio");
 
       toast.success("¡Convenio Creado!", "El documento se ha generado y guardado exitosamente.");
       router.push('/protected');
-      
+
     } catch (error: any) {
       console.error("Submit error:", error);
       toast.error("Error", error.message || "Ocurrió un error inesperado.");
@@ -113,7 +113,7 @@ export function DynamicConvenioPage({ convenioTypeId, title, slug }: DynamicConv
         <div className="space-y-2">
           <h2 className="text-2xl font-bold">Formulario en Configuración</h2>
           <p className="text-muted-foreground max-w-md mx-auto">
-            No se encontró una receta activa para el <strong>{title}</strong>. 
+            No se encontró una receta activa para el <strong>{title}</strong>.
             Es posible que el administrador esté realizando tareas de mantenimiento.
           </p>
         </div>
@@ -170,14 +170,14 @@ export function DynamicConvenioPage({ convenioTypeId, title, slug }: DynamicConv
                     <div key={step.id} className={cn(
                       "flex items-center gap-2 transition-all duration-300 min-w-fit",
                       idx === currentStep ? "text-primary font-medium" :
-                      idx < currentStep ? "text-green-500" :
-                      "text-muted-foreground"
+                        idx < currentStep ? "text-green-500" :
+                          "text-muted-foreground"
                     )}>
                       <div className={cn(
                         "w-8 h-8 rounded-full flex items-center justify-center border-2 transition-all duration-300",
                         idx === currentStep ? "border-primary bg-primary/10" :
-                        idx < currentStep ? "border-green-500 bg-green-500/10" :
-                        "border-muted-foreground/30 bg-background"
+                          idx < currentStep ? "border-green-500 bg-green-500/10" :
+                            "border-muted-foreground/30 bg-background"
                       )}>
                         {idx < currentStep ? (
                           <CheckIcon className="h-4 w-4" />
@@ -193,8 +193,8 @@ export function DynamicConvenioPage({ convenioTypeId, title, slug }: DynamicConv
               </div>
 
               {/* Form Renderer */}
-              <DynamicFormRenderer 
-                schema={formDef.schema} 
+              <DynamicFormRenderer
+                schema={formDef.schema}
                 onSubmit={handleSubmit}
                 isSubmitting={isSubmitting}
                 onStepChange={setCurrentStep}
@@ -210,7 +210,7 @@ export function DynamicConvenioPage({ convenioTypeId, title, slug }: DynamicConv
                 {steps.map((step, idx) => {
                   const isClickable = idx < currentStep;
                   const Icon = ICON_MAP[step.icon || 'FileTextIcon'] || FileTextIcon;
-                  
+
                   return (
                     <button
                       key={step.id}
@@ -222,8 +222,8 @@ export function DynamicConvenioPage({ convenioTypeId, title, slug }: DynamicConv
                       className={cn(
                         "w-full text-left p-4 rounded-lg border transition-all duration-300 focus:outline-none",
                         idx === currentStep ? "bg-primary/5 border-primary/20 scale-105 shadow-sm" :
-                        idx < currentStep ? "bg-green-500/5 border-green-500/20" :
-                        "bg-card border-border",
+                          idx < currentStep ? "bg-green-500/5 border-green-500/20" :
+                            "bg-card border-border",
                         isClickable ? "cursor-pointer hover:ring-2 hover:ring-primary/30" : "opacity-60 cursor-not-allowed"
                       )}
                     >
@@ -231,8 +231,8 @@ export function DynamicConvenioPage({ convenioTypeId, title, slug }: DynamicConv
                         <div className={cn(
                           "p-2 rounded-lg",
                           idx === currentStep ? "bg-primary/10" :
-                          idx < currentStep ? "bg-green-500/10" :
-                          "bg-muted"
+                            idx < currentStep ? "bg-green-500/10" :
+                              "bg-muted"
                         )}>
                           {idx < currentStep ? (
                             <CheckIcon className="h-5 w-5 text-green-500" />
@@ -244,8 +244,8 @@ export function DynamicConvenioPage({ convenioTypeId, title, slug }: DynamicConv
                           <h3 className={cn(
                             "font-medium",
                             idx === currentStep ? "text-primary" :
-                            idx < currentStep ? "text-green-500" :
-                            "text-muted-foreground"
+                              idx < currentStep ? "text-green-500" :
+                                "text-muted-foreground"
                           )}>
                             {step.title}
                           </h3>
@@ -259,7 +259,7 @@ export function DynamicConvenioPage({ convenioTypeId, title, slug }: DynamicConv
                 })}
               </div>
             </SectionContainer>
-            
+
             <SectionContainer title="Vista previa">
               <div className="space-y-3">
                 <Button
