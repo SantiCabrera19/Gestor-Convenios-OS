@@ -15,4 +15,4 @@ export type { DashboardHeaderProps } from './DashboardHeader';
 export type { SectionContainerProps } from './SectionContainer';
 
 // Exportar utilidades
-export { formatTimeAgo, getIconForType, getColorForType } from '../../lib/dashboard/utils'; 
+export { formatTimeAgo, getIconForType, getColorForType } from '@/shared/dashboard/utils';
