@@ -2,11 +2,9 @@
 import { createClient } from "@/infrastructure/supabase/server";
 import { redirect } from "next/navigation";
 import { TemplateManagerClient } from "@/features/templates";
-import {
-  BackgroundPattern,
-  DashboardHeader,
-  SectionContainer
-} from "@/app/components/dashboard";
+import { BackgroundPattern } from "@/app/components/dashboard/BackgroundPattern";
+import { DashboardHeader } from "@/app/components/dashboard/DashboardHeader";
+import { SectionContainer } from "@/app/components/dashboard/SectionContainer";
 
 export default async function TemplatesPage() {
   const supabase = await createClient();

@@ -14,15 +14,13 @@ import Link from "next/link";
 import React from "react";
 import { renderAsync } from "docx-preview";
 
-import {
-  BackgroundPattern,
-  SectionContainer
-} from "@/app/components/dashboard";
+import { BackgroundPattern } from "@/app/components/dashboard/BackgroundPattern";
+import { SectionContainer } from "@/app/components/dashboard/SectionContainer";
 import { Button } from "@/shared/components/ui/button";
 import { Progress } from "@/shared/components/ui/progress";
 import { useConvenioMarcoStore } from "@/stores/convenioMarcoStore";
 import { cn } from "@/shared/utils/cn";
-import { FullScreenPreview } from "@/app/components/convenios";
+import { FullScreenPreview } from "@/features/agreements/components/core/full-screen-preview";
 import { useConvenioStore, getFieldsFromStore } from "@/stores/convenioStore";
 import { SuccessModal } from '@/shared/components/ui/success-modal';
 

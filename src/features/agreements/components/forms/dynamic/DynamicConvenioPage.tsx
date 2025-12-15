@@ -20,7 +20,8 @@ import {
 import { useToast } from "@/shared/components/ui/toast";
 import { Button } from "@/shared/components/ui/button";
 import { Progress } from "@/shared/components/ui/progress";
-import { BackgroundPattern, SectionContainer } from "@/app/components/dashboard";
+import { BackgroundPattern } from "@/app/components/dashboard/BackgroundPattern";
+import { SectionContainer } from "@/app/components/dashboard/SectionContainer";
 import { cn } from "@/shared/utils/cn";
 
 // Mapa de iconos para el sidebar

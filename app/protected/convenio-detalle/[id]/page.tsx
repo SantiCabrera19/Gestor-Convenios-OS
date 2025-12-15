@@ -6,10 +6,12 @@ import Link from "next/link";
 import { useEffect } from "react";
 
 import { Button } from "@/shared/components/ui/button";
-import { ConvenioFormLayout, ConvenioInfoDisplay, convenioConfigs } from "@/app/components/convenios";
+import { ConvenioFormLayout } from "@/features/agreements/components/layout/ConvenioFormLayout";
+import { ConvenioInfoDisplay } from "@/features/agreements/components/layout/convenio-info-display";
+import { convenioConfigs } from "@/features/agreements/components/core/convenio-configs";
 
 import { useConvenioMarcoStore } from "@/stores/convenioMarcoStore";
-import { DynamicConvenioPage } from "@/app/components/forms";
+import { DynamicConvenioPage } from "@/features/agreements/components/forms/dynamic/DynamicConvenioPage";
 import { PageContainer } from "@/shared/components/ui/page-container";
 import { Card, CardContent } from "@/shared/components/ui/card";
 

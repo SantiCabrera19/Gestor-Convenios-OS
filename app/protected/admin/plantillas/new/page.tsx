@@ -1,4 +1,4 @@
-import { BackgroundPattern } from "@/app/components/dashboard";
+import { BackgroundPattern } from "@/app/components/dashboard/BackgroundPattern";
 import { TemplateWizard } from "@/features/templates";
 
 export default function NewTemplatePage() {

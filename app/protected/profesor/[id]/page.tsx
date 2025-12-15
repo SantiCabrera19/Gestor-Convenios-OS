@@ -13,11 +13,9 @@ import {
   CheckIcon
 } from "lucide-react";
 import Link from "next/link";
-import {
-  SectionContainer,
-  BackgroundPattern,
-  DashboardHeader
-} from "@/app/components/dashboard";
+import { SectionContainer } from "@/app/components/dashboard/SectionContainer";
+import { BackgroundPattern } from "@/app/components/dashboard/BackgroundPattern";
+import { DashboardHeader } from "@/app/components/dashboard/DashboardHeader";
 import { Button } from "@/shared/components/ui/button";
 
 export default function ConvenioDetallePage() {
