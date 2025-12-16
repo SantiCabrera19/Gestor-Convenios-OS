@@ -1,11 +1,11 @@
 
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/infrastructure/supabase/server";
 import { NextRequest, NextResponse } from "next/server";
-import { getStorageProvider } from "@/lib/storage";
+import { getStorageProvider } from "@/shared/storage";
 
 export async function POST(request: NextRequest) {
   const supabase = createClient();
-  
+
   // Verificar autenticación
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) {
@@ -22,18 +22,18 @@ export async function POST(request: NextRequest) {
     const template_content = formData.get("template_content") as string;
 
     if (!schemaJson) {
-       return NextResponse.json({ error: "Schema is required" }, { status: 400 });
+      return NextResponse.json({ error: "Schema is required" }, { status: 400 });
     }
 
     const schema = JSON.parse(schemaJson);
-    
+
     let typeId = convenio_type_id ? parseInt(convenio_type_id) : null;
 
     // 1. Si no hay ID pero hay nombre, crear el tipo de convenio
     if (!typeId && name) {
       const { data: newType, error: typeError } = await supabase
         .from('convenio_types')
-        .insert({ 
+        .insert({
           name: name,
           description: `Convenio generado dinámicamente: ${name}`,
           template_content: template_content || "", // Insertamos el contenido o string vacío
@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
         })
         .select()
         .single();
-        
+
       if (typeError) throw typeError;
       typeId = newType.id;
     }
@@ -83,8 +83,8 @@ export async function POST(request: NextRequest) {
 
     if (formError) throw formError;
 
-    return NextResponse.json({ 
-      success: true, 
+    return NextResponse.json({
+      success: true,
       message: "Formulario publicado correctamente",
       form: newForm,
       convenio_type_id: typeId

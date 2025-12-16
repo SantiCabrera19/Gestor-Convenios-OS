@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from 'react';
 import { useLoading } from '@/app/components/providers/loading-provider';
-import { useToast } from '@/app/components/ui/toast';
+import { useToast } from '@/shared/components/ui/toast';
 
 interface AsyncOperationOptions {
   loadingText?: string;

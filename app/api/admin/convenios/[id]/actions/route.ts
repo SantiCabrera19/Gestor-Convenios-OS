@@ -1,7 +1,7 @@
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/infrastructure/supabase/server";
 import { NextResponse } from "next/server";
-import { moveFileToFolder, moveFileToFolderOAuth, moveFolderToFolderOAuth, DRIVE_FOLDERS } from '@/app/lib/google-drive';
-import { NotificationService } from '@/app/lib/services/notification-service';
+import { moveFileToFolder, moveFileToFolderOAuth, moveFolderToFolderOAuth, DRIVE_FOLDERS } from '@/infrastructure/google-drive/client';
+import { NotificationService } from '@/shared/services/notification-service';
 
 export async function POST(
   request: Request,
@@ -130,7 +130,7 @@ export async function POST(
     // Actualizar el estado del convenio
     const { error: updateError } = await supabase
       .from("convenios")
-      .update({ 
+      .update({
         status: newStatus,
         reviewer_id: user.id,
         ...(action === "approve" && { approved_at: new Date().toISOString() })
@@ -196,7 +196,7 @@ export async function POST(
     // Enviar notificación al usuario
     try {
       const convenioTitle = convenio.title || "Sin título";
-      
+
       switch (action) {
         case "approve":
           await NotificationService.convenioApproved(convenio.user_id, convenioTitle, params.id);

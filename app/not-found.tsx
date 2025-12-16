@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shared/components/ui/button";
 import { GhostIcon } from "lucide-react";
 
 export default function NotFound() {

@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 // import { cookies } from "next/headers"; // Eliminado, no se usa
 import { redirect } from "next/navigation";
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/infrastructure/supabase/server";
 
 /**
  * Acción para cerrar sesión

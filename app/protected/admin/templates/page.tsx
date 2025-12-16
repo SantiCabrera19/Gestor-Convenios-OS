@@ -1,12 +1,10 @@
 
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/infrastructure/supabase/server";
 import { redirect } from "next/navigation";
-import { TemplateManagerClient } from "./TemplateManagerClient";
-import {
-  BackgroundPattern,
-  DashboardHeader,
-  SectionContainer
-} from "@/app/components/dashboard";
+import { TemplateManagerClient } from "@/features/templates";
+import { BackgroundPattern } from "@/app/components/dashboard/BackgroundPattern";
+import { DashboardHeader } from "@/app/components/dashboard/DashboardHeader";
+import { SectionContainer } from "@/app/components/dashboard/SectionContainer";
 
 export default async function TemplatesPage() {
   const supabase = await createClient();
@@ -35,7 +33,7 @@ export default async function TemplatesPage() {
           name="Gestión de Plantillas"
           subtitle="Sube tus documentos Word (.docx) y convierte automáticamente las variables en formularios dinámicos."
         />
-        
+
         <div className="mt-6">
           <SectionContainer title="Nueva Plantilla">
             <TemplateManagerClient />

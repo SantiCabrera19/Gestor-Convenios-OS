@@ -1,12 +1,12 @@
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/infrastructure/supabase/server";
 import { NextResponse } from 'next/server';
 import { type NextRequest } from 'next/server';
-import { CreateConvenioDTO } from "@/lib/types/convenio";
+import { CreateConvenioDTO } from "@/shared/types/convenio";
 import { Packer } from 'docx';
-import { createDocument } from '@/app/lib/utils/doc-generator';
-import { renderDocx } from '@/app/lib/utils/docx-templater';
-import { getStorageProvider } from '@/lib/storage';
-import { NotificationService } from '@/app/lib/services/notification-service';
+import { createDocument } from '@/shared/utils/doc-generator';
+import { renderDocx } from '@/shared/utils/docx-templater';
+import { getStorageProvider } from '@/shared/storage';
+import { NotificationService } from '@/shared/services/notification-service';
 import path from 'path';
 import fs from 'fs';
 

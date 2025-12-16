@@ -3,8 +3,8 @@
 import React from "react";
 import { CalendarIcon } from "lucide-react";
 import { useConvenioMarcoStore } from "@/stores/convenioMarcoStore";
-import { Label } from "@/app/components/ui/label";
-import { Input } from "@/app/components/ui/input";
+import { Label } from "@/shared/components/ui/label";
+import { Input } from "@/shared/components/ui/input";
 
 export const FechasForm = () => {
   const { convenioData, updateConvenioData } = useConvenioMarcoStore();

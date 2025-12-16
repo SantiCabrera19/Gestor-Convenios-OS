@@ -3,9 +3,9 @@
 import { useState } from "react";
 import { DataTable } from "./data-table";
 import { columns } from "./columns";
-import { Card, CardContent, CardHeader, CardTitle } from "@/app/components/ui/card";
-import { Input } from "@/app/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/app/components/ui/select";
+import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card";
+import { Input } from "@/shared/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/components/ui/select";
 import { Search, Filter } from "lucide-react";
 
 export function ProfesorPanelClient({ convenios }: { convenios: any[] }) {

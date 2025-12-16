@@ -1,4 +1,4 @@
-import { ConvenioCardSkeleton } from "@/app/components/ui/skeleton";
+import { ConvenioCardSkeleton } from "@/shared/components/ui/skeleton";
 
 export default function Loading() {
   return (

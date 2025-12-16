@@ -4,7 +4,7 @@ import React from "react";
 import { BuildingIcon } from "lucide-react";
 import { useConvenioStore } from "@/stores/convenioStore";
 import { DynamicField } from "./DynamicField";
-import { validateEntidad } from "@/lib/types/convenio-marco";
+import { validateEntidad } from "@/shared/types/convenio-marco";
 
 export const EntidadForm = () => {
   const { convenioData, updateConvenioData } = useConvenioStore();

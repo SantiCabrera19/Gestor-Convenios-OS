@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useContext, useCallback } from 'react';
-import { useToast } from '@/app/components/ui/toast';
+import { useToast } from '@/shared/components/ui/toast';
 import { useLoadingNavigation } from '@/app/hooks/use-loading-navigation';
 
 interface FeedbackContextType {

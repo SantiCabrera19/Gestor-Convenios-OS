@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { Badge } from "./ui/badge";
-import { Button } from "./ui/button";
+import { Badge } from "@/shared/components/ui/badge";
+import { Button } from "@/shared/components/ui/button";
 
 export function EnvVarWarning() {
   return (

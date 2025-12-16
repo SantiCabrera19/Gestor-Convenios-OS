@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { BellIcon, CheckIcon, AlertCircleIcon, FileTextIcon, XIcon, EyeIcon } from 'lucide-react';
-import { createClient } from '@/utils/supabase/client';
+import { createClient } from '@/infrastructure/supabase/client';
 
 interface Notification {
   id: string;

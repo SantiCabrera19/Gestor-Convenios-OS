@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/app/components/ui/button";
+import { Button } from "@/shared/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -9,8 +9,8 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Textarea } from "@/app/components/ui/textarea";
+} from "@/shared/components/ui/dialog";
+import { Textarea } from "@/shared/components/ui/textarea";
 
 interface ObservacionesDialogProps {
   isOpen: boolean;

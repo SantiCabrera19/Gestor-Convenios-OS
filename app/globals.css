@@ -1,7 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import './components/ui/dot-pattern.css';
+@import '../src/shared/components/ui/dot-pattern.css';
 
 @layer base {
   :root {

@@ -1,11 +1,11 @@
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/infrastructure/supabase/server";
 import { redirect } from "next/navigation";
 import { GoogleDriveConfigClient } from "./GoogleDriveConfigClient";
 import { SettingsIcon, CloudIcon, HardDriveIcon } from "lucide-react";
-import { PageContainer } from "@/app/components/ui/page-container";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/app/components/ui/card";
-import { Badge } from "@/app/components/ui/badge";
-import { Button } from "@/app/components/ui/button";
+import { PageContainer } from "@/shared/components/ui/page-container";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/shared/components/ui/card";
+import { Badge } from "@/shared/components/ui/badge";
+import { Button } from "@/shared/components/ui/button";
 
 export default async function ConfiguracionPage() {
   const supabase = await createClient();

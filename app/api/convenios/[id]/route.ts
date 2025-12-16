@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@/utils/supabase/server';
-import { UpdateConvenioDTO } from "@/lib/types/convenio";
-import { getStorageProvider } from '@/lib/storage';
-import { NotificationService } from '@/app/lib/services/notification-service';
-import { renderDocx } from '@/app/lib/utils/docx-templater';
-import { createDocument } from '@/app/lib/utils/doc-generator';
+import { createClient } from '@/infrastructure/supabase/server';
+import { UpdateConvenioDTO } from "@/shared/types/convenio";
+import { getStorageProvider } from '@/shared/storage';
+import { NotificationService } from '@/shared/services/notification-service';
+import { renderDocx } from '@/shared/utils/docx-templater';
+import { createDocument } from '@/shared/utils/doc-generator';
 import { Packer } from 'docx';
 import path from 'path';
 import fs from 'fs';
@@ -16,10 +16,10 @@ export async function GET(
 ) {
   try {
     const supabase = await createClient();
-    
+
     // Verificar autenticación
     const { data: { user }, error: authError } = await supabase.auth.getUser();
-    
+
     if (authError || !user) {
       return NextResponse.json(
         { error: "No autorizado" },
@@ -99,10 +99,10 @@ export async function PATCH(
 ) {
   try {
     const supabase = await createClient();
-    
+
     // Verificar autenticación
     const { data: { user }, error: authError } = await supabase.auth.getUser();
-    
+
     if (authError || !user) {
       return NextResponse.json(
         { error: "No autorizado" },
@@ -188,8 +188,8 @@ export async function PATCH(
     // Si se está cambiando el estado, registrar en activity_log
     if (body.status && body.status !== convenio.status) {
       try {
-        const action = body.status === 'enviado' && convenio.status === 'revision' 
-          ? 'resubmit_convenio' 
+        const action = body.status === 'enviado' && convenio.status === 'revision'
+          ? 'resubmit_convenio'
           : 'update_status';
 
         const { error: logError } = await supabase
@@ -257,15 +257,15 @@ export async function PATCH(
           const safeName = template.name ? template.name.toString() : '';
           const safeNameLower = safeName.toLowerCase();
           const safeNameNormalized = safeNameLower.normalize('NFD').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
-          
+
           const slugify = (str: string) => str.toLowerCase().normalize('NFD').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
           const removeStop = (str: string) => str.replace(/\b(de|del|la|el|en|con|por|para|y|o|a|un|una)\b/g, '').replace(/-+/g, '-').replace(/(^-|-$)+/g, '');
           const norm = (str: string) => str.replace(/[^a-z0-9]/g, '');
-          
+
           const targetSlug = removeStop(safeNameNormalized);
           const allDocx = fs.readdirSync(templateDir).filter(f => f.endsWith('.docx'));
-          const scored: Array<{file: string, score: number}> = [];
-          
+          const scored: Array<{ file: string, score: number }> = [];
+
           allDocx.forEach((f) => {
             const fileSlug = slugify(path.parse(f).name);
             const fileSlugClean = removeStop(fileSlug);
@@ -277,7 +277,7 @@ export async function PATCH(
             else if (norm(fileSlug).includes(norm(safeNameNormalized))) score = 4;
             else if (norm(fileSlugClean).includes(norm(targetSlug))) score = 5;
 
-            if (score >= 0) scored.push({file: f, score});
+            if (score >= 0) scored.push({ file: f, score });
           });
 
           scored.sort((a, b) => a.score - b.score || a.file.length - b.file.length);
@@ -310,8 +310,8 @@ export async function PATCH(
             try {
               const oldId = storage.getFileIdFromUrl ? storage.getFileIdFromUrl(updatedConvenio.document_path) : null;
               if (oldId && storage.deleteFile) {
-                  console.log('🗑️ [Update] Eliminando documento viejo:', oldId);
-                  await storage.deleteFile(oldId);
+                console.log('🗑️ [Update] Eliminando documento viejo:', oldId);
+                await storage.deleteFile(oldId);
               }
             } catch (deleteError) {
               console.error('Error al eliminar documento viejo:', deleteError);
@@ -323,24 +323,24 @@ export async function PATCH(
           const isConvenioEspecifico = updatedConvenio.convenio_type_id === 4;
           let documentPath = null;
           const convenioName = `Convenio_${body.title || 'Sin_titulo'}_${new Date().toISOString().split('T')[0]}`;
-          
+
           if (isConvenioEspecifico) {
             console.log('📁 [Update] Regenerando convenio específico con carpeta...');
-            
+
             // 1. Crear carpeta
             let folderId: string | undefined;
             if (storage.createFolder) {
-                 const folder = await storage.createFolder(convenioName);
-                 folderId = folder.id;
-                 documentPath = folder.webViewLink;
+              const folder = await storage.createFolder(convenioName);
+              folderId = folder.id;
+              documentPath = folder.webViewLink;
             }
 
             // 2. Subir documento principal
             const mainDoc = await storage.saveFile(
-                buffer as Buffer,
-                `${convenioName}.docx`,
-                'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-                folderId
+              buffer as Buffer,
+              `${convenioName}.docx`,
+              'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+              folderId
             );
             if (!documentPath) documentPath = mainDoc.webViewLink;
 
@@ -348,30 +348,30 @@ export async function PATCH(
             if (body.anexos && Array.isArray(body.anexos)) {
               for (const anexo of body.anexos) {
                 if (anexo.name && anexo.buffer) {
-                   let anexoBuffer;
-                    if (Array.isArray(anexo.buffer)) {
-                      anexoBuffer = Buffer.from(new Uint8Array(anexo.buffer));
-                    } else if (anexo.buffer instanceof ArrayBuffer) {
-                      anexoBuffer = Buffer.from(anexo.buffer);
-                    } else {
-                      anexoBuffer = Buffer.from(new Uint8Array(anexo.buffer));
-                    }
+                  let anexoBuffer;
+                  if (Array.isArray(anexo.buffer)) {
+                    anexoBuffer = Buffer.from(new Uint8Array(anexo.buffer));
+                  } else if (anexo.buffer instanceof ArrayBuffer) {
+                    anexoBuffer = Buffer.from(anexo.buffer);
+                  } else {
+                    anexoBuffer = Buffer.from(new Uint8Array(anexo.buffer));
+                  }
 
-                   await storage.saveFile(
-                       anexoBuffer,
-                       `ANEXO-${anexo.name}`,
-                       'application/octet-stream',
-                       folderId
-                   );
+                  await storage.saveFile(
+                    anexoBuffer,
+                    `ANEXO-${anexo.name}`,
+                    'application/octet-stream',
+                    folderId
+                  );
                 }
               }
             }
           } else {
             console.log('📄 [Update] Regenerando convenio normal...');
             const fileInfo = await storage.saveFile(
-                buffer as Buffer,
-                `${convenioName}.docx`,
-                'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+              buffer as Buffer,
+              `${convenioName}.docx`,
+              'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
             );
             documentPath = fileInfo.webViewLink;
           }
@@ -397,14 +397,14 @@ export async function PATCH(
       try {
         console.log('📋 [Update] Moviendo convenio corregido de vuelta a pendientes...');
         const storage = getStorageProvider();
-        
+
         const itemId = storage.getFileIdFromUrl ? storage.getFileIdFromUrl(updatedConvenio.document_path) : null;
         const pendingFolderId = storage.getSystemFolderId ? storage.getSystemFolderId('pending') : null;
 
         if (itemId && pendingFolderId && storage.moveFile) {
-            console.log(`📦 [Update] Moviendo item ${itemId} a ${pendingFolderId}`);
-            await storage.moveFile(itemId, pendingFolderId);
-            console.log('✅ [Update] Convenio movido exitosamente a pendientes');
+          console.log(`📦 [Update] Moviendo item ${itemId} a ${pendingFolderId}`);
+          await storage.moveFile(itemId, pendingFolderId);
+          console.log('✅ [Update] Convenio movido exitosamente a pendientes');
         }
       } catch (moveError) {
         console.error('Error al mover convenio de vuelta a pendientes:', moveError);
@@ -443,10 +443,10 @@ export async function DELETE(
 ) {
   try {
     const supabase = await createClient();
-    
+
     // Verificar autenticación
     const { data: { user }, error: authError } = await supabase.auth.getUser();
-    
+
     if (authError || !user) {
       return NextResponse.json(
         { error: "No autorizado" },

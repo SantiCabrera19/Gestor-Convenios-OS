@@ -14,7 +14,7 @@ import {
   UserCheck,
   HeartHandshake
 } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@/shared/components/ui/badge";
 
 interface AdminFiltersProps {
   data: any[];

@@ -1,4 +1,4 @@
-import { ActividadSkeleton } from "@/app/components/ui/skeleton";
+import { ActividadSkeleton } from "@/shared/components/ui/skeleton";
 
 export default function Loading() {
   return <ActividadSkeleton />;

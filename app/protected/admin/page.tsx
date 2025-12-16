@@ -1,8 +1,8 @@
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/infrastructure/supabase/server";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { AdminPanelClient } from "@/app/protected/admin/AdminPanelClient";
-import { PageContainer } from "@/app/components/ui/page-container";
+import { PageContainer } from "@/shared/components/ui/page-container";
 import { ShieldCheckIcon } from "lucide-react";
 
 export default async function AdminPage() {

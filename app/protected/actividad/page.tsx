@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import { DataTable } from "@/app/protected/admin/data-table";
 import { columns } from "./columns";
 import { ActivityApiData } from "@/app/api/activity/route";
-import { PageContainer } from "@/app/components/ui/page-container";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/app/components/ui/card";
+import { PageContainer } from "@/shared/components/ui/page-container";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/shared/components/ui/card";
 import { ActivityIcon } from "lucide-react";
 
 export default function ActividadPage() {

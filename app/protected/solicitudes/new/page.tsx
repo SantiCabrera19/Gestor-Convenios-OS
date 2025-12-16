@@ -1,10 +1,10 @@
-import { createClient } from "@/utils/supabase/server";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/app/components/ui/card";
-import { Button } from "@/app/components/ui/button";
+import { createClient } from "@/infrastructure/supabase/server";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
+import { Button } from "@/shared/components/ui/button";
 import { ArrowRightIcon, FileTextIcon, SparklesIcon } from "lucide-react";
 import Link from "next/link";
-import { Badge } from "@/app/components/ui/badge";
-import { PageContainer } from "@/app/components/ui/page-container";
+import { Badge } from "@/shared/components/ui/badge";
+import { PageContainer } from "@/shared/components/ui/page-container";
 
 export default async function NewSolicitudPage() {
   const supabase = await createClient();

@@ -8,16 +8,16 @@ import {
   TableHead,
   TableHeader,
   TableRow
-} from "@/app/components/ui/table";
-import { Badge } from "@/app/components/ui/badge";
-import { Button } from "@/app/components/ui/button";
-import { Input } from "@/app/components/ui/input";
+} from "@/shared/components/ui/table";
+import { Badge } from "@/shared/components/ui/badge";
+import { Button } from "@/shared/components/ui/button";
+import { Input } from "@/shared/components/ui/input";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger
-} from "@/app/components/ui/dropdown-menu";
+} from "@/shared/components/ui/dropdown-menu";
 import {
   FileTextIcon,
   MoreHorizontalIcon,

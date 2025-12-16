@@ -1,7 +1,7 @@
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/infrastructure/supabase/server";
 import { redirect } from "next/navigation";
 import { ConveniosListaClient } from "./ConveniosListaClient";
-import { PageContainer } from "@/app/components/ui/page-container";
+import { PageContainer } from "@/shared/components/ui/page-container";
 import { FileTextIcon } from "lucide-react";
 
 export default async function ConveniosListaPage() {

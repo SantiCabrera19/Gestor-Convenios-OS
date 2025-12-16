@@ -19,10 +19,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "components/ui/table";
+} from "@/shared/components/ui/table";
 
-import { Button } from "@/app/components/ui/button";
-import { Input } from "@/app/components/ui/input";
+import { Button } from "@/shared/components/ui/button";
+import { Input } from "@/shared/components/ui/input";
 import { useState } from "react";
 import { SearchIcon, InfoIcon, ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -78,9 +78,9 @@ export function DataTable<TData, TValue>({
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                     </TableHead>
                   );
                 })}

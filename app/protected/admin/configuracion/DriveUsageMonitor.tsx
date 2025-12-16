@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Button } from "@/app/components/ui/button";
+import { Button } from "@/shared/components/ui/button";
 import { HardDriveIcon, FolderIcon, FileIcon, AlertTriangleIcon } from "lucide-react";
 
 interface DriveUsage {

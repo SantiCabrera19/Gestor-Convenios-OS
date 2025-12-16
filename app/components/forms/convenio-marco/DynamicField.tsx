@@ -1,9 +1,9 @@
 "use client";
 
 import React from "react";
-import { Input } from "@/app/components/ui/input";
-import { Textarea } from "@/app/components/ui/textarea";
-import { Label } from "@/app/components/ui/label";
+import { Input } from "@/shared/components/ui/input";
+import { Textarea } from "@/shared/components/ui/textarea";
+import { Label } from "@/shared/components/ui/label";
 
 interface FieldConfig {
   name: string;

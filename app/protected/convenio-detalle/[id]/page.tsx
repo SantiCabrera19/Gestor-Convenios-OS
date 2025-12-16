@@ -5,14 +5,15 @@ import { ChevronLeftIcon, FileTextIcon } from "lucide-react";
 import Link from "next/link";
 import { useEffect } from "react";
 
-import { Button } from "@/app/components/ui/button";
-import { ConvenioFormLayout } from "@/app/components/convenios/ConvenioFormLayout";
-import { ConvenioInfoDisplay } from "@/app/components/convenios/convenio-info-display";
-import { convenioConfigs } from "@/app/components/convenios/convenio-configs";
+import { Button } from "@/shared/components/ui/button";
+import { ConvenioFormLayout } from "@/features/agreements/components/layout/ConvenioFormLayout";
+import { ConvenioInfoDisplay } from "@/features/agreements/components/layout/convenio-info-display";
+import { convenioConfigs } from "@/features/agreements/components/core/convenio-configs";
+
 import { useConvenioMarcoStore } from "@/stores/convenioMarcoStore";
-import { DynamicConvenioPage } from "@/app/components/forms/dynamic/DynamicConvenioPage";
-import { PageContainer } from "@/app/components/ui/page-container";
-import { Card, CardContent } from "@/app/components/ui/card";
+import { DynamicConvenioPage } from "@/features/agreements/components/forms/dynamic/DynamicConvenioPage";
+import { PageContainer } from "@/shared/components/ui/page-container";
+import { Card, CardContent } from "@/shared/components/ui/card";
 
 export default function ConvenioPage() {
   const params = useParams<{ id: string }>();
@@ -84,7 +85,6 @@ export default function ConvenioPage() {
         else if (name.includes('marco')) slug = 'marco';
         else if (name.includes('especifico')) slug = 'especifico';
         else if (name.includes('particular')) slug = 'particular';
-        else if (name.includes('acuerdo')) slug = 'acuerdo';
       }
     }
 

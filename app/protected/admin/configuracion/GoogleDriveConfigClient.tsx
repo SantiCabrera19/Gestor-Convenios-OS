@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/app/components/ui/button";
+import { Button } from "@/shared/components/ui/button";
 import {
   CheckCircleIcon,
   AlertTriangle,
@@ -14,8 +14,8 @@ import {
 } from 'lucide-react'
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/app/components/ui/card";
-import { Badge } from "@/app/components/ui/badge";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
+import { Badge } from "@/shared/components/ui/badge";
 
 interface TokenInfo {
   createdAt: string;
