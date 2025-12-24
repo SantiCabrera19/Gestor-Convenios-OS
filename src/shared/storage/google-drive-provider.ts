@@ -3,17 +3,17 @@ import { Readable } from 'stream';
 import { createClient as createSupabaseClient } from '@supabase/supabase-js';
 import { IStorageProvider, StoredFile } from './types';
 
-// Configuración de las carpetas (Hardcoded por ahora, idealmente en DB o Env)
+// Configuración de las carpetas (DocumentosOS)
 export const DRIVE_FOLDERS = {
-  ROOT: '1od2SuLoJPgxS5OTyps_UhCEvhvhWT3mz',
-  PENDING: '1IwXiatPJ-j98oC7XKrd9xK7VF52fVNaJ',
-  APPROVED: '19BAZjx93AsHZ45s3U6afISMQJy5zdzPm',
-  REJECTED: '16JY2aSOp57qn7Ow4BBRZqqq1xK_kv7PQ',
-  ARCHIVED: '15LlGgNqCVMhjcpZBJUSVKvq4AwkRFSr1',
+  ROOT: '1p6W4hV10Pfk6ebOBtqMsSo57HrU1slq4',
+  PENDING: '1fMPMojrkvomzl0Inbqy9bMV4szHRjzJA',
+  APPROVED: '1HEY4kSXjco_W1LBqYvn-FwbDll22XRii',
+  REJECTED: '1FimWHwQUdsuctGrVumsxQv826L1pRorC',
+  ARCHIVED: '1wHERHIkq1kC-fb9upGXrV2lzPpldBJOw',
 } as const;
 
 export class GoogleDriveProvider implements IStorageProvider {
-  
+
   private async getOAuthClient() {
     // Para esta operación específica, necesitamos un cliente con privilegios de administrador
     // para poder leer los tokens de CUALQUIER usuario.
@@ -105,7 +105,7 @@ export class GoogleDriveProvider implements IStorageProvider {
   ): Promise<StoredFile> {
     try {
       const driveClient = await this.getOAuthClient();
-      
+
       const fileMetadata: any = {
         name: fileName,
         parents: [folderId],
@@ -146,7 +146,7 @@ export class GoogleDriveProvider implements IStorageProvider {
   ): Promise<StoredFile> {
     try {
       const driveClient = await this.getOAuthClient();
-      
+
       const fileMetadata = {
         name: folderName,
         mimeType: 'application/vnd.google-apps.folder',
@@ -177,7 +177,7 @@ export class GoogleDriveProvider implements IStorageProvider {
   async moveFile(fileId: string, targetFolderId: string): Promise<void> {
     try {
       const driveClient = await this.getOAuthClient();
-      
+
       // Obtener padres actuales
       const file = await driveClient.files.get({
         fileId,
@@ -201,27 +201,27 @@ export class GoogleDriveProvider implements IStorageProvider {
 
   getFileIdFromUrl(url: string): string | null {
     if (!url) return null;
-    
+
     // Patrón para archivos: .../d/ID/...
     const fileMatch = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
     if (fileMatch) return fileMatch[1];
-    
+
     // Patrón para carpetas: .../folders/ID...
     const folderMatch = url.match(/\/folders\/([a-zA-Z0-9_-]+)/);
     if (folderMatch) return folderMatch[1];
-    
+
     return null;
   }
 
   getSystemFolderId(type: 'root' | 'pending' | 'approved' | 'rejected' | 'archived'): string {
-      const map = {
-          root: DRIVE_FOLDERS.ROOT,
-          pending: DRIVE_FOLDERS.PENDING,
-          approved: DRIVE_FOLDERS.APPROVED,
-          rejected: DRIVE_FOLDERS.REJECTED,
-          archived: DRIVE_FOLDERS.ARCHIVED
-      };
-      return map[type] || DRIVE_FOLDERS.ROOT;
+    const map = {
+      root: DRIVE_FOLDERS.ROOT,
+      pending: DRIVE_FOLDERS.PENDING,
+      approved: DRIVE_FOLDERS.APPROVED,
+      rejected: DRIVE_FOLDERS.REJECTED,
+      archived: DRIVE_FOLDERS.ARCHIVED
+    };
+    return map[type] || DRIVE_FOLDERS.ROOT;
   }
 
   async deleteFile(fileId: string): Promise<void> {

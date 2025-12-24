@@ -3,13 +3,13 @@ import { readFileSync } from 'fs';
 import path from 'path';
 import { Readable } from 'stream';
 
-// Configuración de las carpetas
+// Configuración de las carpetas (DocumentosOS)
 export const DRIVE_FOLDERS = {
-  ROOT: '1od2SuLoJPgxS5OTyps_UhCEvhvhWT3mz', // Carpeta padre del proyecto
-  PENDING: '1IwXiatPJ-j98oC7XKrd9xK7VF52fVNaJ', // Carpeta "pendientes"
-  APPROVED: '19BAZjx93AsHZ45s3U6afISMQJy5zdzPm', // Carpeta "aprobados"
-  REJECTED: '16JY2aSOp57qn7Ow4BBRZqqq1xK_kv7PQ', // Carpeta "rechazados"
-  ARCHIVED: '15LlGgNqCVMhjcpZBJUSVKvq4AwkRFSr1', // Carpeta "archivados"
+  ROOT: '1p6W4hV10Pfk6ebOBtqMsSo57HrU1slq4', // Carpeta padre del proyecto
+  PENDING: '1fMPMojrkvomzl0Inbqy9bMV4szHRjzJA', // Carpeta "pendientes"
+  APPROVED: '1HEY4kSXjco_W1LBqYvn-FwbDll22XRii', // Carpeta "aprobados"
+  REJECTED: '1FimWHwQUdsuctGrVumsxQv826L1pRorC', // Carpeta "rechazados"
+  ARCHIVED: '1wHERHIkq1kC-fb9upGXrV2lzPpldBJOw', // Carpeta "archivados"
 } as const;
 
 // Inicializar el cliente de Google Drive (ELIMINADO - Usando OAuth)
