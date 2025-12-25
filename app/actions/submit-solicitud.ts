@@ -46,7 +46,11 @@ export async function submitSolicitud(formId: string, formData: any) {
 
   // 4. Generar el documento
   try {
+    console.log('📋 [Submit] Form definition:', { id: formDef.id, template_path: formDef.template_path });
+    console.log('📦 [Submit] Storage provider:', process.env.STORAGE_PROVIDER);
+
     if (formDef.template_path) {
+      console.log('📄 [Submit] Generating document from template...');
       const generatedDocBuffer = await DocumentGenerator.generateDocument(formDef.template_path, formData);
 
       const storage = getStorageProvider();
@@ -73,6 +77,6 @@ export async function submitSolicitud(formId: string, formData: any) {
     // No fallamos todo el proceso si falla la generación, el usuario puede reintentar luego
   }
 
-  revalidatePath('/protected/dashboard');
-  redirect('/protected/dashboard');
+  revalidatePath('/protected');
+  redirect('/protected');
 }

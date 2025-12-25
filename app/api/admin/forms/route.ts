@@ -53,13 +53,23 @@ export async function POST(request: NextRequest) {
     // 2. Guardar archivo si existe
     let templatePath = null;
     if (file) {
+      console.log('📁 [Forms API] Uploading template file:', file.name, file.size);
       const buffer = Buffer.from(await file.arrayBuffer());
       const storage = getStorageProvider();
+      console.log('📦 [Forms API] Storage provider:', process.env.STORAGE_PROVIDER);
       // Guardar en carpeta "templates" (o root si no existe lógica de carpetas aún)
       // Usamos un nombre único para evitar colisiones
       const fileName = `template_${slug}_${Date.now()}.docx`;
-      const storedFile = await storage.saveFile(buffer, fileName, file.type || "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-      templatePath = storedFile.downloadLink || storedFile.id; // Preferimos el link o ID según el provider
+      try {
+        const storedFile = await storage.saveFile(buffer, fileName, file.type || "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+        console.log('✅ [Forms API] File saved:', storedFile);
+        templatePath = storedFile.downloadLink || storedFile.webViewLink || storedFile.id;
+        console.log('📄 [Forms API] Template path set to:', templatePath);
+      } catch (uploadError) {
+        console.error('❌ [Forms API] Error uploading template:', uploadError);
+      }
+    } else {
+      console.log('⚠️ [Forms API] No file provided in form data');
     }
 
     // 3. Desactivar versiones anteriores (si existen)
