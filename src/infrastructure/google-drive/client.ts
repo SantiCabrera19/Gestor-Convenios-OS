@@ -3,13 +3,14 @@ import { readFileSync } from 'fs';
 import path from 'path';
 import { Readable } from 'stream';
 
-// Configuración de las carpetas (DocumentosOS)
+// Configuración de las carpetas (desde env vars)
 export const DRIVE_FOLDERS = {
-  ROOT: '1p6W4hV10Pfk6ebOBtqMsSo57HrU1slq4', // Carpeta padre del proyecto
-  PENDING: '1fMPMojrkvomzl0Inbqy9bMV4szHRjzJA', // Carpeta "pendientes"
-  APPROVED: '1HEY4kSXjco_W1LBqYvn-FwbDll22XRii', // Carpeta "aprobados"
-  REJECTED: '1FimWHwQUdsuctGrVumsxQv826L1pRorC', // Carpeta "rechazados"
-  ARCHIVED: '1wHERHIkq1kC-fb9upGXrV2lzPpldBJOw', // Carpeta "archivados"
+  ROOT: process.env.DRIVE_ROOT_ID || '1p6W4hV10Pfk6ebOBtqMsSo57HrU1slq4',
+  PENDING: process.env.DRIVE_PENDING_ID || '1fMPMojrkvomzl0Inbqy9bMV4szHRjzJA',
+  APPROVED: process.env.DRIVE_APPROVED_ID || '1HEY4kSXjco_W1LBqYvn-FwbDll22XRii',
+  REJECTED: process.env.DRIVE_REJECTED_ID || '1FimWHwQUdsuctGrVumsxQv826L1pRorC',
+  ARCHIVED: process.env.DRIVE_ARCHIVED_ID || '1wHERHIkq1kC-fb9upGXrV2lzPpldBJOw',
+  TEMPLATES: process.env.DRIVE_TEMPLATES_ID || '1adJF4HHCK2WQk3F13OnRJrj2o9yDb5Ew',
 } as const;
 
 // Inicializar el cliente de Google Drive (ELIMINADO - Usando OAuth)

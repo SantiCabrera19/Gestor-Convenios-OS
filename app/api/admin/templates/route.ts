@@ -28,7 +28,7 @@ export async function POST(request: Request) {
                 const fileName = `template_${slug}_${Date.now()}.docx`;
 
                 // Carpeta dedicada para plantillas (separada de documentos generados)
-                const TEMPLATES_FOLDER_ID = '1adJF4HHCK2WQk3F13OnRJrj2o9yDb5Ew';
+                const TEMPLATES_FOLDER_ID = process.env.DRIVE_TEMPLATES_ID || '1adJF4HHCK2WQk3F13OnRJrj2o9yDb5Ew';
 
                 console.log('📁 [Templates API] Uploading template file:', fileName, buffer.length, 'bytes');
                 console.log('📦 [Templates API] Storage provider:', process.env.STORAGE_PROVIDER);

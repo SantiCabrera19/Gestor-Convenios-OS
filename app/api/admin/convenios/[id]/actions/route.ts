@@ -2,6 +2,7 @@ import { createClient } from "@/infrastructure/supabase/server";
 import { NextResponse } from "next/server";
 import { moveFileToFolder, moveFileToFolderOAuth, moveFolderToFolderOAuth, DRIVE_FOLDERS } from '@/infrastructure/google-drive/client';
 import { NotificationService } from '@/shared/services/notification-service';
+import { sendApprovalEmail, sendRejectionEmail, sendCorrectionRequestEmail } from '@/shared/services/email-service';
 
 export async function POST(
   request: Request,
@@ -193,24 +194,77 @@ export async function POST(
       console.error("Error al registrar la actividad:", activityError);
     }
 
-    // Enviar notificación al usuario
+    // Enviar notificación interna + email al usuario
     try {
       const convenioTitle = convenio.title || "Sin título";
 
+      // Obtener datos del usuario para enviar email
+      const { data: userProfile } = await supabase
+        .from("profiles")
+        .select("email, full_name")
+        .eq("id", convenio.user_id)
+        .single();
+
+      // Obtener tipo de convenio para el email
+      const { data: convenioType } = await supabase
+        .from("convenio_types")
+        .select("name")
+        .eq("id", convenio.convenio_type_id)
+        .single();
+
       switch (action) {
         case "approve":
+          // Notificación interna
           await NotificationService.convenioApproved(convenio.user_id, convenioTitle, params.id);
+          // Email
+          if (userProfile?.email) {
+            await sendApprovalEmail({
+              userEmail: userProfile.email,
+              userName: userProfile.full_name || 'Usuario',
+              convenioType: convenioType?.name || 'Convenio',
+              convenioDate: new Date().toLocaleDateString('es-ES'),
+            });
+            console.log('[Actions] Approval email sent to:', userProfile.email);
+          }
           break;
+
         case "reject":
+          // Notificación interna
           await NotificationService.convenioRejected(convenio.user_id, convenioTitle, params.id);
+          // Email
+          if (userProfile?.email) {
+            await sendRejectionEmail({
+              userEmail: userProfile.email,
+              userName: userProfile.full_name || 'Usuario',
+              convenioType: convenioType?.name || 'Convenio',
+              rejectionReason: 'Documentación incompleta o no cumple con los requisitos.',
+              adminEmail: 'admin@documentosos.com',
+            });
+            console.log('[Actions] Rejection email sent to:', userProfile.email);
+          }
           break;
+
         case "correct":
+          // Notificación interna
           await NotificationService.convenioSentToCorrection(convenio.user_id, convenioTitle, params.id);
+          // Email con link directo
+          if (userProfile?.email) {
+            await sendCorrectionRequestEmail({
+              userEmail: userProfile.email,
+              userName: userProfile.full_name || 'Usuario',
+              convenioTitle: convenioTitle,
+              convenioId: params.id,
+              typeSlug: convenioType?.name?.toLowerCase().replace(/\s+/g, '-') || 'convenio',
+              observaciones: 'Por favor revisa y corrige la documentación enviada.',
+              adminName: user.email || 'Administrador',
+            });
+            console.log('[Actions] Correction email sent to:', userProfile.email);
+          }
           break;
       }
     } catch (notificationError) {
-      console.error("Error al enviar notificación:", notificationError);
-      // No fallamos si la notificación falla
+      console.error("[Actions] Error al enviar notificación/email:", notificationError);
+      // No fallamos si la notificación/email falla
     }
 
     return NextResponse.json({ success: true });
