@@ -96,6 +96,22 @@ export default function ConvenioPage() {
         </PageContainer>
       );
     }
+
+    // FALLBACK: Para formularios dinámicos (creados con Template Wizard)
+    // Usa el type slug del URL o busca info del convenio
+    const convenioData = useConvenioMarcoStore.getState().convenioData;
+    const convenioTypeId = (convenioData as any)?.convenio_type_id;
+    const formTitle = (convenioData as any)?.title || 'Corrección de Convenio';
+
+    return (
+      <PageContainer>
+        <DynamicConvenioPage
+          convenioTypeId={convenioTypeId || 0}
+          title={`Corregir: ${formTitle}`}
+          slug={type || 'correccion'}
+        />
+      </PageContainer>
+    );
   }
 
   // Si no es un tipo válido, mostrar mensaje de no disponible

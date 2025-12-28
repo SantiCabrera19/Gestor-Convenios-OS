@@ -197,13 +197,32 @@ export async function POST(
     // Enviar notificación interna + email al usuario
     try {
       const convenioTitle = convenio.title || "Sin título";
+      console.log('[Actions] 📧 Iniciando notificación/email para acción:', action);
 
       // Obtener datos del usuario para enviar email
+      // El email está en auth.users, no en profiles
       const { data: userProfile } = await supabase
         .from("profiles")
-        .select("email, full_name")
+        .select("full_name")
         .eq("id", convenio.user_id)
         .single();
+
+      // Obtener email del usuario usando admin auth API
+      const { createClient: createAdminClient } = await import('@supabase/supabase-js');
+      const supabaseAdmin = createAdminClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.SUPABASE_SERVICE_ROLE_KEY!,
+        { auth: { autoRefreshToken: false, persistSession: false } }
+      );
+
+      const { data: authUser, error: authError } = await supabaseAdmin.auth.admin.getUserById(convenio.user_id);
+
+      const userEmail = authUser?.user?.email;
+      const userName = userProfile?.full_name || authUser?.user?.user_metadata?.full_name || 'Usuario';
+
+      console.log('[Actions] 👤 User name:', userName);
+      console.log('[Actions] 📬 User email:', userEmail || 'NO EMAIL FOUND');
+      if (authError) console.log('[Actions] ⚠️ Auth error:', authError.message);
 
       // Obtener tipo de convenio para el email
       const { data: convenioType } = await supabase
@@ -217,14 +236,16 @@ export async function POST(
           // Notificación interna
           await NotificationService.convenioApproved(convenio.user_id, convenioTitle, params.id);
           // Email
-          if (userProfile?.email) {
+          if (userEmail) {
             await sendApprovalEmail({
-              userEmail: userProfile.email,
-              userName: userProfile.full_name || 'Usuario',
+              userEmail: userEmail,
+              userName: userName,
               convenioType: convenioType?.name || 'Convenio',
               convenioDate: new Date().toLocaleDateString('es-ES'),
             });
-            console.log('[Actions] Approval email sent to:', userProfile.email);
+            console.log('[Actions] ✅ Approval email sent to:', userEmail);
+          } else {
+            console.log('[Actions] ⚠️ No email found for user, skipping email notification');
           }
           break;
 
@@ -232,15 +253,17 @@ export async function POST(
           // Notificación interna
           await NotificationService.convenioRejected(convenio.user_id, convenioTitle, params.id);
           // Email
-          if (userProfile?.email) {
+          if (userEmail) {
             await sendRejectionEmail({
-              userEmail: userProfile.email,
-              userName: userProfile.full_name || 'Usuario',
+              userEmail: userEmail,
+              userName: userName,
               convenioType: convenioType?.name || 'Convenio',
               rejectionReason: 'Documentación incompleta o no cumple con los requisitos.',
               adminEmail: 'admin@documentosos.com',
             });
-            console.log('[Actions] Rejection email sent to:', userProfile.email);
+            console.log('[Actions] ✅ Rejection email sent to:', userEmail);
+          } else {
+            console.log('[Actions] ⚠️ No email found for user, skipping email notification');
           }
           break;
 
@@ -248,17 +271,19 @@ export async function POST(
           // Notificación interna
           await NotificationService.convenioSentToCorrection(convenio.user_id, convenioTitle, params.id);
           // Email con link directo
-          if (userProfile?.email) {
+          if (userEmail) {
             await sendCorrectionRequestEmail({
-              userEmail: userProfile.email,
-              userName: userProfile.full_name || 'Usuario',
+              userEmail: userEmail,
+              userName: userName,
               convenioTitle: convenioTitle,
               convenioId: params.id,
               typeSlug: convenioType?.name?.toLowerCase().replace(/\s+/g, '-') || 'convenio',
               observaciones: 'Por favor revisa y corrige la documentación enviada.',
               adminName: user.email || 'Administrador',
             });
-            console.log('[Actions] Correction email sent to:', userProfile.email);
+            console.log('[Actions] ✅ Correction email sent to:', userEmail);
+          } else {
+            console.log('[Actions] ⚠️ No email found for user, skipping email notification');
           }
           break;
       }
