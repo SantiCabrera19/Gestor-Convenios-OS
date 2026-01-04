@@ -37,9 +37,10 @@ interface DynamicConvenioPageProps {
   convenioTypeId: number;
   title: string;
   slug: string;
+  initialData?: Record<string, any>; // Pre-filled data for correction mode
 }
 
-export function DynamicConvenioPage({ convenioTypeId, title, slug }: DynamicConvenioPageProps) {
+export function DynamicConvenioPage({ convenioTypeId, title, slug, initialData }: DynamicConvenioPageProps) {
   const [formDef, setFormDef] = useState<FormDefinition | null>(null);
   const [loading, setLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -196,6 +197,7 @@ export function DynamicConvenioPage({ convenioTypeId, title, slug }: DynamicConv
               {/* Form Renderer */}
               <DynamicFormRenderer
                 schema={formDef.schema}
+                initialData={initialData || {}}
                 onSubmit={handleSubmit}
                 isSubmitting={isSubmitting}
                 onStepChange={setCurrentStep}

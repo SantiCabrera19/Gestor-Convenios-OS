@@ -103,7 +103,7 @@ export default async function Dashboard() {
                     <div className="flex-1 min-w-0">
                       <h4 className="font-medium truncate group-hover:text-primary transition-colors">{convenio.title}</h4>
                       <p className="text-xs text-muted-foreground flex items-center gap-2 mt-1">
-                        <span>{new Date(convenio.date).toLocaleDateString()}</span>
+                        <span>{convenio.date}</span>
                         <span>•</span>
                         <span>{convenio.type}</span>
                       </p>
